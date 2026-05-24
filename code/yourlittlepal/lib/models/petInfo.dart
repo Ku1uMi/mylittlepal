@@ -1,4 +1,4 @@
-import 'petstate.dart';
+import 'package:yourlittlepal/models/petState.dart';
 
 class PetStaticInfo {
   final String name;
@@ -42,7 +42,7 @@ class PetRegistry {
     PetType.forest: PetStaticInfo(
       name: 'Fuzzy',
       description: 'A mini lion king proud of its thick, pixelated mane.',
-      favoriteFoods: ['steak', 'feather wand'],
+      favoriteFoods: ['steak', 'chicken'],
       favoriteToys: ['feather wand'],
       normalFoods: ['water', 'chicken'],
       normalToys: ['socks', 'bones'],
