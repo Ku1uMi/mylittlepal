@@ -2,7 +2,7 @@ import 'package:yourlittlepal/models/petInfo.dart';
 import 'package:yourlittlepal/models/petState.dart';
 
 class PetLogic {
-  void hourlyDec(PetState state){
+  static void hourlyDec(PetState state){
     const int healthDec = 3;
     const int closenessDec = 2;
     final now = DateTime.now();
@@ -20,7 +20,7 @@ class PetLogic {
     
   }
 
-  void feed(PetState state, String food){
+  static void feed(PetState state, String food){
     final isFavorite = state.petType.info.favoriteFoods.contains(food);
     if (state.mealTime < 3 ) {
       if(isFavorite){
@@ -33,7 +33,7 @@ class PetLogic {
     }        
   }
 
-  void water(PetState state){
+  static void water(PetState state){
     if (state.waterTime < 15) {
       state.health = (state.health + 2).clamp(0, 100);
       state.coins += 5;
@@ -41,7 +41,7 @@ class PetLogic {
     }
   }
 
-  void wash(PetState state){
+  static void wash(PetState state){
     if (!state.isWashed) {
       state.health = (state.health + 10).clamp(0, 100);
       state.coins += 10;
@@ -49,7 +49,7 @@ class PetLogic {
     }
   }
 
-  void play(PetState state, String toy){
+  static void play(PetState state, String toy){
     final isFavorite = state.petType.info.favoriteToys.contains(toy);
     if(!state.isPlayed){
       if(isFavorite){

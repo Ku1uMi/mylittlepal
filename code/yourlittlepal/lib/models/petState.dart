@@ -46,11 +46,11 @@ class PetState{
       health: json['health'] as double,
       closeness: json['closeness'] as double,
       coins: json['coins'] as int,
-      lastSaved: DateTime.parse(json ['lastSaved']),
+      lastSaved: DateTime.parse(json['lastSaved']),
       waterTime: json['waterTime'] as int,
       mealTime: json['mealTime'] as int,
       isWashed: json['isWashed'] as bool,
-      sleepTime: DateTime.parse(json ['sleepTime']),
+      sleepTime: DateTime.parse(json['sleepTime']),
       isPlayed: json['isPlayed'] as bool
     );
   }
