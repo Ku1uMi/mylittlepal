@@ -60,4 +60,27 @@ class PetLogic {
       state.coins += 15;
     }
   }
+
+  static void changeOutfit(PetState state, {String? top, String? bottom}){
+    state.undo.add(state.currOutfit);
+    state.redo.clear();
+
+    state.currOutfit = state.currOutfit.update(top: top, bottom: bottom);
+  }
+
+  static void undo(PetState state){
+    if(!state.undo.isEmpty){
+      state.redo.add(state.currOutfit);
+      state.currOutfit = state.undo.last;
+      state.undo.removeLast();
+    }
+  }
+
+  static void redo(PetState state){
+    if(!state.redo.isEmpty){
+      state.undo.add(state.currOutfit);
+      state.currOutfit = state.redo.last;
+      state.redo.removeLast();
+    }
+  }
 }

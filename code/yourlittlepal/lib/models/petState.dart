@@ -1,4 +1,6 @@
 
+import 'package:yourlittlepal/models/outfit.dart';
+
 enum PetType {sky, ocean, forest}
 
 class PetState{
@@ -12,6 +14,9 @@ class PetState{
   bool isWashed;
   late DateTime sleepTime;
   bool isPlayed;
+  Outfit currOutfit;
+  List<Outfit> undo;
+  List<Outfit> redo;
 
   PetState({
     required this.petType,
@@ -23,7 +28,10 @@ class PetState{
     this.mealTime = 0,
     this.isWashed = false,
     required this.sleepTime,
-    this.isPlayed = false
+    this.isPlayed = false,
+    this.currOutfit = const Outfit(),
+    this.undo = const [],
+    this.redo = const []
   });
 
   Map<String, dynamic> toJson() =>{
@@ -51,7 +59,10 @@ class PetState{
       mealTime: json['mealTime'] as int,
       isWashed: json['isWashed'] as bool,
       sleepTime: DateTime.parse(json['sleepTime']),
-      isPlayed: json['isPlayed'] as bool
+      isPlayed: json['isPlayed'] as bool,
+      currOutfit: Outfit.fromJson(json['currOutfit']),
+      undo: (json['undo'] as List).map((e) => Outfit.fromJson(e),).toList(),
+      redo: (json['redo'] as List).map((e) => Outfit.fromJson(e),).toList(),
     );
   }
 

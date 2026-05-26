@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yourlittlepal/providers/pet_provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => PetProvider()..init()
+      ,child: const MainApp() 
+    ));
 }
 
 class MainApp extends StatelessWidget {
@@ -17,4 +23,6 @@ class MainApp extends StatelessWidget {
       ),
     );
   }
+
+  
 }
