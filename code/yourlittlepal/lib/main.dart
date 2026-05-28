@@ -61,7 +61,6 @@ class MainApp extends StatelessWidget {
             color: Color(0xFF2B2B2B),
           ),
         ),
-        // FIXED: Removed the invalid global imageTheme block that caused the crash.
       ),
 
       initialRoute: '/',

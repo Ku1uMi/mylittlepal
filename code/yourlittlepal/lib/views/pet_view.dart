@@ -65,10 +65,9 @@ class _PetViewState extends State<PetView> {
         ),
         // --- Canvas Drawing Widget ---
         child: CustomPaint(
-          painter: CanvasPainter(
-            bubbles: []
-            //petType: state.petType,
-            //remainingBubbles: bubbleScrubPoints,
+          painter: PetCanvasPainter(
+            petType: state.petType,
+            remainingBubbles: bubbleScrubPoints,
           ),
         ),
       ),
