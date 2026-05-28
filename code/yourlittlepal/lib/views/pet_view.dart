@@ -14,12 +14,13 @@ class PetView extends StatefulWidget {
 class _PetViewState extends State<PetView> {
   // Keeps track of where the user is scrubbing on the pet
   List<Offset> bubbleScrubPoints = [];
-
+  
   @override
   Widget build(BuildContext context) {
     final petProvider = Provider.of<PetProvider>(context);
     final state = petProvider.state;
-
+    final top = state.currOutfit.top;
+    final bottom = state.currOutfit.bottom;
     // Generate a list of temporary visual bubbles if the pet is dirty/being washed
     if (state.isWashed == false && bubbleScrubPoints.isEmpty) {
       // Populates a few initial bubble coordinates across the canvas area
@@ -64,13 +65,34 @@ class _PetViewState extends State<PetView> {
           border: Border.all(color: const Color(0xFF2B2B2B), width: 4),
         ),
         // --- Canvas Drawing Widget ---
-        child: CustomPaint(
-          painter: PetCanvasPainter(
-            petType: state.petType,
-            remainingBubbles: bubbleScrubPoints,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset('assets/pets/rabbit.png',
+            height: 150,
+            width: 150,
+            filterQuality: FilterQuality.none,
+            ),
+
+            if(top != '')
+              Image.asset('assets/outfits/bottoms/yellow_top.png',
+              height: 150,
+              width: 150,
+              filterQuality: FilterQuality.none,
+              ),
+
+            if(bottom != '')
+              Image.asset('assets/outfits/tops/beige_bottom.png',
+              height: 150,
+              width: 150,
+              filterQuality: FilterQuality.none, 
+              )     
+          ],
+        )
+
           ),
-        ),
-      ),
-    );
+        );
+      
+    
   }
 }
