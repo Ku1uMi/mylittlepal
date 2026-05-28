@@ -12,7 +12,7 @@ class PetState {
   int mealTime;
   bool isWashed;
   late DateTime sleepTime;
-  bool isPlayed;
+  int playTime;
   Outfit currOutfit;
   List<Outfit> undo;
   List<Outfit> redo;
@@ -27,7 +27,7 @@ class PetState {
     this.mealTime = 0,
     this.isWashed = false,
     required this.sleepTime,
-    this.isPlayed = false,
+    this.playTime = 0,
     this.currOutfit = const Outfit(),
     this.undo = const [],
     this.redo = const [],
@@ -43,7 +43,7 @@ class PetState {
     'mealTime': mealTime,
     'isWashed': isWashed,
     'sleepTime': sleepTime.toIso8601String(),
-    'isPlayed': isPlayed,
+    'playTime': playTime,
   };
 
   factory PetState.fromJson(Map<String, dynamic> json) {
@@ -57,7 +57,7 @@ class PetState {
       mealTime: json['mealTime'] as int,
       isWashed: json['isWashed'] as bool,
       sleepTime: DateTime.parse(json['sleepTime']),
-      isPlayed: json['isPlayed'] as bool,
+      playTime: json['playTime'] as int,
       currOutfit: Outfit.fromJson(json['currOutfit']),
       undo: (json['undo'] as List).map((e) => Outfit.fromJson(e)).toList(),
       redo: (json['redo'] as List).map((e) => Outfit.fromJson(e)).toList(),

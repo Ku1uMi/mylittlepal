@@ -1,4 +1,4 @@
-import 'package:yourlittlepal/models/petState.dart';
+import 'package:yourlittlepal/models/pet_state.dart';
 
 class PetStaticInfo {
   final String name;

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
-import 'models/petInfo.dart';
-import 'package:yourlittlepal/widgets/pet_view.dart';
+import 'models/pet_info.dart';
+import 'package:yourlittlepal/views/pet_view.dart';
 
 void main() {
   // Ensures localizations and SharedPreferences bindings are ready before execution
@@ -107,7 +107,7 @@ class PetPlaygroundScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(right: 16.0),
               child: Text(
-                '🪙${state.coins}',
+                '${state.coins}',
                 style: const TextStyle(
                   fontFamily: 'PixelFont',
                   fontSize: 18,

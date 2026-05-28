@@ -1,5 +1,5 @@
-import 'package:yourlittlepal/models/petInfo.dart';
-import 'package:yourlittlepal/models/petState.dart';
+import 'package:yourlittlepal/models/pet_info.dart';
+import 'package:yourlittlepal/models/pet_state.dart';
 
 class PetLogic {
   static void hourlyDec(PetState state){
@@ -51,7 +51,7 @@ class PetLogic {
 
   static void play(PetState state, String toy){
     final isFavorite = state.petType.info.favoriteToys.contains(toy);
-    if(!state.isPlayed){
+    if(state.playTime <= 3){
       if(isFavorite){
         state.closeness = (state.closeness + 20).clamp(0, 100);
       } else{
@@ -83,4 +83,6 @@ class PetLogic {
       state.redo.removeLast();
     }
   }
+
+
 }

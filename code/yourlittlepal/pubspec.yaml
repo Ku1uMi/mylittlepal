@@ -21,3 +21,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/pets/
+    - assets/effects/
+    - assets/outfits/tops/
+    - assets/outfits/bottoms/

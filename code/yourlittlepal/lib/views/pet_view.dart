@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
-import 'package:yourlittlepal/models/petState.dart';
+import 'package:yourlittlepal/models/pet_state.dart';
+import 'package:yourlittlepal/widgets/canvas_painter.dart';
 
 class PetView extends StatefulWidget {
   const PetView({super.key});
@@ -51,7 +52,7 @@ class _PetViewState extends State<PetView> {
         if (bubbleScrubPoints.isEmpty && !state.isWashed) {
           petProvider.wash();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('✨ Clean and refreshed! ✨')),
+            const SnackBar(content: Text('Clean and refreshed!')),
           );
         }
       },
@@ -64,9 +65,10 @@ class _PetViewState extends State<PetView> {
         ),
         // --- Canvas Drawing Widget ---
         child: CustomPaint(
-          painter: PetCanvasPainter(
-            petType: state.petType,
-            remainingBubbles: bubbleScrubPoints,
+          painter: CanvasPainter(
+            bubbles: []
+            //petType: state.petType,
+            //remainingBubbles: bubbleScrubPoints,
           ),
         ),
       ),
