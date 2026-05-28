@@ -86,5 +86,17 @@ class PetLogic {
     }
   }
 
+  static void buyFood(PetState state, String food){
+
+  }
+
+  static void buyToy(PetState state, String toy){
+
+  }
+
+  static void selectPet(PetState state, PetType type){
+    
+  }
+
 
 }

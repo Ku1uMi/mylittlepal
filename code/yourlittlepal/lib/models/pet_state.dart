@@ -16,6 +16,9 @@ class PetState {
   Outfit currOutfit;
   List<Outfit> undo;
   List<Outfit> redo;
+  Map<String, int> ownedFood;
+  List<String> ownedToy;
+  bool newPet;
 
   PetState({
     required this.petType,
@@ -31,6 +34,9 @@ class PetState {
     this.currOutfit = const Outfit(),
     this.undo = const [],
     this.redo = const [],
+    this.ownedFood = const {},
+    this.ownedToy = const [],
+    this.newPet = true
   });
 
   Map<String, dynamic> toJson() => {
@@ -44,6 +50,9 @@ class PetState {
     'isWashed': isWashed,
     'sleepTime': sleepTime.toIso8601String(),
     'playTime': playTime,
+    'ownedFood': ownedFood,
+    'ownedToy': ownedToy,
+    'newPet': newPet
   };
 
   factory PetState.fromJson(Map<String, dynamic> json) {
@@ -61,12 +70,32 @@ class PetState {
       currOutfit: Outfit.fromJson(json['currOutfit']),
       undo: (json['undo'] as List).map((e) => Outfit.fromJson(e)).toList(),
       redo: (json['redo'] as List).map((e) => Outfit.fromJson(e)).toList(),
+      ownedFood: Map<String, int>.from(json['ownedFood']),
+      ownedToy: List<String>.from(json['ownedToys']),
+      newPet: json['newPet'] as bool
     );
   }
 
-  factory PetState.newPet(PetType type) => PetState(
+  factory PetState.newPet(PetType type) {
+    final defaultFood = {
+      PetType.sky: {'carrot': 2, 'hay': 2},
+      PetType.ocean: {'shrimp': 2, 'salmon': 2},
+      PetType.forest: {'steak': 2, 'chicken': 2},
+    };
+
+    final defaultToy = {
+      PetType.sky: ['socks'],
+      PetType.ocean: ['socks'],
+      PetType.forest: ['socks'],
+    };
+
+    return PetState(
     petType: type,
     lastSaved: DateTime.now(),
     sleepTime: DateTime(2026, 5, 24, 21, 30),
-  );
+    ownedFood: defaultFood[type]!,
+    ownedToy: defaultToy[type]!,
+    newPet: true
+    );
+  }
 }

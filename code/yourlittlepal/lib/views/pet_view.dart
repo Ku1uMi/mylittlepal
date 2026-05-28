@@ -61,8 +61,8 @@ class _PetViewState extends State<PetView> {
         width: 200,
         height: 200,
         decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: const Color(0xFF2B2B2B), width: 4),
+          //color: Colors.white,
+          //border: Border.all(color: const Color(0xFF2B2B2B), width: 4),
         ),
         // --- Canvas Drawing Widget ---
         child: Stack(
