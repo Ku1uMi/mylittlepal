@@ -84,6 +84,10 @@ extension PetTypeData on PetType {
         return 'Splish splash! The temperature down here is perfect.';
       case PetType.forest:
         return 'ROAR! Just practicing my hunting stalk!';
+      case PetType.goat:
+        return 'Maaach! Look at my horns! Is it time to graze on some grass yet? 🌿';
+      case PetType.rabbit:
+        return 'Hop hop! My ears are tingling... got any crunchy carrots? 🥕';
     }
   }
 }
