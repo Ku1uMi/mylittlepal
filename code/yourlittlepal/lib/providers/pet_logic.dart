@@ -2,7 +2,7 @@ import 'package:yourlittlepal/models/pet_info.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 
 class PetLogic {
-  static void hourlyDec(PetState state){
+   static void hourlyDec(PetState state){
     const int healthDec = 3;
     const int closenessDec = 2;
     final now = DateTime.now();
@@ -31,6 +31,7 @@ class PetLogic {
       }
       state.coins += 20;
       state.mealTime++;
+      state.ownedFood[food] = state.ownedFood[food]! - 1;
     }
   }
 
@@ -86,16 +87,32 @@ class PetLogic {
     }
   }
 
-  static void buyFood(PetState state, String food){
+  static bool buyFood(PetState state, String food){
+    const int foodPrice = 20;
+    if(state.coins < foodPrice){
+      return false;
+    }else {
+      state.coins -= foodPrice;
+      state.ownedFood[food] = (state.ownedFood[food] ?? 0) + 1;
+      return true;
+    }
+  }
+
+  static bool buyToy(PetState state, String toy){
+    const int toyPrice = 30;
+    if(state.coins < toyPrice){
+      return false;
+    }else{
+      state.coins -= toyPrice;
+      state.ownedToy.add(toy);
+      return true;
+    }
 
   }
 
-  static void buyToy(PetState state, String toy){
-
-  }
-
-  static void selectPet(PetState state, PetType type){
-    
+   static void selectPet(PetState state, PetType type){
+    state.petType = type;
+    state.newPet = false;
   }
 
 

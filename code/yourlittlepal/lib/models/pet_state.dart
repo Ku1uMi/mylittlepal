@@ -3,7 +3,7 @@ import 'package:yourlittlepal/models/outfit.dart';
 enum PetType { sky, ocean, forest }
 
 class PetState {
-  final PetType petType;
+  PetType petType;
   double health;
   double closeness;
   int coins;

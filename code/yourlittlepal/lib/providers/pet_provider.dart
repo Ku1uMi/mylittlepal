@@ -12,7 +12,7 @@ class PetProvider extends ChangeNotifier {
   Timer? _timer;
   PetState get state => _state;
   bool get isLoaded => _isLoaded;
-
+  bool get newPet => _state.newPet;
   Locale _currentLocale = const Locale('en', '');
   bool _isDarkMode = false;
 
@@ -104,6 +104,26 @@ class PetProvider extends ChangeNotifier {
 
   Future<void> redo() async {
     PetLogic.redo(_state);
+    await _save();
+    notifyListeners();
+  }
+
+  Future<bool> buyFood(String food) async {
+    final buyed = PetLogic.buyFood(_state, food);
+    await _save();
+    notifyListeners();
+    return buyed;
+  }
+
+  Future<bool> buyToy(String toy) async {
+    final buyed = PetLogic.buyToy(_state, toy);
+    await _save();
+    notifyListeners();
+    return buyed;
+  }
+
+  Future<void> selectPet(PetType type) async {
+    PetLogic.selectPet(_state, type);
     await _save();
     notifyListeners();
   }
