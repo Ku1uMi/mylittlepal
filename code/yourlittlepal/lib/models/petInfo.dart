@@ -44,7 +44,7 @@ class PetRegistry {
       description: 'A mini lion king proud of its thick, pixelated mane.',
       favoriteFoods: ['steak', 'chicken'],
       favoriteToys: ['feather wand'],
-      normalFoods: ['water', 'chicken'],
+      normalFoods: ['water'], // Cleaned duplicate 'chicken' out of normal items
       normalToys: ['socks', 'bones'],
     ),
   };
@@ -56,18 +56,20 @@ class PetRegistry {
 extension PetTypeData on PetType {
   PetStaticInfo get info => PetRegistry.getInfo(this);
 
-  String getDialogue({
-    required double health,
-    required double closeness,
-    required bool isThirsty,
-    required bool isHungry,
-  }) {
-    if (health <= 0) {
+  /// Generates dynamic UI messages directly by analyzing the current PetState
+  String getDialogue(PetState state) {
+    if (state.health <= 0) {
       return 'I feel sick... and need some medicine.';
     }
-    if (closeness <= 0) {
+    if (state.closeness <= 0) {
       return '... Hmph. Leave me alone right now.';
     }
+
+    // Derived states: Hungry if pet has eaten 0 meals today;
+    // Thirsty if pet has had less than 2 cups of water today.
+    bool isHungry = state.mealTime == 0;
+    bool isThirsty = state.waterTime < 2;
+
     if (isHungry) {
       return 'My tummy is rumbling! Time for a meal?';
     }

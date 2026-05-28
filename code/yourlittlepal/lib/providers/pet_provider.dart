@@ -6,21 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:yourlittlepal/models/petState.dart';
 import 'package:yourlittlepal/providers/pet_logic.dart';
 
-class PetProvider extends ChangeNotifier{
+class PetProvider extends ChangeNotifier {
   late PetState _state;
-  bool _isLoaded =  false;
+  bool _isLoaded = false;
   Timer? _timer;
   PetState get state => _state;
   bool get isLoaded => _isLoaded;
 
-  Future<void> init() async{
+  Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getString('pet_state');
 
-
-    if(saved != null){
-      _state = PetState.fromJson(jsonDecode(saved)); 
-    }else{
+    if (saved != null) {
+      _state = PetState.fromJson(jsonDecode(saved));
+    } else {
       _state = PetState.newPet(PetType.sky);
     }
 
@@ -29,47 +28,44 @@ class PetProvider extends ChangeNotifier{
     _isLoaded = true;
     notifyListeners();
 
-    _timer = Timer.periodic(
-      const Duration(minutes: 10), 
-      (_)async{
-        PetLogic.hourlyDec(_state);
-        await _save();
-        notifyListeners();
-      }
-    );
+    _timer = Timer.periodic(const Duration(minutes: 10), (_) async {
+      PetLogic.hourlyDec(_state);
+      await _save();
+      notifyListeners();
+    });
   }
-  
+
   Future<void> _save() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('pet_state', jsonEncode(_state.toJson()));
   }
 
-  Future<void> feed(String food) async {  
+  Future<void> feed(String food) async {
     PetLogic.feed(_state, food);
     await _save();
     notifyListeners();
   }
-    
-  Future<void> water() async {  
+
+  Future<void> water() async {
     PetLogic.water(_state);
     await _save();
     notifyListeners();
   }
-    
-  Future<void> wash() async {  
+
+  Future<void> wash() async {
     PetLogic.wash(_state);
     await _save();
     notifyListeners();
   }
-    
-  Future<void> play(String toy) async {  
+
+  Future<void> play(String toy) async {
     PetLogic.play(_state, toy);
     await _save();
     notifyListeners();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _timer?.cancel();
     super.dispose();
   }
