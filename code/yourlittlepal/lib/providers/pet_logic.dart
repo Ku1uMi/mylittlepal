@@ -2,14 +2,14 @@ import 'package:yourlittlepal/models/pet_info.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 
 class PetLogic {
-  static void hourlyDec(PetState state) {
+  static void hourlyDec(PetState state){
     const int healthDec = 3;
     const int closenessDec = 2;
     final now = DateTime.now();
     final diff = (now.difference(state.lastSaved).inMinutes / 60).clamp(0, 24);
 
     //check day before updating lastSaved
-    if (now.day != state.lastSaved.day) {
+    if(now.day != state.lastSaved.day){
       state.waterTime = 0;
       state.mealTime = 0;
       state.isWashed = false;
@@ -52,8 +52,8 @@ class PetLogic {
 
   static void play(PetState state, String toy) {
     final isFavorite = state.petType.info.favoriteToys.contains(toy);
-    if(state.playTime < 2){
-      if(isFavorite){
+    if (state.playTime < 2) {
+      if (isFavorite) {
         state.closeness = (state.closeness + 20).clamp(0, 100);
       } else {
         state.closeness = (state.closeness + 15).clamp(0, 100);
