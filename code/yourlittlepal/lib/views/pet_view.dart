@@ -1,10 +1,7 @@
-import 'dart:async';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Required for rootBundle
+import 'package:yourlittlepal/widgets/canvas_painter.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
-import 'package:yourlittlepal/widgets/canvas_painter.dart';
 
 class PetView extends StatefulWidget {
   const PetView({super.key});
@@ -15,36 +12,13 @@ class PetView extends StatefulWidget {
 
 class _PetViewState extends State<PetView> {
   List<Offset> bubbleScrubPoints = [];
-  ui.Image? bubbleImage; // Holds our pixel art bubble
-
-  @override
-  void initState() {
-    super.initState();
-    _loadBubbleAsset();
-  }
-
-  // Helper method to load and decode the custom PNG asset into memory
-  Future<void> _loadBubbleAsset() async {
-    try {
-      final ByteData data = await rootBundle.load('assets/effects/bubble.png');
-      final ui.Codec codec = await ui.instantiateImageCodec(
-        data.buffer.asUint8List(),
-      );
-      final ui.FrameInfo fi = await codec.getNextFrame();
-      setState(() {
-        bubbleImage = fi.image;
-      });
-    } catch (e) {
-      debugPrint("Error loading bubble asset: $e");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final petProvider = Provider.of<PetProvider>(context);
     final state = petProvider.state;
 
-    // Reset/populate initial bubbles if pet needs washing and the list is empty
+    // Generate a list of temporary visual bubbles if the pet is dirty/being washed
     if (state.isWashed == false && bubbleScrubPoints.isEmpty) {
       bubbleScrubPoints = [
         const Offset(60, 50),
@@ -85,13 +59,12 @@ class _PetViewState extends State<PetView> {
           //color: Colors.white,
           //border: Border.all(color: const Color(0xFF2B2B2B), width: 4),
         ),
+        // --- Canvas Drawing Widget ---
         child: CustomPaint(
           painter: CanvasPainter(
             petType: state.petType,
             remainingBubbles: bubbleScrubPoints,
-            bubbles: bubbleScrubPoints,
-            bubble:
-                bubbleImage, // <-- Pass the loaded image asset directly down to the painter
+            bubbles: [],
           ),
         ),
       ),

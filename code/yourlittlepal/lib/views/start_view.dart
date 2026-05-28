@@ -39,7 +39,6 @@ class StartPage extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                // Smoothly pushes to your primary dashboard route and clears the backstack
                 Navigator.of(context).pushReplacementNamed('/playground');
               },
               child: const Text(
