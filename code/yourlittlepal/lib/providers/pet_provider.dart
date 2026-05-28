@@ -13,6 +13,22 @@ class PetProvider extends ChangeNotifier {
   PetState get state => _state;
   bool get isLoaded => _isLoaded;
 
+  Locale _currentLocale = const Locale('en', ' ');
+  bool _isDarkMode = false;
+
+  Locale get currentLocale => _currentLocale;
+  bool get isDarkMode => _isDarkMode;
+
+  void setLocale(Locale locale) {
+    _currentLocale = locale;
+    notifyListeners();
+  }
+
+  void toggleDarkMode() {
+    _isDarkMode = !_isDarkMode;
+    notifyListeners();
+  }
+
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getString('pet_state');

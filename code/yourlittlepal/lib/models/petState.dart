@@ -1,9 +1,8 @@
-
 import 'package:yourlittlepal/models/outfit.dart';
 
-enum PetType {sky, ocean, forest}
+enum PetType { sky, ocean, forest }
 
-class PetState{
+class PetState {
   final PetType petType;
   double health;
   double closeness;
@@ -31,10 +30,10 @@ class PetState{
     this.isPlayed = false,
     this.currOutfit = const Outfit(),
     this.undo = const [],
-    this.redo = const []
+    this.redo = const [],
   });
 
-  Map<String, dynamic> toJson() =>{
+  Map<String, dynamic> toJson() => {
     'petType': petType.name,
     'health': health,
     'closeness': closeness,
@@ -44,11 +43,10 @@ class PetState{
     'mealTime': mealTime,
     'isWashed': isWashed,
     'sleepTime': sleepTime.toIso8601String(),
-    'isPlayed' : isPlayed
+    'isPlayed': isPlayed,
   };
-    
-  
-  factory PetState.fromJson(Map<String, dynamic> json){
+
+  factory PetState.fromJson(Map<String, dynamic> json) {
     return PetState(
       petType: PetType.values.byName(json['petType']),
       health: json['health'] as double,
@@ -61,15 +59,14 @@ class PetState{
       sleepTime: DateTime.parse(json['sleepTime']),
       isPlayed: json['isPlayed'] as bool,
       currOutfit: Outfit.fromJson(json['currOutfit']),
-      undo: (json['undo'] as List).map((e) => Outfit.fromJson(e),).toList(),
-      redo: (json['redo'] as List).map((e) => Outfit.fromJson(e),).toList(),
+      undo: (json['undo'] as List).map((e) => Outfit.fromJson(e)).toList(),
+      redo: (json['redo'] as List).map((e) => Outfit.fromJson(e)).toList(),
     );
   }
 
   factory PetState.newPet(PetType type) => PetState(
-    petType: type, 
-    lastSaved: DateTime.now(), 
-    sleepTime: DateTime(2026,5,24,21,30)
+    petType: type,
+    lastSaved: DateTime.now(),
+    sleepTime: DateTime(2026, 5, 24, 21, 30),
   );
-
 }

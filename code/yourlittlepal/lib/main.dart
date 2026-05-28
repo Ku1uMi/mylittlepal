@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
-import 'package:yourlittlepal/models/petState.dart';
-import 'package:yourlittlepal/models/petInfo.dart';
+import 'models/petInfo.dart';
+import 'package:yourlittlepal/widgets/pet_view.dart';
 
 void main() {
   // Ensures localizations and SharedPreferences bindings are ready before execution
@@ -41,7 +41,7 @@ class MainApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
 
-      // --- Retro Pixel Vibe Theme ---
+      // --- Retro Sketch/Pixel Vibe Theme ---
       theme: ThemeData(
         useMaterial3: true,
         brightness: petProvider.isDarkMode ? Brightness.dark : Brightness.light,
@@ -61,8 +61,7 @@ class MainApp extends StatelessWidget {
             color: Color(0xFF2B2B2B),
           ),
         ),
-        // Anti-aliasing override: Prevents the engine from blurring retro pixel assets
-        imageTheme: const ImageThemeData(filterQuality: FilterQuality.none),
+        // FIXED: Removed the invalid global imageTheme block that caused the crash.
       ),
 
       initialRoute: '/',
@@ -121,14 +120,14 @@ class PetPlaygroundScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainMainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // 1. Status Meters Container
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Card(
                 elevation: 0,
-                color: Colors.white.withOpacity(0.6),
+                color: Colors.white.withValues(alpha: 0.6),
                 shape: RoundedRectangleBorder(
                   side: const BorderSide(color: Color(0xFF2B2B2B), width: 3),
                   borderRadius: BorderRadius.circular(0), // Sharp retro corners
@@ -160,28 +159,9 @@ class PetPlaygroundScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Pixel Avatar Representation Box
-                    Container(
-                      width: 160,
-                      height: 160,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: const Color(0xFF2B2B2B),
-                          width: 4,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          state.petType == PetType.sky
-                              ? '🐰✨'
-                              : state.petType == PetType.ocean
-                              ? '🐳🌊'
-                              : '🦁🌳',
-                          style: const TextStyle(fontSize: 64),
-                        ),
-                      ),
-                    ),
+                    // Advanced Custom Canvas View Layer with Hand-Drawn Mechanics
+                    const PetView(),
+
                     const SizedBox(height: 24),
                     // Speech Bubble Dialogue
                     Padding(
@@ -238,7 +218,7 @@ class PetPlaygroundScreen extends StatelessWidget {
     );
   }
 
-  // Helper builder generating clean custom status progress strips
+  // Helper builder generating custom status progress strips
   Widget _buildPixelStatBar(String label, double percentage, Color fill) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,7 +249,7 @@ class PetPlaygroundScreen extends StatelessWidget {
     );
   }
 
-  // Builder creating hard-bordered retro layout interaction keys
+  // Builder creating hard-bordered retro interaction keys
   Widget _buildPixelButton(String text, VoidCallback onPressed) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
