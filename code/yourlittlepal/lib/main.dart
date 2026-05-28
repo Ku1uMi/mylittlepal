@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'models/pet_info.dart';
 import 'package:yourlittlepal/views/pet_view.dart';
+import 'package:yourlittlepal/views/start_view.dart'; // Your standalone start page file
 
 void main() {
   // Ensures localizations and SharedPreferences bindings are ready before execution
@@ -63,8 +64,12 @@ class MainApp extends StatelessWidget {
         ),
       ),
 
+      // Set the default initial route to your imported StartPage widget
       initialRoute: '/',
-      routes: {'/': (context) => const PetPlaygroundScreen()},
+      routes: {
+        '/': (context) => const StartPage(),
+        '/playground': (context) => const PetPlaygroundScreen(),
+      },
     );
   }
 }
@@ -77,7 +82,7 @@ class PetPlaygroundScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final petProvider = Provider.of<PetProvider>(context);
 
-    // Guard rail showing a pixelated loading message while SharedPreferences initializes
+    // Safeguard guard rail (in case it is directly accessed without loading)
     if (!petProvider.isLoaded) {
       return const Scaffold(
         body: Center(
@@ -257,6 +262,7 @@ class PetPlaygroundScreen extends StatelessWidget {
         elevation: 0,
         shape: const RoundedRectangleBorder(
           side: BorderSide(color: Color(0xFF2B2B2B), width: 3),
+          borderRadius: BorderRadius.zero,
         ),
         padding: EdgeInsets.zero,
       ),
