@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
-import 'models/petInfo.dart';
+import 'package:yourlittlepal/models/pet_info_temp.dart';
 import 'package:yourlittlepal/widgets/pet_view.dart';
 
 void main() {
@@ -61,7 +61,6 @@ class MainApp extends StatelessWidget {
             color: Color(0xFF2B2B2B),
           ),
         ),
-        // FIXED: Removed the invalid global imageTheme block that caused the crash.
       ),
 
       initialRoute: '/',

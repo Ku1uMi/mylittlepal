@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 //import 'package:yourlittlepal/models/petInfo.dart';
-import 'package:yourlittlepal/models/petState.dart';
+import 'package:yourlittlepal/models/pet_state.dart';
 import 'package:yourlittlepal/providers/pet_logic.dart';
 
 class PetProvider extends ChangeNotifier {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
-import 'package:yourlittlepal/models/petState.dart';
 
 class PetView extends StatefulWidget {
   const PetView({super.key});
@@ -61,13 +60,6 @@ class _PetViewState extends State<PetView> {
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: const Color(0xFF2B2B2B), width: 4),
-        ),
-        // --- Canvas Drawing Widget ---
-        child: CustomPaint(
-          painter: PetCanvasPainter(
-            petType: state.petType,
-            remainingBubbles: bubbleScrubPoints,
-          ),
         ),
       ),
     );
