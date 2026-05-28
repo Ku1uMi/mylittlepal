@@ -52,8 +52,8 @@ class PetLogic {
 
   static void play(PetState state, String toy) {
     final isFavorite = state.petType.info.favoriteToys.contains(toy);
-    if(state.playTime < 2){
-      if(isFavorite){
+    if (state.playTime < 2) {
+      if (isFavorite) {
         state.closeness = (state.closeness + 20).clamp(0, 100);
       } else {
         state.closeness = (state.closeness + 15).clamp(0, 100);
@@ -85,6 +85,4 @@ class PetLogic {
       state.redo.removeLast();
     }
   }
-
-
 }

@@ -37,7 +37,7 @@ class PetProvider extends ChangeNotifier {
     final saved = prefs.getString('pet_state');
     final languageCode = prefs.getString('locale') ?? 'en';
     final countryCode = prefs.getString('locale_country') ?? '';
-    
+
     if (saved != null) {
       _state = PetState.fromJson(jsonDecode(saved));
     } else {
