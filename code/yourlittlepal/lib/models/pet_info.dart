@@ -27,8 +27,8 @@ class PetRegistry {
           'A delicate rabbit with functional wings and a hovering halo.',
       favoriteFoods: ['carrot'],
       favoriteToys: ['hay balls'],
-      normalFoods: ['water', 'grass'],
-      normalToys: ['socks'],
+      normalFoods: ['steak','grass','salmon'],
+      normalToys: ['socks', 'feather'],
     ),
     PetType.ocean: PetStaticInfo(
       name: 'Bubble',
@@ -36,8 +36,8 @@ class PetRegistry {
           'An uncommon, gentle creature: half goat, half whale hybrid.',
       favoriteFoods: ['shrimp'],
       favoriteToys: ['pebbles'],
-      normalFoods: ['water', 'salmon'],
-      normalToys: ['socks', 'bones'],
+      normalFoods: ['salmon','steak','grass'],
+      normalToys: ['socks', 'feather'],
     ),
   };
 

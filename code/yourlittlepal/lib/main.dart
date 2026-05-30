@@ -212,7 +212,7 @@ class PetPlaygroundScreen extends StatelessWidget {
       ),
     );
   }
-
+/*
   // Helper builder generating custom status progress strips
   Widget _buildPixelStatBar(String label, double percentage, Color fill) {
     return Column(
@@ -268,4 +268,5 @@ class PetPlaygroundScreen extends StatelessWidget {
       ),
     );
   }
+  */
 }
