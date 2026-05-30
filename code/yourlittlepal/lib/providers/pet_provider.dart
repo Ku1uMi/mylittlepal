@@ -128,6 +128,13 @@ class PetProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  final ValueNotifier<bool> washing = ValueNotifier(false);
+
+  Future<void> startWashing() async {
+    washing.value = true;
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
