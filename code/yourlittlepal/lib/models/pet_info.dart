@@ -25,7 +25,7 @@ class PetRegistry {
       name: 'Cloudy',
       description:
           'A delicate rabbit with functional wings and a hovering halo.',
-      favoriteFoods: ['carrot', 'hay balls'],
+      favoriteFoods: ['carrot'],
       favoriteToys: ['hay balls'],
       normalFoods: ['water', 'grass'],
       normalToys: ['socks'],
@@ -34,7 +34,7 @@ class PetRegistry {
       name: 'Bubble',
       description:
           'An uncommon, gentle creature: half goat, half whale hybrid.',
-      favoriteFoods: ['shrimp', 'pebbles'],
+      favoriteFoods: ['shrimp'],
       favoriteToys: ['pebbles'],
       normalFoods: ['water', 'salmon'],
       normalToys: ['socks', 'bones'],
