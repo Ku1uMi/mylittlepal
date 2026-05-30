@@ -4,18 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'models/pet_info.dart';
 import 'package:yourlittlepal/views/pet_view.dart';
-import 'package:yourlittlepal/views/start_view.dart'; // Your standalone start page file
+import 'package:yourlittlepal/views/start_view.dart';
+import 'package:yourlittlepal/views/select_view.dart';
 
 void main() {
-  // Ensures localizations and SharedPreferences bindings are ready before execution
   WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => PetProvider()..init(),
-      child: const MainApp(),
-    ),
-  );
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -23,53 +17,53 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final petProvider = Provider.of<PetProvider>(context);
+    return ChangeNotifierProvider(
+      create: (_) => PetProvider(),
+      child: MaterialApp(
+        title: 'Your Little Pal',
+        debugShowCheckedModeBanner: false,
 
-    return MaterialApp(
-      title: 'Your Little Pal',
-      debugShowCheckedModeBanner: false,
+        // --- Internationalization Configuration ---
+        locale: const Locale('en', ''),
+        supportedLocales: const [
+          Locale('en', ''),
+          Locale('es', ''),
+          Locale('zh', 'TW'),
+        ],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
 
-      // --- Internationalization Configuration ---
-      locale: petProvider.currentLocale,
-      supportedLocales: const [
-        Locale('en', ''), // English
-        Locale('es', ''), // Spanish
-        Locale('zh', 'TW'), // Traditional Chinese
-      ],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-
-      // --- Retro Sketch/Pixel Vibe Theme ---
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: petProvider.isDarkMode ? Brightness.dark : Brightness.light,
-        scaffoldBackgroundColor: const Color(
-          0xFFF4F1EA,
-        ), // GameBoy background tone
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(
-            fontFamily: 'PixelFont',
-            fontSize: 16,
-            color: Color(0xFF2B2B2B),
-          ),
-          headlineMedium: TextStyle(
-            fontFamily: 'PixelFont',
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF2B2B2B),
+        // --- Retro Sketch/Pixel Vibe Theme ---
+        theme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: const Color(0xFFF4F1EA),
+          textTheme: const TextTheme(
+            bodyLarge: TextStyle(
+              fontFamily: 'PixelFont',
+              fontSize: 16,
+              color: Color(0xFF2B2B2B),
+            ),
+            headlineMedium: TextStyle(
+              fontFamily: 'PixelFont',
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF2B2B2B),
+            ),
           ),
         ),
-      ),
 
-      // Set the default initial route to your imported StartPage widget
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const StartPage(),
-        '/playground': (context) => const PetPlaygroundScreen(),
-      },
+        // --- Application Route Flow Hierarchy ---
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const StartPage(),
+          '/select': (context) => const SelectView(),
+          '/playground': (context) => const PetPlaygroundScreen(),
+        },
+      ),
     );
   }
 }
@@ -134,7 +128,7 @@ class PetPlaygroundScreen extends StatelessWidget {
                 color: Colors.white.withValues(alpha: 0.6),
                 shape: RoundedRectangleBorder(
                   side: const BorderSide(color: Color(0xFF2B2B2B), width: 3),
-                  borderRadius: BorderRadius.circular(0), // Sharp retro corners
+                  borderRadius: BorderRadius.circular(0),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -163,11 +157,8 @@ class PetPlaygroundScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Advanced Custom Canvas View Layer with Hand-Drawn Mechanics
                     const PetView(),
-
                     const SizedBox(height: 24),
-                    // Speech Bubble Dialogue
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 32.0),
                       child: Container(

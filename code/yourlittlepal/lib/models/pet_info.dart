@@ -39,14 +39,6 @@ class PetRegistry {
       normalFoods: ['water', 'salmon'],
       normalToys: ['socks', 'bones'],
     ),
-    PetType.forest: PetStaticInfo(
-      name: 'Fuzzy',
-      description: 'A mini lion king proud of its thick, pixelated mane.',
-      favoriteFoods: ['steak', 'chicken'],
-      favoriteToys: ['feather wand'],
-      normalFoods: ['water'], // Cleaned duplicate 'chicken' out of normal items
-      normalToys: ['socks', 'bones'],
-    ),
   };
 
   /// Fetch info for a specific type safely

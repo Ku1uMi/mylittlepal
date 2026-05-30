@@ -1,6 +1,6 @@
 import 'package:yourlittlepal/models/outfit.dart';
 
-enum PetType { sky, ocean, forest }
+enum PetType { sky, ocean, forest}
 
 class PetState {
   PetType petType;
@@ -36,7 +36,7 @@ class PetState {
     this.redo = const [],
     this.ownedFood = const {},
     this.ownedToy = const [],
-    this.newPet = true
+    this.newPet = true,
   });
 
   Map<String, dynamic> toJson() => {
@@ -52,7 +52,7 @@ class PetState {
     'playTime': playTime,
     'ownedFood': ownedFood,
     'ownedToy': ownedToy,
-    'newPet': newPet
+    'newPet': newPet,
   };
 
   factory PetState.fromJson(Map<String, dynamic> json) {
@@ -72,7 +72,7 @@ class PetState {
       redo: (json['redo'] as List).map((e) => Outfit.fromJson(e)).toList(),
       ownedFood: Map<String, int>.from(json['ownedFood']),
       ownedToy: List<String>.from(json['ownedToys']),
-      newPet: json['newPet'] as bool
+      newPet: json['newPet'] as bool,
     );
   }
 
@@ -90,12 +90,14 @@ class PetState {
     };
 
     return PetState(
-    petType: type,
-    lastSaved: DateTime.now(),
-    sleepTime: DateTime(2026, 5, 24, 21, 30),
-    ownedFood: defaultFood[type]!,
-    ownedToy: defaultToy[type]!,
-    newPet: true
+      petType: type,
+      lastSaved: DateTime.now(),
+      sleepTime: DateTime(2026, 5, 24, 21, 30),
+      ownedFood: defaultFood[type]!,
+      ownedToy: defaultToy[type]!,
+      newPet: true,
     );
   }
+
+  Object? get petName => null;
 }

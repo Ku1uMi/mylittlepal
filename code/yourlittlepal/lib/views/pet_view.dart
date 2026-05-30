@@ -20,17 +20,30 @@ class _PetViewState extends State<PetView> {
     final top = state.currOutfit.top;
     final bottom = state.currOutfit.bottom;
 
-    // Generate a list of temporary visual bubbles if the pet is dirty/being washed
+/*
+    // Fallback safe-check to grab the chosen pet name string
+    final Object selectedPet =
+        (petProvider.isLoaded && petProvider.state.petName != null)
+        ? petProvider.state.petName!.toUpperCase()
+        : "RABBIT";
+
+    // Map the name to the correct asset path
+    String assetPath = 'assets/pets/rabbit.png';
+    if (selectedPet == 'GOAT') {
+      assetPath = 'assets/pets/goat.png';
+    }
+*/
+    // Generate a list of soap bubbles if the pet is dirty/being washed
     if (state.isWashed == false && bubbleScrubPoints.isEmpty) {
       bubbleScrubPoints = [
-        const Offset(60, 50),
-        const Offset(100, 70),
-        const Offset(50, 100),
-        const Offset(20, 80),
-        const Offset(50, 60),
+        const Offset(40, 40),
+        const Offset(100, 50),
+        const Offset(50, 90),
+        const Offset(20, 70),
+        const Offset(80, 80),
         const Offset(45, 110),
-        const Offset(70, 42),
-        const Offset(115, 110),
+        const Offset(70, 30),
+        const Offset(110, 100),
       ];
     }
 
@@ -42,6 +55,7 @@ class _PetViewState extends State<PetView> {
         Offset localPosition = renderBox.globalToLocal(details.globalPosition);
 
         setState(() {
+          // Pops a bubble if your finger drags within 25 pixels of it
           bubbleScrubPoints.removeWhere(
             (bubblePos) => (bubblePos - localPosition).distance < 25.0,
           );
@@ -138,4 +152,8 @@ class _PetViewState extends State<PetView> {
   }
 
 
+}
+
+extension on Object {
+  Future<void> toUpperCase() async {}
 }

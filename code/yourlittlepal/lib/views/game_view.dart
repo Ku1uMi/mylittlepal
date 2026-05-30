@@ -8,6 +8,7 @@ import 'package:yourlittlepal/widgets/food_sheet.dart';
 import 'package:yourlittlepal/widgets/stat_bar.dart';
 import 'package:yourlittlepal/widgets/bottom_bar.dart';
 import 'package:yourlittlepal/widgets/action_sheet.dart';
+import 'package:yourlittlepal/widgets/toy_sheet.dart';
 
 class GameView extends StatelessWidget{
   const GameView({super.key});
@@ -140,7 +141,26 @@ class GameView extends StatelessWidget{
                   BottomBar(
                     name: 'PLAY', 
                     icon: 'assets/icons/play.png', 
-                    onTap: () => Placeholder() //------
+                    onTap: () async {
+                      showPlaySheet(context, provider);
+                      provider.water();
+                      final overlay = Overlay.of(context);
+                      final entry = OverlayEntry(
+                        builder: (_) => Positioned(
+                          bottom: 120,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                              child: Dialogue(
+                                dialogue: 'This is so fun!'
+                              ),
+                            )
+                          )
+                        );
+                      overlay.insert(entry);
+                      await Future.delayed(const Duration(seconds: 3));
+                      entry.remove();
+                    }
                   ),
                   BottomBar(
                     name: 'OUTFIT', 
@@ -189,6 +209,31 @@ class GameView extends StatelessWidget{
     );
   }
   
+  void showPlaySheet(BuildContext context, PetProvider provider){
+    final state = provider.state;
+    final name = state.petType.info.name;
+    showModalBottomSheet(
+      context: context, 
+      builder: (_) => ActionSheet(
+        text: 'Let\'s Play with $name!', 
+        icon: 'assets/icons/close.png', 
+        child: state.ownedFood.isEmpty ? const Center(
+          child: Text('No toy!( ;´ - `;) Please visit the shop.')) : Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: state.ownedFood.entries.where((e) => e.value > 0)
+              .map((e) => ToySheet(
+                toy: e.key, 
+                onTap: () {
+                  provider.feed(e.key);
+                  Navigator.pop(context);
+                }
+              )
+            ).toList(),
+          )
+      )
+    );
+  }
   
 }
 
