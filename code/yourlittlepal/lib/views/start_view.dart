@@ -16,7 +16,7 @@ class StartPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'MY LITTLE PAL 🐾',
+              'YOUR LITTLE PAL 🐾',
               style: TextStyle(
                 fontFamily: 'PixelFont',
                 fontSize: 28,

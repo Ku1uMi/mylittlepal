@@ -2,14 +2,14 @@ import 'package:yourlittlepal/models/pet_info.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 
 class PetLogic {
-   static void hourlyDec(PetState state){
+  static void hourlyDec(PetState state) {
     const int healthDec = 3;
     const int closenessDec = 2;
     final now = DateTime.now();
     final diff = (now.difference(state.lastSaved).inMinutes / 60).clamp(0, 24);
 
     //check day before updating lastSaved
-    if(now.day != state.lastSaved.day){
+    if (now.day != state.lastSaved.day) {
       state.waterTime = 0;
       state.mealTime = 0;
       state.isWashed = false;
@@ -22,7 +22,8 @@ class PetLogic {
   }
 
   static void feed(PetState state, String food) {
-    final isFavorite = state.petType.info.favoriteFoods.contains(food);
+    final isFavorite =
+        state.petType.info?.favoriteFoods?.contains(food) ?? false;
     if (state.mealTime < 3) {
       if (isFavorite) {
         state.health = (state.health + 15).clamp(0, 100);
@@ -87,33 +88,30 @@ class PetLogic {
     }
   }
 
-  static bool buyFood(PetState state, String food){
+  static bool buyFood(PetState state, String food) {
     const int foodPrice = 20;
-    if(state.coins < foodPrice){
+    if (state.coins < foodPrice) {
       return false;
-    }else {
+    } else {
       state.coins -= foodPrice;
       state.ownedFood[food] = (state.ownedFood[food] ?? 0) + 1;
       return true;
     }
   }
 
-  static bool buyToy(PetState state, String toy){
+  static bool buyToy(PetState state, String toy) {
     const int toyPrice = 30;
-    if(state.coins < toyPrice){
+    if (state.coins < toyPrice) {
       return false;
-    }else{
+    } else {
       state.coins -= toyPrice;
       state.ownedToy.add(toy);
       return true;
     }
-
   }
 
-   static void selectPet(PetState state, PetType type){
+  static void selectPet(PetState state, PetType type) {
     state.petType = type;
     state.newPet = false;
   }
-
-
 }

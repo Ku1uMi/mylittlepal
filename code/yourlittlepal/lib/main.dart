@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:yourlittlepal/models/pet_info.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
-import 'models/pet_info.dart';
 import 'package:yourlittlepal/views/pet_view.dart';
+
 import 'package:yourlittlepal/views/start_view.dart';
 import 'package:yourlittlepal/views/select_view.dart';
 
@@ -89,7 +90,7 @@ class PetPlaygroundScreen extends StatelessWidget {
     }
 
     final state = petProvider.state;
-    final info = state.petType.info;
+    final info = PetRegistry.getInfo(state.petType);
 
     return Scaffold(
       appBar: AppBar(
