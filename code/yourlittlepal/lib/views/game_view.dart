@@ -16,13 +16,42 @@ class GameView extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     final provider = context.watch<PetProvider>();
+    //final info = state.petType.info;
+    if (!provider.isLoaded) {
+      return const Scaffold(
+        body: Center(
+          child: Text(
+            'LOADING PAL...',
+            style: TextStyle(fontFamily: 'Pixelify Sans', fontSize: 18),
+          ),
+        ),
+      );
+    }
     final state = provider.state;
-    final info = state.petType.info;
 
     return Scaffold(
+      backgroundColor: Colors.teal[50],
       body:SafeArea(
         child: Column(
           children:[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, 'settings'),
+                    child: 
+                    Image.asset(
+                    'assets/icons/setting.png',
+                    width: 28,
+                    height: 28,
+                    semanticLabel: 'Press to go to setting page',
+                  )
+                  )
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Column(
@@ -41,9 +70,12 @@ class GameView extends StatelessWidget{
                 ],
               ),
             ),
-            const SizedBox(height: 16,),
-            Dialogue(
-              dialogue: state.petType.getDialogue(state),
+            const SizedBox(height: 16,), 
+            SizedBox(
+              height: 100,
+              child: Dialogue(
+                dialogue: provider.tempDialogue ?? state.petType.getDialogue(state),
+              ),
             ),
             const SizedBox(height: 16,),
 
@@ -53,17 +85,21 @@ class GameView extends StatelessWidget{
               )
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 16, 8),
+              padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Image.asset('assets/icons/coins.png'),
-                  const SizedBox(width: 4,),
+                  Image.asset(
+                    'assets/icons/coins.png',
+                    width: 28,
+                    height: 28,
+                  ),
+                  const SizedBox(width: 6,),
                   Text(
-                    'state.coins',
+                    '${state.coins}',
                     style: const TextStyle(
-                      fontFamily: 'PixelFont',
-                      fontSize: 12,
+                      fontFamily: 'Pixelify Sans',
+                      fontSize: 20,
                       fontWeight: FontWeight.bold
                     ),
                   )
@@ -72,10 +108,11 @@ class GameView extends StatelessWidget{
             ),
 
             Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
+                color: Colors.amber[100],
                 border: Border(
                   top: BorderSide(
-                    color: Colors.black,
+                    color: const Color.fromARGB(255, 51, 37, 14),
                     width: 2,
                   )
                 ),
@@ -94,23 +131,7 @@ class GameView extends StatelessWidget{
                     icon: 'assets/icons/water.png', 
                     onTap: () async {
                       provider.water();
-                      final overlay = Overlay.of(context);
-                      final entry = OverlayEntry(
-                        builder: (_) => Positioned(
-                          bottom: 120,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                              child: Dialogue(
-                                dialogue: 'Thank you!(˶>⩊<˶) Have you drunk your water yet?'
-                              ),
-                            )
-                          )
-                        );
-                      overlay.insert(entry);
-                      await Future.delayed(const Duration(seconds: 3));
-                      entry.remove();
-
+                      provider.showDialogue('Thank you!(˶>⩊<˶) Have you drunk your water yet?');
                     }
                   ),
                   BottomBar(
@@ -118,24 +139,8 @@ class GameView extends StatelessWidget{
                     icon: 'assets/icons/wash.png', 
                     onTap: () async {
                       provider.startWashing();
-
-                      final overlay = Overlay.of(context);
-                      final entry = OverlayEntry(
-                        builder: (_) => Positioned(
-                          bottom: 120,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                              child: Dialogue(
-                                dialogue: 'Please scrub the bubbles off my body(ㅅ´ ˘ `)'
-                              ),
-                            )
-                          )
-                        );
-                      overlay.insert(entry);
-                      await Future.delayed(const Duration(seconds: 3));
-                      entry.remove();
-
+                      provider.showDialogue('Please scrub the bubbles off my body\n(ㅅ´ ˘ `)');
+                      
                     }
                   ),
                   BottomBar(
@@ -143,23 +148,6 @@ class GameView extends StatelessWidget{
                     icon: 'assets/icons/play.png', 
                     onTap: () async {
                       showPlaySheet(context, provider);
-                      provider.water();
-                      final overlay = Overlay.of(context);
-                      final entry = OverlayEntry(
-                        builder: (_) => Positioned(
-                          bottom: 120,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                              child: Dialogue(
-                                dialogue: 'This is so fun!'
-                              ),
-                            )
-                          )
-                        );
-                      overlay.insert(entry);
-                      await Future.delayed(const Duration(seconds: 3));
-                      entry.remove();
                     }
                   ),
                   BottomBar(
@@ -194,14 +182,15 @@ class GameView extends StatelessWidget{
           child: Text('No food!( ;´ - `;) Please visit the shop.')) : Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: state.ownedFood.entries.where((e) => e.value > 0)
+            children: state.ownedFood.entries
               .map((e) => FoodSheet(
                 food: e.key, 
                 num: e.value, 
-                onTap: () {
+                onTap: e.value > 0 ? () async {
                   provider.feed(e.key);
+                  provider.showDialogue('Yummy!');
                   Navigator.pop(context);
-                }
+                } : null,
               )
             ).toList(),
           )
@@ -217,16 +206,33 @@ class GameView extends StatelessWidget{
       builder: (_) => ActionSheet(
         text: 'Let\'s Play with $name!', 
         icon: 'assets/icons/close.png', 
-        child: state.ownedFood.isEmpty ? const Center(
+        child: state.ownedToy.isEmpty ? const Center(
           child: Text('No toy!( ;´ - `;) Please visit the shop.')) : Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: state.ownedFood.entries.where((e) => e.value > 0)
-              .map((e) => ToySheet(
-                toy: e.key, 
-                onTap: () {
-                  provider.feed(e.key);
+            children: state.ownedToy.map((e) => ToySheet(
+                toy: e, 
+                onTap: () async {
+                  provider.play(e);
+                  provider.showDialogue('This is so fun!');
                   Navigator.pop(context);
+
+                  /*final overlay = Overlay.of(context);
+                      final entry = OverlayEntry(
+                        builder: (_) => Positioned(
+                          top: 120,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                              child: Dialogue(
+                                dialogue: 'This is so fun!'
+                              ),
+                            )
+                          )
+                        );
+                      overlay.insert(entry);
+                      await Future.delayed(const Duration(seconds: 3));
+                      entry.remove();*/
                 }
               )
             ).toList(),

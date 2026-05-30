@@ -6,6 +6,7 @@ class BottomBar extends StatelessWidget{
   final VoidCallback onTap;
 
   const BottomBar({
+    super.key,
     required this.name,
     required this.icon,
     required this.onTap
@@ -19,18 +20,18 @@ class BottomBar extends StatelessWidget{
         children: [
           Image.asset(
             icon,
-            width:24,
-            height: 24,
+            width:48,
+            height: 48,
             filterQuality: FilterQuality.none,
           ),
           const SizedBox(
-            height: 2,
+            height: 8,
           ),
           Text(
             name,
             style: const TextStyle(
-              fontFamily: 'PixelFont',
-              fontSize: 10,
+              fontFamily: 'Pixelify Sans',
+              fontSize: 12,
               fontWeight: FontWeight.bold
             ),
           )

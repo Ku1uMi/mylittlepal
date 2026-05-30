@@ -21,7 +21,7 @@ class ToySheet extends StatelessWidget{
         child: Text(
           toy,
           style: const TextStyle(
-            fontFamily: 'PixelFont',
+            fontFamily: 'Pixelify Sans',
             fontSize: 12
           ),
         ),

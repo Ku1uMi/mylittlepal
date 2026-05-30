@@ -14,6 +14,7 @@ class StatBar extends StatelessWidget{
     
       @override
       Widget build(BuildContext context) {
+        final percent = (val * 100).toInt();
         return Row(
           children: [
             SizedBox(
@@ -21,8 +22,9 @@ class StatBar extends StatelessWidget{
               child: Text(
                 name,
                 style: const TextStyle(
-                  fontFamily: 'PixelFont',
-                  fontSize: 11,
+                  color: Colors.black,
+                  fontFamily: 'Pixelify Sans',
+                  fontSize: 14,
                   fontWeight: FontWeight.bold
                 )
               )
@@ -40,6 +42,19 @@ class StatBar extends StatelessWidget{
                   child: Container(color: color,),
                 )
               )
+            ),
+            const SizedBox(width: 8,),
+            SizedBox(
+              width: 36,
+              child: Text(
+                '$percent',
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontFamily: 'Pixelify Sans'
+                )
+
+              ),
             )
           ],
         );

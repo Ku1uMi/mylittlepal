@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
+//import 'package:google_fonts/google_fonts.dart';
 
 class SelectView extends StatefulWidget {
   const SelectView({super.key});
@@ -14,8 +15,8 @@ class _SelectViewState extends State<SelectView> {
   int? _selectedIndex;
 
   final List<Map<String, String>> totalPets = [
-    {'name': 'RABBIT', 'image': 'assets/pets/rabbit.png'},
-    {'name': 'GOAT', 'image': 'assets/pets/goat.png'},
+    {'name': 'CLOUDY', 'image': 'assets/pets/sky.png'},
+    {'name': 'BUBBLE', 'image': 'assets/pets/ocean.png'},
   ];
 
   @override
@@ -25,11 +26,12 @@ class _SelectViewState extends State<SelectView> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F1EA),
+      
       appBar: AppBar(
         title: const Text(
           'CHOOSE YOUR PAL',
           style: TextStyle(
-            fontFamily: 'PixelFont',
+            fontFamily: 'Pixelify Sans',
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Color(0xFF2B2B2B),
@@ -93,7 +95,7 @@ class _SelectViewState extends State<SelectView> {
                                   errorBuilder: (context, error, stackTrace) {
                                     return const Icon(
                                       Icons.pets,
-                                      size: 40,
+                                      size: 120,
                                       color: Color(0xFF2B2B2B),
                                     );
                                   },
@@ -104,7 +106,7 @@ class _SelectViewState extends State<SelectView> {
                             Text(
                               pet['name']!,
                               style: const TextStyle(
-                                fontFamily: 'PixelFont',
+                                fontFamily: 'Pixelify Sans',
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF2B2B2B),
@@ -158,7 +160,7 @@ class _SelectViewState extends State<SelectView> {
                   child: const Text(
                     'CONFIRM PAL',
                     style: TextStyle(
-                      fontFamily: 'PixelFont',
+                      fontFamily: 'Pixelify Sans',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

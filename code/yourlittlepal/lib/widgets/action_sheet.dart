@@ -28,7 +28,7 @@ class ActionSheet extends StatelessWidget{
               Text(
                 text,
                 style: const TextStyle(
-                  fontFamily: 'PixelFont',
+                  fontFamily: 'Pixelify Sans',
                   fontSize: 16,
                   fontWeight: FontWeight.bold
                 ),

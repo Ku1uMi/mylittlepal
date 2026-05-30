@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 class FoodSheet extends StatelessWidget{
   final String food;
   final int num;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const FoodSheet({
+    super.key,
     required this.food,
     required this.num,
     required this.onTap
@@ -25,14 +26,14 @@ class FoodSheet extends StatelessWidget{
             Text(
               food,
               style: const TextStyle(
-                fontFamily: 'PixelFont',
+                fontFamily: 'Pixelify Sans',
                 fontSize: 12
               ),
             ),
             Text(
                 ' x$num',
                 style: const TextStyle(
-                  fontFamily: 'PixelFont',
+                  fontFamily: 'Pixelify Sans',
                   fontSize: 12
                 ),
             )

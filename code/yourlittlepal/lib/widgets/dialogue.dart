@@ -18,15 +18,11 @@ class Dialogue extends StatelessWidget{
         child: Stack(
           alignment: AlignmentGeometry.center,
           children: [
-            Container(
-              width: 200,
-              height: 134,
-              color: const Color.fromARGB(255, 255, 250, 238),
-            ),
             Image.asset(
-              'assets/icons/dialogue_frame.png',
+              'assets/icons/dialogue.png',
               width: 256,
-              height: 134,
+              height: 150,
+              fit: BoxFit.fill,
               filterQuality: FilterQuality.none,
             ),
 
@@ -36,7 +32,8 @@ class Dialogue extends StatelessWidget{
                 dialogue,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontFamily: 'PixelFont',
+                  color: Colors.black,
+                  fontFamily: 'Pixelify Sans',
                   fontSize: 14
                 ),
               ),

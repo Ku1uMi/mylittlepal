@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
@@ -34,7 +36,7 @@ class _PetViewState extends State<PetView> {
     }
 */
     // Generate a list of soap bubbles if the pet is dirty/being washed
-    if (state.isWashed == false && bubbleScrubPoints.isEmpty) {
+    /*if (state.isWashed == false && bubbleScrubPoints.isEmpty) {
       bubbleScrubPoints = [
         const Offset(40, 40),
         const Offset(100, 50),
@@ -45,7 +47,7 @@ class _PetViewState extends State<PetView> {
         const Offset(70, 30),
         const Offset(110, 100),
       ];
-    }
+    }*/
 
     return GestureDetector(
       onPanUpdate: (DragUpdateDetails details) {
@@ -61,51 +63,40 @@ class _PetViewState extends State<PetView> {
           );
         });
 
-        if (bubbleScrubPoints.isEmpty && !state.isWashed) {
+        if (bubbleScrubPoints.isEmpty && !state.isWashed && petProvider.washing.value) {
           petProvider.wash();
           petProvider.washing.value = false;
-
-          final overlay = Overlay.of(context);
-          final entry = OverlayEntry(
-            builder: (_) => Positioned(
-              bottom: 120,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Dialogue(
-                  dialogue: 'I am so clean now!٩(^ᗜ^ )و ´-'
-                )
-              )
-            ));
-
-          overlay.insert(entry);
-          Future.delayed(const Duration(seconds: 3)).then((_) => entry.remove()); 
+          petProvider.showDialogue('I am so clean now!\n٩(^ᗜ^ )و ´-');
+          
         }
       },
-      child: SizedBox(
-        width: 200,
-        height: 200,
-        child: Stack(
-          children: [
+      child: LayoutBuilder(
+        builder: (context, constraints){
+          final size = constraints.maxWidth < constraints.maxHeight ? 
+          constraints.maxWidth : constraints.maxHeight;
+
+          return Stack(
+            alignment: Alignment.center,
+            children: [
             Image.asset(
               'assets/pets/${state.petType.name}.png',
-              width: 300,
-              height: 300,
+              width: size,
+              height: size,
               filterQuality: FilterQuality.none,
             ),
             if(bottom != '')
               Image.asset(
                 'assets/outfits/bottoms/$bottom.png',
-                width: 300,
-                height: 300,
+                width: size,
+                height: size,
                 filterQuality: FilterQuality.none,
               ),
 
               if(top != '')
               Image.asset(
                 'assets/outfits/tops/$top.png',
-                width: 300,
-                height: 300,
+                width: size,
+                height: size,
                 filterQuality: FilterQuality.none,
               ),
             
@@ -120,40 +111,38 @@ class _PetViewState extends State<PetView> {
                   filterQuality: FilterQuality.none,
                 ),
               ),
-
-            ValueListenableBuilder<bool>(
+              ValueListenableBuilder<bool>(
               valueListenable: petProvider.washing, 
               builder: (context, washing, _){
                 if(washing && bubbleScrubPoints.isEmpty){
                   WidgetsBinding.instance.addPostFrameCallback((_){
-                    setState(() => reset());
+                    if(mounted) setState(() => reset(size));
                   });
                 }
                 return const SizedBox.shrink();
               }
             )
-          ],
-        ),
+            ], 
+          );
+        }
       )
     );
   }
 
-  void reset(){
-    bubbleScrubPoints = [
-        const Offset(60, 50),
-        const Offset(100, 70),
-        const Offset(50, 100),
-        const Offset(20, 80),
-        const Offset(50, 60),
-        const Offset(45, 110),
-        const Offset(70, 42),
-        const Offset(115, 110),
-      ];
+  void reset(double size){
+    final random = Random();
+    final min = size * 0.2;
+    final max = size * 0.8;
+    bubbleScrubPoints = List.generate(
+      8,
+      (_) => Offset(min + random.nextDouble() * (max-min), 
+      max + random.nextDouble() * (max-min)) 
+      );
   }
 
 
 }
-
+/*
 extension on Object {
   Future<void> toUpperCase() async {}
-}
+}*/
