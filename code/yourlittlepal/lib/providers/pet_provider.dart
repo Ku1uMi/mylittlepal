@@ -222,10 +222,10 @@ class PetProvider extends ChangeNotifier {
   /// Processes transactional financial balances to attempt buying a food item.
   /// Parameters:
   /// - String food: The name text identifying the specific consumable item.
-  /// - int i: The indexing reference mapping execution details inside store interfaces.
+  /// - int price: Referring to the price of the given food name
   /// Returns: A boolean stating true if the coin balance check passes successfully.
-  Future<bool> buyFood(String food, int i) async {
-    final buyed = PetLogic.buyFood(_state, food);
+  Future<bool> buyFood(String food, int price) async {
+    final buyed = PetLogic.buyFood(_state, food, price);
     await _save();
     notifyListeners();
     return buyed;
@@ -234,10 +234,10 @@ class PetProvider extends ChangeNotifier {
   /// Processes transactional wallet parameters to attempt purchasing an equipment item.
   /// Parameters:
   /// - String toy: The name text identifying the specific toy item.
-  /// - int i: The indexing reference mapping execution details inside store interfaces.
+  /// - int price: Referring to the price of the given toy name
   /// Returns: A boolean stating true if transaction deductions executed completely.
-  Future<bool> buyToy(String toy, int i) async {
-    final buyed = PetLogic.buyToy(_state, toy);
+  Future<bool> buyToy(String toy, int price) async {
+    final buyed = PetLogic.buyToy(_state, toy, price);
     await _save();
     notifyListeners();
     return buyed;

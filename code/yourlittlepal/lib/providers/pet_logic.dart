@@ -34,8 +34,8 @@ class PetLogic {
       PetType.sky: ['carrot'],
       PetType.ocean: ['shrimp'],
     };
-    final isFavorite = (favorites[state.petType] ?? []).contains(food);
-    if (state.mealTime < 3) {
+    final isFavorite = (favorites[state.petType] ?? []).contains(food.toLowerCase());
+    if (state.mealTime < 3 && (state.ownedFood[food.toLowerCase()] ?? 0) > 0) {
       if (isFavorite) {
         state.health = (state.health + 15).clamp(0, 100);
       } else {
@@ -43,7 +43,7 @@ class PetLogic {
       }
       state.coins += 20;
       state.mealTime++;
-      state.ownedFood[food] = state.ownedFood[food]! - 1;
+      state.ownedFood[food.toLowerCase()] = state.ownedFood[food.toLowerCase()]! - 1;
     }
   }
 
@@ -129,14 +129,14 @@ class PetLogic {
   /// Parameters:
   /// - PetState state: The pet data model to modify.
   /// - String food: The text name of the food item to purchase.
+  /// - int price: Price of the given toy
   /// Returns: A boolean stating true if there were enough coins to finish the purchase.
-  static bool buyFood(PetState state, String food) {
-    const int foodPrice = 20;
-    if (state.coins < foodPrice) {
+  static bool buyFood(PetState state, String food, int price) {
+    if (state.coins < price) {
       return false;
     } else {
-      state.coins -= foodPrice;
-      state.ownedFood[food] = (state.ownedFood[food] ?? 0) + 1;
+      state.coins -= price;
+      state.ownedFood[food.toLowerCase()] = (state.ownedFood[food.toLowerCase()] ?? 0) + 1;
       return true;
     }
   }
@@ -145,14 +145,14 @@ class PetLogic {
   /// Parameters:
   /// - PetState state: The pet data model to modify.
   /// - String toy: The text name of the toy item to purchase.
+  /// - int price: Price of the given toy
   /// Returns: A boolean stating true if there were enough coins to finish the purchase.
-  static bool buyToy(PetState state, String toy) {
-    const int toyPrice = 30;
-    if (state.coins < toyPrice) {
+  static bool buyToy(PetState state, String toy, int price){
+    if (state.coins < price || state.ownedToy.contains(toy.toLowerCase())) {
       return false;
     } else {
-      state.coins -= toyPrice;
-      state.ownedToy.add(toy);
+      state.coins -= price;
+      state.ownedToy.add(toy.toLowerCase());
       return true;
     }
   }

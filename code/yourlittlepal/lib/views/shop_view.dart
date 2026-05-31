@@ -114,49 +114,53 @@ class _ShopViewState extends State<ShopView> {
                     final itemName = currentItems.keys.elementAt(index);
                     final itemData = currentItems[itemName]!;
                     final bool isSelected = selectedItem == itemName;
-
+                    final isSold = activeTab == 'toy' && state.ownedToy.contains(itemName.toLowerCase());
+                    
                     return GestureDetector(
-                      onTap: () => setState(() {
+                      onTap: isSold ? null :() => setState(() {
                         selectedItem = itemName;
                         selectedPrice = itemData['price'];
                       }),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: isSelected
-                                ? Colors.cyan
-                                : const Color(0xFF33250E),
-                            width: isSelected ? 3 : 2,
+                      child: Opacity(
+                        opacity: isSold? 0.4 : 1.0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: isSelected
+                                  ? Colors.cyan
+                                  : const Color(0xFF33250E),
+                              width: isSelected ? 3 : 2,
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image.asset(
-                                  itemData['asset'],
-                                  filterQuality: FilterQuality.none,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    itemData['asset'],
+                                    filterQuality: FilterQuality.none,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Text(
-                              itemName,
-                              style: GoogleFonts.pixelifySans(fontSize: 12),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              '\$${itemData['price']}',
-                              style: GoogleFonts.pixelifySans(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                              Text(
+                                itemName,
+                                style: GoogleFonts.pixelifySans(fontSize: 12),
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                          ],
+                              const SizedBox(height: 4),
+                              Text(
+                                isSold ? 'SOLD' : '\$${itemData['price']}',
+                                style: GoogleFonts.pixelifySans(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                            ],
+                          ),
                         ),
                       ),
                     );

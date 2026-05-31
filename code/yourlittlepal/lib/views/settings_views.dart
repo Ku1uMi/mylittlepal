@@ -131,76 +131,11 @@ class _SettingsViewState extends State<SettingsView> {
             ),
             const SizedBox(height: 20),
 
-            // Section 2: Routine Schedules
-            Text(
-              l10n.petRoutineTimers,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF2B2B2B),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Card(
-              color: Colors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: Color(0xFF2B2B2B), width: 2),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text(
-                      l10n.setMealTime,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    trailing: Text(_mealTime.format(context)),
-                    onTap: () => _selectTime(context, 'meal', _mealTime),
-                  ),
-                  const Divider(),
-                  ListTile(
-                    title: Text(
-                      l10n.setSleepTime,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    trailing: Text(_sleepTime.format(context)),
-                    onTap: () => _selectTime(context, 'sleep', _sleepTime),
-                  ),
-                  const Divider(),
-                  ListTile(
-                    title: Text(
-                      l10n.setWakeTime,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    trailing: Text(_wakeTime.format(context)),
-                    onTap: () => _selectTime(context, 'wake', _wakeTime),
-                  ),
-                ],
-              ),
-            ),
+           
           ],
         ),
       ),
     );
   }
 
-  Widget _buildNotificationTile(
-    String title,
-    String subtitle,
-    String buttonText,
-    VoidCallback onPressed,
-  ) {
-    return ListTile(
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text(subtitle),
-      trailing: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF2B2B2B),
-        ),
-        onPressed: onPressed,
-        child: Text(buttonText, style: const TextStyle(color: Colors.white)),
-      ),
-    );
-  }
 }
