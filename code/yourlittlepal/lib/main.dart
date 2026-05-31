@@ -17,7 +17,7 @@ import 'package:yourlittlepal/providers/weather_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final petProvider= PetProvider();
+  final petProvider = PetProvider();
   final weatherProvider = WeatherProvider();
   final positionProvider = PositionProvider();
 
@@ -26,10 +26,10 @@ void main() async {
       providers: [
         ChangeNotifierProvider.value(value: petProvider),
         ChangeNotifierProvider.value(value: weatherProvider),
-        ChangeNotifierProvider.value(value: positionProvider)
+        ChangeNotifierProvider.value(value: positionProvider),
       ],
       child: const MainApp(),
-    )
+    ),
   );
   await petProvider.init();
 }
@@ -44,7 +44,7 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Your Little Pal',
         debugShowCheckedModeBanner: false,
-      
+
         // --- Internationalization Configuration ---
         locale: const Locale('en', ''),
         supportedLocales: const [
@@ -73,10 +73,13 @@ class MainApp extends StatelessWidget {
           '/select': (context) => const SelectView(),
           '/playground': (context) => const GameView(),
           '/settings': (context) => const SettingsView(),
-          '/outfit': (context) => const OutfitPage()
+          '/outfit': (context) => const OutfitView()
         },
       ),
     );
   }
 }
 
+class z {
+  const z();
+}

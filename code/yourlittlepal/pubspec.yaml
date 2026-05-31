@@ -30,6 +30,9 @@ flutter:
     - assets/outfits/tops/
     - assets/outfits/bottoms/
     - assets/icons/
+<<<<<<< HEAD
+    - assets/backgrounds/
+=======
     - assets/effects/bubble.png
     - assets/backgrounds/
 
@@ -39,3 +42,4 @@ flutter:
         - asset: assets/fonts/PixelifySans-VariableFont_wght.ttf
   
 
+>>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5

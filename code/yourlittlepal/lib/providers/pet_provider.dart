@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-//import 'package:yourlittlepal/models/petInfo.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 import 'package:yourlittlepal/providers/pet_logic.dart';
 
@@ -108,14 +107,14 @@ class PetProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> buyFood(String food) async {
+  Future<bool> buyFood(String food, int i) async {
     final buyed = PetLogic.buyFood(_state, food);
     await _save();
     notifyListeners();
     return buyed;
   }
 
-  Future<bool> buyToy(String toy) async {
+  Future<bool> buyToy(String toy, int i) async {
     final buyed = PetLogic.buyToy(_state, toy);
     await _save();
     notifyListeners();
@@ -137,7 +136,12 @@ class PetProvider extends ChangeNotifier {
 
   String? _tempDialogue;
   String? get tempDialogue => _tempDialogue;
-  
+
+  // --- CONNECTED OUTFIT GETTERS ---
+  // Pull directly from your backend state variables instead of returning null
+  String? get currentTopAsset => _state.currOutfit.top;
+  String? get currentBottomAsset => _state.currOutfit.bottom;
+
   Future<void> showDialogue(String text, {int seconds = 5}) async {
     _tempDialogue = text;
     notifyListeners();
@@ -146,10 +150,38 @@ class PetProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
+  }
+
+  /// Handles undoing an outfit adjustment sequence step
+  Future<void> undoOutfitChange() async {
+    await undo();
+  }
+
+  /// Handles redoing an outfit adjustment sequence step
+  Future<void> redoOutfitChange() async {
+    await redo();
+  }
+
+  /// Toggles clothing item paths dynamically inside your core business rules
+  Future<void> equipClothingItem(String itemId, bool viewingTops) async {
+    if (viewingTops) {
+      // Toggle top: if clicked item is already equipped, strip it (null), else change it
+      final nextTop = _state.currOutfit.top == itemId ? null : itemId;
+      await changeOutfit(top: nextTop, bottom: _state.currOutfit.bottom);
+    } else {
+      // Toggle bottom: if clicked item is already equipped, strip it (null), else change it
+      final nextBottom = _state.currOutfit.bottom == itemId ? null : itemId;
+      await changeOutfit(top: _state.currOutfit.top, bottom: nextBottom);
+    }
+  }
+
+  /// Automatically persists configurations when confirming wardrobe modifications
+  Future<void> saveCurrentOutfitState() async {
+    await _save(); // Saves everything neatly down to local device disk storage
+    notifyListeners();
   }
 }

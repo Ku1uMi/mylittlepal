@@ -13,7 +13,6 @@ import 'package:yourlittlepal/widgets/stat_bar.dart';
 import 'package:yourlittlepal/widgets/bottom_bar.dart';
 import 'package:yourlittlepal/widgets/action_sheet.dart';
 import 'package:yourlittlepal/widgets/toy_sheet.dart';
-import 'package:yourlittlepal/views/outfit_view.dart';
 
 class GameView extends StatelessWidget {
   const GameView({super.key});
@@ -152,9 +151,13 @@ class GameView extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 color: Colors.amber[100],
-                border: Border(
+                border: const Border(
                   top: BorderSide(
+<<<<<<< HEAD
+                    color: Color.fromARGB(255, 51, 37, 14),
+=======
                     color: const Color.fromRGBO(255, 236, 179, 1),
+>>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5
                     width: 2,
                   ),
                 ),
@@ -203,7 +206,8 @@ class GameView extends StatelessWidget {
                   BottomBar(
                     name: 'SHOP',
                     icon: 'assets/icons/shop.png',
-                    onTap: () => Placeholder(), //------
+                    // Navigates directly over to your store catalog overlay
+                    onTap: () => Navigator.pushNamed(context, '/shop'),
                   ),
                 ],
               ),
@@ -280,12 +284,21 @@ class GameView extends StatelessWidget {
                           provider.play(e);
                           provider.showDialogue('This is so fun!');
                           Navigator.pop(context);
+<<<<<<< HEAD
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
+      ),
+=======
 
                 }
               )
             ).toList(),
           )
       )
+>>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5
     );
   }
   

@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
-//import 'package:google_fonts/google_fonts.dart';
 
 class SelectView extends StatefulWidget {
   const SelectView({super.key});
@@ -15,9 +14,9 @@ class SelectView extends StatefulWidget {
 class _SelectViewState extends State<SelectView> {
   int? _selectedIndex;
 
-  final List<Map<String, String>> totalPets = [
-    {'name': 'CLOUDY', 'image': 'assets/pets/sky.png'},
-    {'name': 'BUBBLE', 'image': 'assets/pets/ocean.png'},
+  final List<Map<String, dynamic>> totalPets = [
+    {'name': 'CLOUDY', 'type': PetType.sky, 'image': 'assets/pets/sky.png'},
+    {'name': 'BUBBLE', 'type': PetType.ocean, 'image': 'assets/pets/ocean.png'},
   ];
 
   @override
@@ -27,7 +26,7 @@ class _SelectViewState extends State<SelectView> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F1EA),
-      
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
           'CHOOSE YOUR PAL',
@@ -43,66 +42,131 @@ class _SelectViewState extends State<SelectView> {
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 32),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/backgrounds/background.png'),
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+              Expanded(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(totalPets.length, (index) {
+                        final pet = totalPets[index];
+                        final isSelected = _selectedIndex == index;
 
-            // Grid layout showing character choices cleanly
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: GridView.builder(
-                  itemCount: totalPets.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 0.85,
-                  ),
-                  itemBuilder: (context, index) {
-                    final pet = totalPets[index];
-                    final isSelected = _selectedIndex == index;
-
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedIndex = index;
-                        });
-                      },
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 150),
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          border: Border.all(
-                            color: isSelected
-                                ? const Color(0xFF2B2B2B)
-                                : Colors.transparent,
-                            width: 3,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SizedBox(
-                                height: 120,
-                                width: 120,
-                                child: Image.asset(
-                                  pet['image']!,
-                                  fit: BoxFit.contain,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const Icon(
-                                      Icons.pets,
-                                      size: 120,
-                                      color: Color(0xFF2B2B2B),
-                                    );
-                                  },
-                                ),
-                              ),
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedIndex = index;
+                            });
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 150),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
                             ),
+                            padding: const EdgeInsets.all(20.0),
+                            decoration: BoxDecoration(
+                              // --- UPDATED: Now Transparent ---
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: isSelected
+                                    ? const Color(0xFF2B2B2B)
+                                    : Colors.transparent,
+                                width: 3,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: isSelected
+                                  ? [
+                                      const BoxShadow(
+                                        color: Color(0xFF2B2B2B),
+                                        offset: Offset(4, 4),
+                                        blurRadius: 0,
+                                      ),
+                                    ]
+                                  : null,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    height: 120,
+                                    width: 120,
+                                    child: Image.asset(
+                                      pet['image']!,
+                                      fit: BoxFit.contain,
+                                      filterQuality: FilterQuality.none,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                            return const Icon(
+                                              Icons.pets,
+                                              size: 120,
+                                              color: Color(0xFF2B2B2B),
+                                            );
+                                          },
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  pet['name']!,
+                                  style: const TextStyle(
+                                    fontFamily: 'Pixelify Sans',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF2B2B2B),
+                                    // Added shadow for better contrast against background
+                                    shadows: [
+                                      Shadow(
+                                        color: Colors.white,
+                                        offset: Offset(1.5, 1.5),
+                                        blurRadius: 2.0,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+<<<<<<< HEAD
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isAnyPetSelected
+                          ? const Color(0xFF2B2B2B)
+                          : const Color(0xFFD6D1C4),
+                      foregroundColor: isAnyPetSelected
+                          ? Colors.white
+                          : const Color(0xFF8A857B),
+                      elevation: 0,
+                      side: const BorderSide(
+                        color: Color(0xFF2B2B2B),
+                        width: 3,
+=======
                             const SizedBox(height: 8),
                             Text(
                               pet['name']!,
@@ -114,31 +178,37 @@ class _SelectViewState extends State<SelectView> {
                             ),
                           ],
                         ),
+>>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5
                       ),
-                    );
-                  },
-                ),
-              ),
-            ),
-
-            // --- HIGHLIGHTABLE CONFIRM PAL BUTTON ---
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isAnyPetSelected
-                        ? const Color(0xFF2B2B2B)
-                        : const Color(0xFFD6D1C4),
-                    foregroundColor: isAnyPetSelected
-                        ? Colors.white
-                        : const Color(0xFF8A857B),
-                    elevation: 0,
-                    side: const BorderSide(color: Color(0xFF2B2B2B), width: 3),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 18),
                     ),
+<<<<<<< HEAD
+                    onPressed: !isAnyPetSelected
+                        ? null
+                        : () {
+                            final selectedPetType =
+                                totalPets[_selectedIndex!]['type'] as PetType;
+                            try {
+                              petProvider.selectPet(selectedPetType);
+                            } catch (e) {
+                              debugPrint("Selection save error: $e");
+                            }
+                            Navigator.of(
+                              context,
+                            ).pushReplacementNamed('/playground');
+                          },
+                    child: const Text(
+                      'CONFIRM PAL',
+                      style: TextStyle(
+                        fontFamily: 'Pixelify Sans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+=======
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   onPressed: !isAnyPetSelected
@@ -164,11 +234,12 @@ class _SelectViewState extends State<SelectView> {
                         fontWeight: FontWeight.bold,
                       ),
                   
+>>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

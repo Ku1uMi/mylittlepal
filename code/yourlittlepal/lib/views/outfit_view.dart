@@ -8,7 +8,7 @@ class OutfitPage extends StatefulWidget {
   const OutfitPage({super.key});
 
   @override
-  State<OutfitPage> createState() => _OutfitPageState(); // FIXED: Matches the state class below
+  State<OutfitPage> createState() => _OutfitPageState();
 }
 
 class _OutfitPageState extends State<OutfitPage> {
@@ -25,7 +25,7 @@ class _OutfitPageState extends State<OutfitPage> {
     final activeInventory = viewingTops ? availableTops : availableBottoms;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F1EA), // Notebook cream base color
+      backgroundColor: const Color(0xFFF4F1EA),
       appBar: AppBar(
         title: Text(
           'OUTFIT',
