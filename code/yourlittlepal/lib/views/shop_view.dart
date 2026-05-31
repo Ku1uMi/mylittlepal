@@ -204,7 +204,7 @@ class _ShopViewState extends State<ShopView> {
                       }
 
                       provider.showDialogue(
-                        'Successfully bought $selectedItem! 🎉',
+                        'Successfully bought $selectedItem!',
                       );
                       setState(() {
                         selectedItem = null; // Reset selection after buying
