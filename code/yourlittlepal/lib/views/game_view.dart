@@ -23,19 +23,20 @@ class GameView extends StatelessWidget {
     final provider = context.watch<PetProvider>();
     final positionProvider = context.watch<PositionProvider>();
     final weatherProvider = context.watch<WeatherProvider>();
-    
-    if(positionProvider.positionKnown){
-      weatherProvider.updateLocation(positionProvider.latitude!, positionProvider.longitude!);
+
+    if (positionProvider.positionKnown) {
+      weatherProvider.updateLocation(
+        positionProvider.latitude!,
+        positionProvider.longitude!,
+      );
     }
-    
+
     if (!provider.isLoaded) {
       return Scaffold(
         body: Center(
           child: Text(
             'LOADING PAL...',
-            style: GoogleFonts.pixelifySans(
-                        fontSize: 18,
-            ),
+            style: GoogleFonts.pixelifySans(fontSize: 18),
           ),
         ),
       );
@@ -54,19 +55,18 @@ class GameView extends StatelessWidget {
                 children: [
                   IconButton(
                     padding: EdgeInsets.zero,
-                    onPressed: () => Navigator.pushNamed(context, '/settings'), 
+                    onPressed: () => Navigator.pushNamed(context, '/settings'),
                     icon: Image.asset(
                       'assets/icons/setting.png',
                       width: 28,
                       height: 28,
                       semanticLabel: 'Settings',
                     ),
-                    
                   ),
                   //weather -------
                   Consumer<WeatherProvider>(
-                    builder: (context, weather, _){
-                      if(!weather.isValid){
+                    builder: (context, weather, _) {
+                      if (!weather.isValid) {
                         return const SizedBox.shrink();
                       }
                       return Row(
@@ -77,20 +77,18 @@ class GameView extends StatelessWidget {
                             height: 28,
                             filterQuality: FilterQuality.none,
                           ),
-                          const SizedBox(width: 3,),
+                          const SizedBox(width: 3),
                           Text(
                             '${weather.tempInFahrenheit}°F',
                             style: GoogleFonts.pixelifySans(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
                             ),
-                            
                           ),
                         ],
                       );
-                      
-                    }
-                  )
+                    },
+                  ),
                 ],
               ),
             ),
@@ -114,7 +112,7 @@ class GameView extends StatelessWidget {
               ),
             ),
             //dialogue
-            const SizedBox(height: 16,), 
+            const SizedBox(height: 16),
             SizedBox(
               height: 100,
               child: Dialogue(
@@ -124,11 +122,7 @@ class GameView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            const Expanded(
-              child: Center(
-                child: PetView(),
-              )
-            ),
+            const Expanded(child: Center(child: PetView())),
             //coins
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -140,10 +134,9 @@ class GameView extends StatelessWidget {
                   Text(
                     '${state.coins}',
                     style: GoogleFonts.pixelifySans(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                    
                   ),
                 ],
               ),
@@ -154,11 +147,7 @@ class GameView extends StatelessWidget {
                 color: Colors.amber[100],
                 border: const Border(
                   top: BorderSide(
-<<<<<<< HEAD
-                    color:  Color.fromRGBO(255, 236, 179, 1),
-=======
                     color: Color.fromARGB(255, 51, 37, 14),
->>>>>>> d1ab4bb341d71674d45809598fc43b5509a5698b
                     width: 2,
                   ),
                 ),
@@ -202,7 +191,7 @@ class GameView extends StatelessWidget {
                   BottomBar(
                     name: 'OUTFIT',
                     icon: 'assets/icons/clothes.png',
-                    onTap: () => Navigator.pushNamed(context, '/outfit')
+                    onTap: () => Navigator.pushNamed(context, '/outfit'),
                   ),
                   BottomBar(
                     name: 'SHOP',
@@ -219,14 +208,15 @@ class GameView extends StatelessWidget {
     );
   }
 
-  String petName(PetType type){
-    switch(type){
+  String petName(PetType type) {
+    switch (type) {
       case PetType.sky:
         return 'Cloudy';
       case PetType.ocean:
         return 'Bubble';
     }
   }
+
   void showFeedSheet(BuildContext context, PetProvider provider) {
     final state = provider.state;
     final name = petName(state.petType);
@@ -285,34 +275,21 @@ class GameView extends StatelessWidget {
                           provider.play(e);
                           provider.showDialogue('This is so fun!');
                           Navigator.pop(context);
-<<<<<<< HEAD
-
-                }
-              )
-            ).toList(),
-          )
-      )
-=======
                         },
                       ),
                     )
                     .toList(),
               ),
       ),
->>>>>>> d1ab4bb341d71674d45809598fc43b5509a5698b
     );
   }
-  
 }
 
-String weatherIcon(WeatherCondition condition){
-  return switch(condition) {
+String weatherIcon(WeatherCondition condition) {
+  return switch (condition) {
     WeatherCondition.sunny => 'assets/icons/sunny.png',
     WeatherCondition.rainy => 'assets/icons/rainy.png',
     WeatherCondition.gloomy => 'assets/icons/gloomy.png',
-    _ => 'assets/icons/unknown.png'
+    _ => 'assets/icons/unknown.png',
   };
 }
-
-
-

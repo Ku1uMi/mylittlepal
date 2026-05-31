@@ -14,19 +14,13 @@ class OutfitView extends StatefulWidget {
 class _OutfitPageState extends State<OutfitView> {
   bool viewingTops = true;
 
-  String _getCleanPath(String category, String filename) {
-    String base = filename.replaceAll('.png', '');
-    return 'assets/outfits/$category/$base.png';
-  }
-
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PetProvider>(context);
     final petState = provider.state;
 
-    // Hardcoded item configurations so inventory options are always available
-    const alwaysAvailableTops = ['t1', 't2'];
-    const alwaysAvailableBottoms = ['b1', 'b2'];
+    const alwaysAvailableTops = ['navy_top', 'yellow_top'];
+    const alwaysAvailableBottoms = ['beige_bottom', 'checked_skirt'];
 
     final activeInventory = viewingTops
         ? alwaysAvailableTops
@@ -58,15 +52,19 @@ class _OutfitPageState extends State<OutfitView> {
                     height: 22,
                     fit: BoxFit.contain,
                     filterQuality: FilterQuality.none,
+                    errorBuilder: (context, error, stackTrace) => const Icon(
+                      Icons.monetization_on,
+                      color: Colors.amber,
+                      size: 22,
+                    ),
                   ),
                   const SizedBox(width: 6),
                   Text(
                     'Coins: ${petState.coins}',
-                    style: const TextStyle(
-                      fontFamily: 'Pixelify Sans',
+                    style: GoogleFonts.pixelifySans(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF2B2B2B),
+                      color: const Color(0xFF2B2B2B),
                     ),
                   ),
                 ],
@@ -77,44 +75,83 @@ class _OutfitPageState extends State<OutfitView> {
       ),
       body: Column(
         children: [
+          // 1. CHARACTER DRAG TARGET AREA
           Expanded(
             flex: 5,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: const Color(0xFFEFECE4),
-                border: Border.all(color: const Color(0xFF2B2B2B), width: 3),
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Image.asset(
-                    'assets/pets/${petState.petType == PetType.sky ? 'sky' : 'ocean'}.png',
-                    width: 160,
-                    height: 160,
-                    fit: BoxFit.contain,
-                    filterQuality: FilterQuality.none,
-                  ),
+            child: DragTarget<Map<String, dynamic>>(
+              onWillAcceptWithDetails: (details) => true,
+              onAcceptWithDetails: (details) {
+                final data = details.data;
+                final String itemId = data['id'];
+                final bool isTop = data['isTop'];
 
-                  if (provider.state.currOutfit.top != null)
-                    Positioned.fill(
-                      child: Image.asset(
-                        provider.state.currOutfit.top,
+                // Equips the item onto the character when dropped!
+                if (isTop) {
+                  provider.changeOutfit(top: itemId);
+                } else {
+                  provider.changeOutfit(bottom: itemId);
+                }
+              },
+              builder: (context, candidateData, rejectedData) {
+                // Highlight the background slightly when a user hovers a clothing item over the character
+                final bool isHovering = candidateData.isNotEmpty;
+
+                return Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: isHovering
+                        ? const Color(0xFFE5E0D3)
+                        : const Color(0xFFEFECE4),
+                    border: Border.all(
+                      color: isHovering
+                          ? const Color(0xFF76A584)
+                          : const Color(0xFF2B2B2B),
+                      width: 3,
+                    ),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Base Pet Layer
+                      Image.asset(
+                        'assets/pets/${petState.petType == PetType.sky ? 'sky' : 'ocean'}.png',
+                        width: 160,
+                        height: 160,
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.none,
                       ),
-                    ),
-                  if (provider.state.currOutfit.bottom != null)
-                    Positioned.fill(
-                      child: Image.asset(
-                        provider.state.currOutfit.bottom,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
-                      ),
-                    ),
-                ],
-              ),
+
+                      // Tops Layer
+                      if (petState.currOutfit.top.isNotEmpty)
+                        Positioned.fill(
+                          child: Image.asset(
+                            'assets/outfits/tops/${petState.currOutfit.top}.png',
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.none,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const SizedBox.shrink(),
+                          ),
+                        ),
+
+                      // Bottoms Layer
+                      if (petState.currOutfit.bottom.isNotEmpty)
+                        Positioned.fill(
+                          child: Image.asset(
+                            'assets/outfits/bottoms/${petState.currOutfit.bottom}.png',
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.none,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const SizedBox.shrink(),
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
 
@@ -175,186 +212,132 @@ class _OutfitPageState extends State<OutfitView> {
             indent: 24,
             endIndent: 24,
           ),
+
+          // 3. DRAGGABLE CLOTHING SELECTION GRID
           Expanded(
             flex: 4,
             child: GridView.builder(
+              key: ValueKey(viewingTops),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
-                childAspectRatio: 1.0,
+                childAspectRatio: 0.85,
               ),
-              itemCount: activeInventory.length,
+              itemCount: activeInventory.length + 1,
               itemBuilder: (context, index) {
-                final itemId = activeInventory[index];
-
-                String exactAssetPath = '';
-                String shortFileName = '';
-                String displayName = '';
-
-                if (viewingTops) {
-                  if (itemId == 't1') {
-                    exactAssetPath = 'assets/outfits/tops/navy_top.png';
-                    shortFileName = 'navy_top.png';
-                    displayName = 'Navy Top';
-                  } else {
-                    exactAssetPath = 'assets/outfits/tops/yellow_top.png';
-                    shortFileName = 'yellow_top.png';
-                    displayName = 'Yellow Top';
-                  }
-                } else {
-                  if (itemId == 'b1') {
-                    exactAssetPath = 'assets/outfits/bottoms/beige_bottom.png';
-                    shortFileName = 'beige_bottom.png';
-                    displayName = 'Beige Pants';
-                  } else {
-                    exactAssetPath = 'assets/outfits/bottoms/checked_skirt.png';
-                    shortFileName = 'checked_skirt.png';
-                    displayName = 'Skirt';
-                  }
+                // "None" Button (Kept as tap-only for ease of clearing outfits)
+                if (index == 0) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (viewingTops) {
+                        provider.changeOutfit(top: '');
+                      } else {
+                        provider.changeOutfit(bottom: '');
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFEFECE4),
+                        border: Border.all(
+                          color: const Color(0xFF2B2B2B),
+                          width: 2,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'None',
+                          style: GoogleFonts.pixelifySans(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF2B2B2B),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
                 }
 
-                return GestureDetector(
-                  onTap: () {
-                    provider.equipClothingItem(shortFileName, viewingTops);
-                  },
-                  child: Container(
+                // Inventory Items
+                final itemId = activeInventory[index - 1];
+                final String exactAssetPath = viewingTops
+                    ? 'assets/outfits/tops/$itemId.png'
+                    : 'assets/outfits/bottoms/$itemId.png';
+
+                final String displayName = itemId
+                    .replaceAll('_', ' ')
+                    .split(' ')
+                    .map(
+                      (str) => str.isNotEmpty
+                          ? '${str[0].toUpperCase()}${str.substring(1)}'
+                          : '',
+                    )
+                    .join(' ');
+
+                // Item Base Layout Widget
+                Widget cardContent(bool isFeedback) {
+                  return Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFFEFECE4),
+                      color: const Color(
+                        0xFFEFECE4,
+                      ).withOpacity(isFeedback ? 0.7 : 1.0),
                       border: Border.all(
                         color: const Color(0xFF2B2B2B),
                         width: 2,
                       ),
                     ),
-<<<<<<< HEAD
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(6),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Image.asset(
                             exactAssetPath,
                             fit: BoxFit.contain,
                             filterQuality: FilterQuality.none,
-=======
-                  )
-                : GridView.builder(
-                    key: ValueKey(viewingTops),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
-                    ),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: 1.0,
-                        ),
-                    itemCount: activeInventory.length + 1,
-                    itemBuilder: (context, index) {
-                      
-
-                      if(index == 0){
-                        petState.currOutfit.bottom == '';
-                        return GestureDetector(
-                          onTap:() {
-                            if(viewingTops){
-                              provider.changeOutfit(top: '');
-                            }else{
-                              provider.changeOutfit(bottom: '');
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFEFECE4),
-                              border: Border.all(
-                                  color: const Color(0xFF2B2B2B),
-                                  width: 2,
-                              ), 
-                            ),
-                            child: Center(
-                              child: Text(
-                                'None',
-                               style: GoogleFonts.pixelifySans(
-                                fontSize: 14,
-                                color: const Color(0xFF2B2B2B)
-                              ),
-                            ),
-                          )
-                          )
-                        );
-                      }
-                      final itemId = activeInventory[index - 1];
-
-                      String exactAssetPath = '';
-                      if (viewingTops) {
-                        exactAssetPath = 'assets/outfits/tops/$itemId.png';
-                      } else {
-                        exactAssetPath = 'assets/outfits/bottoms/$itemId.png';
-                      }
-
-                      return GestureDetector(
-                        onTap: () {
-                          //provider.equipClothingItem(itemId, viewingTops);
-
-                          if(viewingTops){
-                            provider.changeOutfit(top: itemId);
-                          } else {
-                            provider.changeOutfit(bottom: itemId);
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFEFECE4),
-                            border: Border.all(
-                              color: const Color(0xFF2B2B2B),
-                              width: 2,
-                            ),
-                          ),
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Image.asset(
-                                  exactAssetPath,
-                                  fit: BoxFit.contain,
-                                  filterQuality: FilterQuality.none,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                'pic of\n${viewingTops ? 'top' : 'bottom'}',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.pixelifySans(
-                                  color: Color(0xFF2B2B2B),
-                                  height: 1.1,
-                                  fontSize: 10,
-                                ), 
-                              ),
-                            ],
->>>>>>> d1ab4bb341d71674d45809598fc43b5509a5698b
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(Icons.checkroom, color: Colors.grey),
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           displayName,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontFamily: 'Pixelify Sans',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.pixelifySans(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF2B2B2B),
-                            height: 1.1,
+                            color: const Color(0xFF2B2B2B),
+                            decoration: TextDecoration
+                                .none, // Strips out yellow text baseline bugs during drag
                           ),
                         ),
                       ],
                     ),
+                  );
+                }
+
+                // Wrap grid item in a Draggable widget
+                return Draggable<Map<String, dynamic>>(
+                  data: {'id': itemId, 'isTop': viewingTops},
+                  feedback: SizedBox(
+                    width: 90,
+                    height: 105,
+                    child: cardContent(true), // Floating item under finger
                   ),
+                  childWhenDragging: Opacity(
+                    opacity: 0.3,
+                    child: cardContent(false), // Ghost item left behind in slot
+                  ),
+                  child: cardContent(false), // Base item state
                 );
               },
             ),
           ),
+
+          // 4. ACTION SUBMIT PERSISTENCE FOOTER
           Padding(
             padding: const EdgeInsets.only(
               left: 24,
@@ -415,17 +398,4 @@ class _OutfitPageState extends State<OutfitView> {
       ),
     );
   }
-}
-
-class PremiumBadgePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.amber
-      ..style = PaintingStyle.fill;
-    canvas.drawCircle(Offset(size.width * 0.9, size.height * 0.1), 10, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
