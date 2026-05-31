@@ -8,6 +8,7 @@ import 'package:yourlittlepal/views/settings_views.dart';
 import 'package:yourlittlepal/views/start_view.dart';
 import 'package:yourlittlepal/views/select_view.dart';
 import 'package:yourlittlepal/views/game_view.dart';
+import 'package:yourlittlepal/views/outfit_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,6 +72,7 @@ class MainApp extends StatelessWidget {
           '/select': (context) => const SelectView(),
           '/playground': (context) => const GameView(),
           '/settings': (context) => const SettingsView(),
+          '/outfit': (context) => const OutfitPage(),
         },
       ),
     );

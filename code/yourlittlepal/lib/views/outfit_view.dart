@@ -7,7 +7,7 @@ class OutfitPage extends StatefulWidget {
   const OutfitPage({super.key});
 
   @override
-  State<OutfitPage> createState() => _OutfitPageState(); // FIXED: Matches the state class below
+  State<OutfitPage> createState() => _OutfitPageState();
 }
 
 class _OutfitPageState extends State<OutfitPage> {
@@ -18,21 +18,28 @@ class _OutfitPageState extends State<OutfitPage> {
     final provider = Provider.of<PetProvider>(context);
     final petState = provider.state;
 
-    // FIXED: Reads directly from your real petState.ownedToy list
-    final availableTops = petState.ownedToy
-        .where((id) => id.startsWith('t'))
-        .toList();
-    final availableBottoms = petState.ownedToy
-        .where((id) => id.startsWith('b'))
-        .toList();
-    final activeInventory = viewingTops ? availableTops : availableBottoms;
+    // Hardcoded item configurations so inventory options are always available
+    const alwaysAvailableTops = ['t1', 't2'];
+    const alwaysAvailableBottoms = ['b1', 'b2'];
+
+    final activeInventory = viewingTops
+        ? alwaysAvailableTops
+        : alwaysAvailableBottoms;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F1EA), // Notebook cream base color
+      backgroundColor: const Color(0xFFF4F1EA),
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF2B2B2B)),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: const Text(
           'OUTFIT',
-          style: TextStyle(fontFamily: 'PixelFont', fontSize: 22),
+          style: TextStyle(
+            fontFamily: 'Pixelify Sans',
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -55,7 +62,7 @@ class _OutfitPageState extends State<OutfitPage> {
                   Text(
                     'Coins: ${petState.coins}',
                     style: const TextStyle(
-                      fontFamily: 'PixelFont',
+                      fontFamily: 'Pixelify Sans',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF2B2B2B),
@@ -82,7 +89,6 @@ class _OutfitPageState extends State<OutfitPage> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  // Base dynamic character layer (Sky or Ocean)
                   Image.asset(
                     'assets/pets/${petState.petType == PetType.sky ? 'sky' : 'ocean'}.png',
                     width: 160,
@@ -91,18 +97,24 @@ class _OutfitPageState extends State<OutfitPage> {
                     filterQuality: FilterQuality.none,
                   ),
 
-                  if (provider.currentTopAsset != null)
+                  if (provider.currentTopAsset != null &&
+                      provider.currentTopAsset!.isNotEmpty)
                     Positioned.fill(
                       child: Image.asset(
-                        provider.currentTopAsset!,
+                        provider.currentTopAsset!.startsWith('assets/')
+                            ? provider.currentTopAsset!
+                            : 'assets/outfits/tops/${provider.currentTopAsset}',
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.none,
                       ),
                     ),
-                  if (provider.currentBottomAsset != null)
+                  if (provider.currentBottomAsset != null &&
+                      provider.currentBottomAsset!.isNotEmpty)
                     Positioned.fill(
                       child: Image.asset(
-                        provider.currentBottomAsset!,
+                        provider.currentBottomAsset!.startsWith('assets/')
+                            ? provider.currentBottomAsset!
+                            : 'assets/outfits/bottoms/${provider.currentBottomAsset}',
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.none,
                       ),
@@ -174,84 +186,85 @@ class _OutfitPageState extends State<OutfitPage> {
           // 3. WARDROBE GRID SECTOR
           Expanded(
             flex: 4,
-            child: activeInventory.isEmpty
-                ? Center(
-                    child: Text(
-                      'No ${viewingTops ? 'tops' : 'bottoms'} owned yet.\nVisit the shop! 🛍️',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontFamily: 'PixelFont',
-                        color: Colors.grey,
-                        height: 1.3,
+            child: GridView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 1.0,
+              ),
+              itemCount: activeInventory.length,
+              itemBuilder: (context, index) {
+                final itemId = activeInventory[index];
+
+                String exactAssetPath = '';
+                String shortFileName = '';
+                String displayName = '';
+
+                if (viewingTops) {
+                  if (itemId == 't1') {
+                    exactAssetPath = 'assets/outfits/tops/navy_top.png';
+                    shortFileName = 'navy_top.png';
+                    displayName = 'Navy Top';
+                  } else {
+                    exactAssetPath = 'assets/outfits/tops/yellow_top.png';
+                    shortFileName = 'yellow_top.png';
+                    displayName = 'Yellow Top';
+                  }
+                } else {
+                  if (itemId == 'b1') {
+                    exactAssetPath = 'assets/outfits/bottoms/beige_bottom.png';
+                    shortFileName = 'beige_bottom.png';
+                    displayName = 'Beige Pants';
+                  } else {
+                    exactAssetPath = 'assets/outfits/bottoms/checked_skirt.png';
+                    shortFileName = 'checked_skirt.png';
+                    displayName = 'Skirt';
+                  }
+                }
+
+                return GestureDetector(
+                  onTap: () {
+                    // FIXED: Passes only the short file name that the background view logic naturally expects!
+                    provider.equipClothingItem(shortFileName, viewingTops);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEFECE4),
+                      border: Border.all(
+                        color: const Color(0xFF2B2B2B),
+                        width: 2,
                       ),
                     ),
-                  )
-                : GridView.builder(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Image.asset(
+                            exactAssetPath,
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.none,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          displayName,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontFamily: 'Pixelify Sans',
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF2B2B2B),
+                            height: 1.1,
+                          ),
+                        ),
+                      ],
                     ),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: 1.0,
-                        ),
-                    itemCount: activeInventory.length,
-                    itemBuilder: (context, index) {
-                      final itemId = activeInventory[index];
-
-                      String exactAssetPath = '';
-                      if (viewingTops) {
-                        exactAssetPath = itemId == 't1'
-                            ? 'assets/outfits/tops/navy_top.png'
-                            : 'assets/outfits/tops/yellow_top.png';
-                      } else {
-                        exactAssetPath = itemId == 'b1'
-                            ? 'assets/outfits/bottoms/beige_bottom.png'
-                            : 'assets/outfits/bottoms/checked_skirt.png';
-                      }
-
-                      return GestureDetector(
-                        onTap: () {
-                          provider.equipClothingItem(itemId, viewingTops);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFEFECE4),
-                            border: Border.all(
-                              color: const Color(0xFF2B2B2B),
-                              width: 2,
-                            ),
-                          ),
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Image.asset(
-                                  exactAssetPath,
-                                  fit: BoxFit.contain,
-                                  filterQuality: FilterQuality.none,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                'pic of\n${viewingTops ? 'top' : 'bottom'}',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontFamily: 'PixelFont',
-                                  fontSize: 10,
-                                  color: Color(0xFF2B2B2B),
-                                  height: 1.1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
                   ),
+                );
+              },
+            ),
           ),
 
           // 4. PERSIST AND ESCAPE ACTION BAR
@@ -278,16 +291,14 @@ class _OutfitPageState extends State<OutfitPage> {
                 onPressed: () {
                   provider.saveCurrentOutfitState();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Wardrobe choices synchronized! ✨'),
-                    ),
+                    const SnackBar(content: Text('Nice outfit! ✨')),
                   );
                   Navigator.of(context).pop();
                 },
                 child: const Text(
                   'SAVE & CLOSE',
                   style: TextStyle(
-                    fontFamily: 'PixelFont',
+                    fontFamily: 'Pixelify Sans',
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -316,7 +327,7 @@ class _OutfitPageState extends State<OutfitPage> {
         child: Text(
           text,
           style: TextStyle(
-            fontFamily: 'PixelFont',
+            fontFamily: 'Pixelify Sans',
             fontSize: 12,
             fontWeight: FontWeight.bold,
             color: isSelected ? Colors.white : const Color(0xFF2B2B2B),

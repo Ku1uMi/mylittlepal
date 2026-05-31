@@ -8,7 +8,6 @@ import 'package:yourlittlepal/widgets/stat_bar.dart';
 import 'package:yourlittlepal/widgets/bottom_bar.dart';
 import 'package:yourlittlepal/widgets/action_sheet.dart';
 import 'package:yourlittlepal/widgets/toy_sheet.dart';
-import 'package:yourlittlepal/views/outfit_view.dart';
 
 class GameView extends StatelessWidget {
   const GameView({super.key});
@@ -102,9 +101,9 @@ class GameView extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 color: Colors.amber[100],
-                border: Border(
+                border: const Border(
                   top: BorderSide(
-                    color: const Color.fromARGB(255, 51, 37, 14),
+                    color: Color.fromARGB(255, 51, 37, 14),
                     width: 2,
                   ),
                 ),
@@ -148,12 +147,14 @@ class GameView extends StatelessWidget {
                   BottomBar(
                     name: 'OUTFIT',
                     icon: 'assets/icons/clothes.png',
-                    onTap: () => Placeholder(), //------
+                    // Navigates directly over to your wardrobe view overlay
+                    onTap: () => Navigator.pushNamed(context, '/outfit'),
                   ),
                   BottomBar(
                     name: 'SHOP',
                     icon: 'assets/icons/shop.png',
-                    onTap: () => Placeholder(), //------
+                    // Navigates directly over to your store catalog overlay
+                    onTap: () => Navigator.pushNamed(context, '/shop'),
                   ),
                 ],
               ),
@@ -222,23 +223,6 @@ class GameView extends StatelessWidget {
                           provider.play(e);
                           provider.showDialogue('This is so fun!');
                           Navigator.pop(context);
-
-                          /*final overlay = Overlay.of(context);
-                      final entry = OverlayEntry(
-                        builder: (_) => Positioned(
-                          top: 120,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                              child: Dialogue(
-                                dialogue: 'This is so fun!'
-                              ),
-                            )
-                          )
-                        );
-                      overlay.insert(entry);
-                      await Future.delayed(const Duration(seconds: 3));
-                      entry.remove();*/
                         },
                       ),
                     )
