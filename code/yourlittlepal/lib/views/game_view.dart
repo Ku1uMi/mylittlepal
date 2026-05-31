@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:yourlittlepal/models/pet_state.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'package:yourlittlepal/providers/position_provider.dart';
 import 'package:yourlittlepal/providers/weather_provider.dart';
@@ -196,8 +197,7 @@ class GameView extends StatelessWidget {
                   BottomBar(
                     name: 'OUTFIT',
                     icon: 'assets/icons/clothes.png',
-                    // Navigates directly over to your wardrobe view overlay
-                    onTap: () => Navigator.pushNamed(context, '/outfit'),
+                    onTap: () => Navigator.pushNamed(context, '/outfit')
                   ),
                   BottomBar(
                     name: 'SHOP',
@@ -214,9 +214,17 @@ class GameView extends StatelessWidget {
     );
   }
 
+  String petName(PetType type){
+    switch(type){
+      case PetType.sky:
+        return 'Cloudy';
+      case PetType.ocean:
+        return 'Bubble';
+    }
+  }
   void showFeedSheet(BuildContext context, PetProvider provider) {
     final state = provider.state;
-    final name = state.petType.info.name;
+    final name = petName(state.petType);
     showModalBottomSheet(
       context: context,
       builder: (_) => ActionSheet(
@@ -251,7 +259,7 @@ class GameView extends StatelessWidget {
 
   void showPlaySheet(BuildContext context, PetProvider provider) {
     final state = provider.state;
-    final name = state.petType.info.name;
+    final name = petName(state.petType);
     showModalBottomSheet(
       context: context,
       builder: (_) => ActionSheet(

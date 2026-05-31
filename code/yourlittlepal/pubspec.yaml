@@ -32,7 +32,7 @@ flutter:
     - assets/icons/
     - assets/effects/bubble.png
     - assets/backgrounds/
-    
+
   fonts:
     - family: PixelifySans
       fonts:

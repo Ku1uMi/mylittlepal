@@ -23,7 +23,7 @@ class PetStaticInfo {
 /// Helper class containing the configuration data for your pet variants
 class PetRegistry {
   static final Map<PetType, PetStaticInfo> allPets = {
-    PetType.rabbit: const PetStaticInfo(
+    PetType.sky: const PetStaticInfo(
       name: 'Cloudy',
       description:
           'A delicate rabbit with functional wings and a hovering halo.',
@@ -32,7 +32,7 @@ class PetRegistry {
       normalFoods: ['steak','grass','salmon'],
       normalToys: ['socks', 'feather'], assetPath: '',
     ),
-    PetType.goat: const PetStaticInfo(
+    PetType.ocean: const PetStaticInfo(
       name: 'Bubble',
       description:
           'An uncommon, gentle creature: half goat, half whale hybrid.',

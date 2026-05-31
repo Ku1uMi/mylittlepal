@@ -22,8 +22,11 @@ class PetLogic {
   }
 
   static void feed(PetState state, String food) {
-    final isFavorite =
-        state.petType.info.favoriteFoods.contains(food);
+    const favorites = {
+          PetType.sky: ['carrot'],
+          PetType.ocean: ['shrimp'],
+        };
+    final isFavorite = (favorites[state.petType] ?? []).contains(food);
     if (state.mealTime < 3) {
       if (isFavorite) {
         state.health = (state.health + 15).clamp(0, 100);
@@ -53,7 +56,11 @@ class PetLogic {
   }
 
   static void play(PetState state, String toy) {
-    final isFavorite = state.petType.info.favoriteToys.contains(toy);
+    const favorites = {
+          PetType.sky: ['hay balls'],
+          PetType.ocean: ['pebbles'],
+        };
+    final isFavorite = (favorites[state.petType] ?? []).contains(toy);
     if (state.playTime < 2) {
       if (isFavorite) {
         state.closeness = (state.closeness + 20).clamp(0, 100);

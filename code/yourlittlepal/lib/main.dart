@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'package:yourlittlepal/providers/position_provider.dart';
 import 'package:yourlittlepal/providers/weather_provider.dart';
+import 'package:yourlittlepal/views/outfit_view.dart';
 import 'package:yourlittlepal/views/settings_views.dart';
 import 'package:yourlittlepal/views/shop_view.dart';
 import 'package:yourlittlepal/views/start_view.dart';
 import 'package:yourlittlepal/views/select_view.dart';
 import 'package:yourlittlepal/views/game_view.dart';
-import 'package:yourlittlepal/views/outfit_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +42,8 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Your Little Pal',
       debugShowCheckedModeBanner: false,
+
+      // --- Internationalization Configuration ---
       locale: const Locale('en', ''),
       supportedLocales: const [
         Locale('en', ''),
@@ -53,12 +55,17 @@ class MainApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+
+      // --- Retro Sketch/Pixel Vibe Theme ---
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
         scaffoldBackgroundColor: const Color.fromARGB(255, 248, 248, 248),
         textTheme: GoogleFonts.pixelifySansTextTheme(),
       ),
+
+      // --- Application Route Flow Hierarchy ---
+      // These are now inside MaterialApp where they belong
       initialRoute: '/',
       routes: {
         '/': (context) => const StartPage(),
