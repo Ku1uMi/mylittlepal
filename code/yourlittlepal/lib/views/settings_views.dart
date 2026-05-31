@@ -59,7 +59,6 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     final provider = context.watch<PetProvider>();
     final selectedLang = _localeToDisplayName(provider.currentLocale);
-    final fontSize = provider.fontSize;
     final brightness = provider.brightness;
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
@@ -118,24 +117,6 @@ class _SettingsViewState extends State<SettingsView> {
                             provider.setLocale(_languages[val]!);
                           }
                         },
-                      ),
-                    ),
-                    const Divider(),
-
-                    // Font Size Selection
-                    ListTile(
-                      title:  Text(
-                        l10n.fontSize,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Slider(
-                        value: fontSize,
-                        min: 12.0,
-                        max: 24.0,
-                        divisions: 4,
-                        activeColor: const Color(0xFF2B2B2B),
-                        label: '${fontSize.toInt()}px',
-                        onChanged: (val) => provider.setFontSize(val),
                       ),
                     ),
                     const Divider(),
@@ -204,120 +185,6 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                     trailing: Text(_wakeTime.format(context)),
                     onTap: () => _selectTime(context, 'wake', _wakeTime),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // ==================== SECTION 3: NOTIFICATIONS ====================
-            Text(
-              l10n.notificationsSimulator,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF2B2B2B),
-              ),
-            ),
-            const SizedBox(height: 8),
-
-            Card(
-              color: Colors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: Color(0xFF2B2B2B), width: 2),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Column(
-                children: [
-                  // Care Alerts
-                  ListTile(
-                    title: Text(
-                      l10n.careReminders,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle:  Text(
-                      l10n.careRemindersDesc
-                    ),
-                    trailing: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2B2B2B),
-                      ),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
-                            content: Text(
-                              l10n.snackCareReminder,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        l10n.test,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  const Divider(),
-
-                  // Status box updates
-                  ListTile(
-                    title: Text(
-                      l10n.petMessageStatuses,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      l10n.petMessageSimDesc
-                    ),
-                    trailing: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2B2B2B),
-                      ),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
-                            content: Text(
-                              l10n.snackPetMessage,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        l10n.test,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  const Divider(),
-
-                  // Bedtime Alerts
-                  ListTile(
-                    title: Text(
-                      l10n.sleepAlertTitle,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      l10n.sleepAlertSimDesc
-                    ),
-                    trailing: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2B2B2B),
-                      ),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              l10n.snackBedtime(_sleepTime.format(context)),
-                            ),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        l10n.test,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
                   ),
                 ],
               ),

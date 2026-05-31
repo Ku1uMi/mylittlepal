@@ -62,25 +62,12 @@ class MainApp extends StatelessWidget {
         ],
 
         // --- Retro Sketch/Pixel Vibe Theme ---
-        theme: void ThemeData(
-          useMaterial3 = true,
-          brightness = Brightness.light,
-          scaffoldBackgroundColor = const Color.fromARGB(255, 248, 248, 248),
-          textTheme = TextTheme(
-            bodyLarge: TextStyle(
-              fontFamily: 'Pixelify Sans',
-              fontSize: provider.fontSize,
-              fontWeight: FontWeight.bold,
-              color: Colors.black
-            ),
-            headlineMedium: TextStyle(
-              fontFamily: 'Pixelify Sans',
-              fontSize: provider.fontSize + 10,
-              fontWeight: FontWeight.bold,
-              color: Colors.black
-            ) 
+        theme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: const Color.fromARGB(255, 248, 248, 248),
+          
           ),
-        ),
 
         // --- Application Route Flow Hierarchy ---
         initialRoute: '/',

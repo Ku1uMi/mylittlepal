@@ -118,29 +118,9 @@ class PetProvider extends ChangeNotifier {
   }
 
   Future<void> changeOutfit({String? top, String? bottom}) async {
-<<<<<<< HEAD
-    // 1. Determine fallback values if a category is omitted or unprovided
-    final String finalTop = top ?? _state.currOutfit.top;
-    final String finalBottom = bottom ?? _state.currOutfit.bottom;
-
-    // 2. Build a brand new local Outfit instance payload
-    // Note: If your constructor uses positional fields instead of named keys,
-    // modify this line to: final newOutfit = Outfit(finalTop, finalBottom);
-    final newOutfit = Outfit(top: finalTop, bottom: finalBottom);
-
-    // 3. Re-assign state via the single argument update wrapper inside pet_state.dart
-    _state = _state.update(currOutfit: newOutfit);
-
-    // Notify the UI to rebuild immediately
-    notifyListeners();
-
-    // Persist configurations locally
-    await _saveToStorage();
-=======
     PetLogic.changeOutfit(_state, top: top, bottom: bottom);
     await _save();
     notifyListeners();
->>>>>>> 2d9719fdaad8eddf803af2d4b3e54259da40a364
   }
 
   Future<void> undo() async {
@@ -203,7 +183,7 @@ class PetProvider extends ChangeNotifier {
     _timer?.cancel();
     super.dispose();
   }
-/*
+
   /// Handles undoing an outfit adjustment sequence step
   Future<void> undoOutfitChange() async {
     await undo();
@@ -237,12 +217,14 @@ class PetProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _saveToStorage() async {
-    // Forwards the data layer modifications into your shared preferences logic block
+  Future<void> resetPet(PetType type) async {
+    _state =PetState.newPet(type);
+    _state.newPet = false;
     await _save();
+    notifyListeners();
   }
-<<<<<<< HEAD
-=======
-  }*/
->>>>>>> 2d9719fdaad8eddf803af2d4b3e54259da40a364
+
+
 }
+
+
