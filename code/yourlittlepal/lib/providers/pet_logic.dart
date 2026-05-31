@@ -1,4 +1,4 @@
-import 'package:yourlittlepal/models/pet_info.dart';
+
 import 'package:yourlittlepal/models/pet_state.dart';
 
 class PetLogic {
@@ -23,7 +23,7 @@ class PetLogic {
 
   static void feed(PetState state, String food) {
     final isFavorite =
-        state.petType.info?.favoriteFoods?.contains(food) ?? false;
+        state.petType.info.favoriteFoods.contains(food);
     if (state.mealTime < 3) {
       if (isFavorite) {
         state.health = (state.health + 15).clamp(0, 100);

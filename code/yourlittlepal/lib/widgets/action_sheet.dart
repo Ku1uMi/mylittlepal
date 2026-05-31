@@ -6,7 +6,7 @@ class ActionSheet extends StatelessWidget{
   final String icon;
   //final String name;
 
-  const ActionSheet({
+  const ActionSheet({super.key, 
     required this.text,
     required this.child,
     required this.icon,

@@ -1,22 +1,12 @@
 import 'package:yourlittlepal/models/outfit.dart';
 
-<<<<<<< HEAD
-enum PetType {
-  sky,
-  ocean,
-  forest,
-  goat,
-  rabbit;
+enum PetType { sky, ocean, forest, rabbit, goat;
 
-  Object? get info => null;
+  dynamic get info => null;
 
   String getDialogue(PetState state) {
-    return "Hi!";
-  }
-}
-=======
-enum PetType { sky, ocean, forest}
->>>>>>> 656640a97f88deb3c8fff5097b9cc7b21fee031b
+    return "hello!";
+  }}
 
 class PetState {
   PetType petType;

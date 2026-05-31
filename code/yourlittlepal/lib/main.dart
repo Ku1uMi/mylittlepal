@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
-import 'models/pet_info.dart';
-import 'package:yourlittlepal/views/pet_view.dart';
+import 'package:yourlittlepal/views/settings_views.dart';
 
 import 'package:yourlittlepal/views/start_view.dart';
 import 'package:yourlittlepal/views/select_view.dart';
