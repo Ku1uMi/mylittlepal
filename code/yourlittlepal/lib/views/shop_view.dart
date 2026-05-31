@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 
 class ShopView extends StatefulWidget {
@@ -37,7 +38,7 @@ class _ShopViewState extends State<ShopView> {
   Widget build(BuildContext context) {
     final provider = context.watch<PetProvider>();
     final state = provider.state;
-
+    final l10n = AppLocalizations.of(context)!;
     // Switch items depending on active tab selection
     final currentItems = activeTab == 'food' ? foodItems : toyItems;
 
@@ -51,7 +52,7 @@ class _ShopViewState extends State<ShopView> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'SHOP',
+          l10n.shop,
           style: GoogleFonts.pixelifySans(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,  
@@ -91,9 +92,9 @@ class _ShopViewState extends State<ShopView> {
               ),
               child: Row(
                 children: [
-                  _buildTabButton('Food', 'food'),
+                  _buildTabButton(l10n.food, 'food'),
                   const SizedBox(width: 12),
-                  _buildTabButton('Toy', 'toy'),
+                  _buildTabButton(l10n.toy, 'toy'),
                 ],
               ),
             ),
@@ -204,7 +205,7 @@ class _ShopViewState extends State<ShopView> {
                       }
 
                       provider.showDialogue(
-                        'Successfully bought $selectedItem!',
+                        l10n.dialogueBought(selectedItem!),
                       );
                       setState(() {
                         selectedItem = null; // Reset selection after buying
@@ -213,12 +214,12 @@ class _ShopViewState extends State<ShopView> {
                     } else {
                       // Insufficient funds trigger dialogue matching wireframe logic notes
                       provider.showDialogue(
-                        'No coins! ( ;´ - `;) Go play with your pet!',
+                        l10n.dialogueNoCoins,
                       );
                     }
                   },
                   child: Text(
-                    'Buy',
+                    l10n.buyButton,
                     style: GoogleFonts.pixelifySans(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,  

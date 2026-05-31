@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 
 class PetView extends StatefulWidget {
@@ -20,7 +21,7 @@ class _PetViewState extends State<PetView> {
     final state = petProvider.state;
     final top = state.currOutfit.top;
     final bottom = state.currOutfit.bottom;
-
+    final l10n = AppLocalizations.of(context)!;
     void popBubble(Offset globalPosition){
       if(!state.isWashed){
         RenderBox renderBox = context.findRenderObject() as RenderBox;
@@ -52,7 +53,7 @@ class _PetViewState extends State<PetView> {
         if (bubbleScrubPoints.isEmpty && !state.isWashed && petProvider.washing.value) {
           petProvider.wash();
           petProvider.washing.value = false;
-          petProvider.showDialogue('I am so clean now!\n٩(^ᗜ^ )و ');
+          petProvider.showDialogue(l10n.dialogueClean);
           
         }
       },

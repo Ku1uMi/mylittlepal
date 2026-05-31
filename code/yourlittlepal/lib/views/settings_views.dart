@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 
 class SettingsView extends StatefulWidget {
@@ -60,13 +61,13 @@ class _SettingsViewState extends State<SettingsView> {
     final selectedLang = _localeToDisplayName(provider.currentLocale);
     final fontSize = provider.fontSize;
     final brightness = provider.brightness;
-
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFFF4F1EA), // App retro canvas color
       appBar: AppBar(
-        title: const Text(
-          'SETTINGS & NOTIFICATIONS',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l10n.settings,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -77,8 +78,8 @@ class _SettingsViewState extends State<SettingsView> {
         child: ListView(
           children: [
             // ==================== SECTION 1: SETTINGS PAGE ====================
-            const Text(
-              'APP SETTINGS',
+             Text(
+              l10n.appSettings,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -100,8 +101,8 @@ class _SettingsViewState extends State<SettingsView> {
                   children: [
                     // Language Selection
                     ListTile(
-                      title: const Text(
-                        'Language / Idioma',
+                      title: Text(
+                        l10n.language,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       trailing: DropdownButton<String>(
@@ -123,8 +124,8 @@ class _SettingsViewState extends State<SettingsView> {
 
                     // Font Size Selection
                     ListTile(
-                      title: const Text(
-                        'Font Size',
+                      title:  Text(
+                        l10n.fontSize,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Slider(
@@ -141,8 +142,8 @@ class _SettingsViewState extends State<SettingsView> {
 
                     // Brightness Selection
                     ListTile(
-                      title: const Text(
-                        'Screen Brightness',
+                      title: Text(
+                        l10n.brightness,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Slider(
@@ -159,8 +160,8 @@ class _SettingsViewState extends State<SettingsView> {
             const SizedBox(height: 20),
 
             // ==================== SECTION 2: ROUTINE SCHEDULES ====================
-            const Text(
-              'PET ROUTINE TIMERS',
+            Text(
+              l10n.petRoutineTimers,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -179,8 +180,8 @@ class _SettingsViewState extends State<SettingsView> {
               child: Column(
                 children: [
                   ListTile(
-                    title: const Text(
-                      'Set Meal Time',
+                    title: Text(
+                      l10n.setMealTime,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     trailing: Text(_mealTime.format(context)),
@@ -188,8 +189,8 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                   const Divider(),
                   ListTile(
-                    title: const Text(
-                      'Set Sleeping Time',
+                    title: Text(
+                      l10n.setSleepTime,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     trailing: Text(_sleepTime.format(context)),
@@ -197,8 +198,8 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                   const Divider(),
                   ListTile(
-                    title: const Text(
-                      'Set Wake Up Time',
+                    title: Text(
+                      l10n.setWakeTime,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     trailing: Text(_wakeTime.format(context)),
@@ -211,8 +212,8 @@ class _SettingsViewState extends State<SettingsView> {
             const SizedBox(height: 20),
 
             // ==================== SECTION 3: NOTIFICATIONS ====================
-            const Text(
-              'NOTIFICATIONS SIMULATOR',
+            Text(
+              l10n.notificationsSimulator,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -232,12 +233,12 @@ class _SettingsViewState extends State<SettingsView> {
                 children: [
                   // Care Alerts
                   ListTile(
-                    title: const Text(
-                      'Care Reminders',
+                    title: Text(
+                      l10n.careReminders,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: const Text(
-                      'Simulate alerts to feed, wash, or play',
+                    subtitle:  Text(
+                      l10n.careRemindersDesc
                     ),
                     trailing: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -245,15 +246,15 @@ class _SettingsViewState extends State<SettingsView> {
                       ),
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                           SnackBar(
                             content: Text(
-                              'Reminder: Remember to feed, wash, and play with your pal!',
+                              l10n.snackCareReminder,
                             ),
                           ),
                         );
                       },
-                      child: const Text(
-                        'TEST',
+                      child: Text(
+                        l10n.test,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -262,12 +263,12 @@ class _SettingsViewState extends State<SettingsView> {
 
                   // Status box updates
                   ListTile(
-                    title: const Text(
-                      'Pet Message Statuses',
+                    title: Text(
+                      l10n.petMessageStatuses,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: const Text(
-                      'Simulate hungry/thirsty/bored text box updates',
+                    subtitle: Text(
+                      l10n.petMessageSimDesc
                     ),
                     trailing: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -275,15 +276,15 @@ class _SettingsViewState extends State<SettingsView> {
                       ),
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                           SnackBar(
                             content: Text(
-                              'Message Box: "I\'m lonely and my tummy is rumbling!"',
+                              l10n.snackPetMessage,
                             ),
                           ),
                         );
                       },
-                      child: const Text(
-                        'TEST',
+                      child: Text(
+                        l10n.test,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -292,12 +293,12 @@ class _SettingsViewState extends State<SettingsView> {
 
                   // Bedtime Alerts
                   ListTile(
-                    title: const Text(
-                      'Sleep Schedule Alerts',
+                    title: Text(
+                      l10n.sleepAlertTitle,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: const Text(
-                      'Simulate bedtime notification target triggers',
+                    subtitle: Text(
+                      l10n.sleepAlertSimDesc
                     ),
                     trailing: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -307,13 +308,13 @@ class _SettingsViewState extends State<SettingsView> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'Bedtime Alert: It is ${_sleepTime.format(context)}. Time for your pal to go to sleep!',
+                              l10n.snackBedtime(_sleepTime.format(context)),
                             ),
                           ),
                         );
                       },
-                      child: const Text(
-                        'TEST',
+                      child: Text(
+                        l10n.test,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

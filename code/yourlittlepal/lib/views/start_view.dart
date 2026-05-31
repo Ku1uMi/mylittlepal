@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 
 class StartPage extends StatelessWidget {
@@ -8,7 +9,7 @@ class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final petProvider = Provider.of<PetProvider>(context);
-
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Stack(
         children: [
@@ -68,8 +69,8 @@ class StartPage extends StatelessWidget {
                           context,
                         ).pushReplacementNamed('/playground');
                       },
-                      child: const Text(
-                        'CONTINUE GAME',
+                      child: Text(
+                        l10n.continueGame,
                         style: TextStyle(fontFamily: 'PixelFont', fontSize: 16),
                       ),
                     ),
@@ -84,8 +85,8 @@ class StartPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed('/select');
                     },
-                    child: const Text(
-                      'START',
+                    child: Text(
+                      l10n.start,
                       style: TextStyle(fontFamily: 'PixelFont', fontSize: 16),
                     ),
                   ),

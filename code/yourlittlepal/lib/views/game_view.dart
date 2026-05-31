@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'package:yourlittlepal/providers/position_provider.dart';
@@ -23,6 +24,7 @@ class GameView extends StatelessWidget {
     final provider = context.watch<PetProvider>();
     final positionProvider = context.watch<PositionProvider>();
     final weatherProvider = context.watch<WeatherProvider>();
+    final l10n = AppLocalizations.of(context)!;
     
     if(positionProvider.positionKnown){
       weatherProvider.updateLocation(positionProvider.latitude!, positionProvider.longitude!);
@@ -32,7 +34,7 @@ class GameView extends StatelessWidget {
       return Scaffold(
         body: Center(
           child: Text(
-            'LOADING PAL...',
+            l10n.loading,
             style: GoogleFonts.pixelifySans(
                         fontSize: 18,
             ),
@@ -100,13 +102,13 @@ class GameView extends StatelessWidget {
               child: Column(
                 children: [
                   StatBar(
-                    name: 'Health',
+                    name: l10n.health,
                     val: state.health / 100,
                     color: Colors.redAccent,
                   ),
                   const SizedBox(height: 8),
                   StatBar(
-                    name: 'Closeness',
+                    name: l10n.closeness,
                     val: state.closeness / 100,
                     color: Colors.orangeAccent,
                   ),
@@ -119,7 +121,7 @@ class GameView extends StatelessWidget {
               height: 100,
               child: Dialogue(
                 dialogue:
-                    provider.tempDialogue ?? state.petType.getDialogue(state),
+                    provider.tempDialogue ?? l10n.hello,
               ),
             ),
             const SizedBox(height: 16),
@@ -164,44 +166,44 @@ class GameView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   BottomBar(
-                    name: 'FEED',
+                    name: l10n.feed,
                     icon: 'assets/icons/feed.png',
                     onTap: () => showFeedSheet(context, provider),
                   ),
                   BottomBar(
-                    name: 'WATER',
+                    name: l10n.water,
                     icon: 'assets/icons/water.png',
                     onTap: () async {
                       provider.water();
                       provider.showDialogue(
-                        'Thank you!(˶>⩊<˶) Have you drunk your water yet?',
+                        l10n.dialogueWater,
                       );
                     },
                   ),
                   BottomBar(
-                    name: 'WASH',
+                    name: l10n.wash,
                     icon: 'assets/icons/wash.png',
                     onTap: () async {
                       provider.startWashing();
                       provider.showDialogue(
-                        'Please scrub the bubbles off my body\n(ㅅ´ ˘ `)',
+                        l10n.dialogueWash,
                       );
                     },
                   ),
                   BottomBar(
-                    name: 'PLAY',
+                    name: l10n.play,
                     icon: 'assets/icons/play.png',
                     onTap: () async {
                       showPlaySheet(context, provider);
                     },
                   ),
                   BottomBar(
-                    name: 'OUTFIT',
+                    name: l10n.outfit,
                     icon: 'assets/icons/clothes.png',
                     onTap: () => Navigator.pushNamed(context, '/outfit')
                   ),
                   BottomBar(
-                    name: 'SHOP',
+                    name: l10n.shop,
                     icon: 'assets/icons/shop.png',
                     // Navigates directly over to your store catalog overlay
                     onTap: () => Navigator.pushNamed(context, '/shop'),
@@ -226,14 +228,15 @@ class GameView extends StatelessWidget {
   void showFeedSheet(BuildContext context, PetProvider provider) {
     final state = provider.state;
     final name = petName(state.petType);
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       builder: (_) => ActionSheet(
-        text: 'Let\'s feed $name!',
+        text: l10n.letsFeed(name),
         icon: 'assets/icons/close.png',
         child: state.ownedFood.isEmpty
-            ? const Center(
-                child: Text('No food!( ;´ - `;) Please visit the shop.'),
+            ?  Center(
+                child: Text(l10n.noFood),
               )
             : Wrap(
                 spacing: 8,
@@ -246,7 +249,7 @@ class GameView extends StatelessWidget {
                         onTap: e.value > 0
                             ? () async {
                                 provider.feed(e.key);
-                                provider.showDialogue('Yummy!');
+                                provider.showDialogue(l10n.dialogueFed);
                                 Navigator.pop(context);
                               }
                             : null,
@@ -261,14 +264,15 @@ class GameView extends StatelessWidget {
   void showPlaySheet(BuildContext context, PetProvider provider) {
     final state = provider.state;
     final name = petName(state.petType);
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       builder: (_) => ActionSheet(
-        text: 'Let\'s Play with $name!',
+        text: l10n.letsPlay(name),
         icon: 'assets/icons/close.png',
         child: state.ownedToy.isEmpty
-            ? const Center(
-                child: Text('No toy!( ;´ - `;) Please visit the shop.'),
+            ? Center(
+                child: Text(l10n.noToy),
               )
             : Wrap(
                 spacing: 8,
@@ -279,7 +283,7 @@ class GameView extends StatelessWidget {
                         toy: e,
                         onTap: () async {
                           provider.play(e);
-                          provider.showDialogue('This is so fun!');
+                          provider.showDialogue(l10n.dialoguePlayed);
                           Navigator.pop(context);
                         },
                       ),

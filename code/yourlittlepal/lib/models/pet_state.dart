@@ -4,9 +4,8 @@ enum PetType { sky, ocean;
 
   dynamic get info => null;
 
-  String getDialogue(PetState state) {
-    return "hello!";
-  }}
+
+  }
 
 class PetState {
   PetType petType;

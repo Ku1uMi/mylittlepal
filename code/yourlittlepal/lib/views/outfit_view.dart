@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 
@@ -18,7 +19,7 @@ class _OutfitPageState extends State<OutfitView> {
   Widget build(BuildContext context) {
     final provider = Provider.of<PetProvider>(context);
     final petState = provider.state;
-
+    final l10n = AppLocalizations.of(context)!;
     // FIXED: Reads directly from your real petState.ownedToy list
     final availableTops = petState.ownedTops;
     final availableBottoms = petState.ownedBottoms;
@@ -153,13 +154,13 @@ class _OutfitPageState extends State<OutfitView> {
                 Row(
                   children: [
                     _buildSubCategoryTab(
-                      'Top',
+                      l10n.top,
                       viewingTops,
                       () => setState(() => viewingTops = true),
                     ),
                     const SizedBox(width: 6),
                     _buildSubCategoryTab(
-                      'Bottom',
+                      l10n.bottom,
                       !viewingTops,
                       () => setState(() => viewingTops = false),
                     ),
@@ -182,7 +183,7 @@ class _OutfitPageState extends State<OutfitView> {
             child: activeInventory.isEmpty
                 ? Center(
                     child: Text(
-                      'No ${viewingTops ? 'tops' : 'bottoms'} owned yet.\nVisit the shop!',
+                      viewingTops ? l10n.noTopsOwned : l10n.noBottomsOwned,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.pixelifySans(
                         color: Colors.grey,
@@ -227,7 +228,7 @@ class _OutfitPageState extends State<OutfitView> {
                             ),
                             child: Center(
                               child: Text(
-                                'None',
+                                l10n.none,
                                style: GoogleFonts.pixelifySans(
                                 fontSize: 14,
                                 color: const Color(0xFF2B2B2B)
@@ -248,7 +249,6 @@ class _OutfitPageState extends State<OutfitView> {
 
                       return GestureDetector(
                         onTap: () {
-                          //provider.equipClothingItem(itemId, viewingTops);
 
                           if(viewingTops){
                             provider.changeOutfit(top: itemId);
@@ -315,7 +315,7 @@ class _OutfitPageState extends State<OutfitView> {
                 ),
                 onPressed: () => Navigator.of(context).pop(),
                 child: Text(
-                  'SAVE & CLOSE',
+                  l10n.saveClose,
                   style: GoogleFonts.pixelifySans(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

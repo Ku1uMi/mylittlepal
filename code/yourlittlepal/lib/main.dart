@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'package:yourlittlepal/views/outfit_view.dart';
 import 'package:yourlittlepal/views/settings_views.dart';
@@ -15,13 +16,14 @@ import 'package:yourlittlepal/views/game_view.dart';
 import 'package:yourlittlepal/providers/position_provider.dart';
 import 'package:yourlittlepal/providers/weather_provider.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final petProvider = PetProvider();
   final weatherProvider = WeatherProvider();
   final positionProvider = PositionProvider();
-
+  await petProvider.init();
   runApp(
     MultiProvider(
       providers: [
@@ -32,7 +34,7 @@ void main() async {
       child: const MainApp(),
     ),
   );
-  await petProvider.init();
+  //await petProvider.init();
 }
 
 class MainApp extends StatelessWidget {
@@ -41,20 +43,20 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<PetProvider>();
-    return ChangeNotifierProvider(
-      create: (_) => PetProvider()..init(),
-      child: MaterialApp(
+    
+    return MaterialApp(
         title: 'Your Little Pal',
         debugShowCheckedModeBanner: false,
 
         // --- Internationalization Configuration ---
-        locale: const Locale('en', ''),
+        locale: provider.currentLocale,
         supportedLocales: const [
           Locale('en', ''),
           Locale('es', ''),
           Locale('zh', 'TW'),
         ],
         localizationsDelegates: const [
+          AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
@@ -91,8 +93,8 @@ class MainApp extends StatelessWidget {
           '/outfit': (context) => const OutfitView(),
           '/shop': (context) => const ShopView()
         },
-      ),
-    );
+      );
+
   }
 }
 
