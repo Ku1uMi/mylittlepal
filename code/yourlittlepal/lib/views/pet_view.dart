@@ -62,6 +62,7 @@ class _PetViewState extends State<PetView> {
                   'assets/outfits/bottoms/$bottom.png',
                   width: size ,
                   height: size ,
+                  fit: BoxFit.contain,
                   filterQuality: FilterQuality.none,
                 ),
             
@@ -70,6 +71,7 @@ class _PetViewState extends State<PetView> {
                   'assets/outfits/tops/$top.png',
                   width: size,
                   height: size ,
+                  fit: BoxFit.contain,
                   filterQuality: FilterQuality.none,
                 ),
               

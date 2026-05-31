@@ -1,6 +1,6 @@
 import 'package:yourlittlepal/models/outfit.dart';
 
-enum PetType { sky, ocean, forest, rabbit, goat;
+enum PetType { sky, ocean;
 
   dynamic get info => null;
 
@@ -24,6 +24,8 @@ class PetState {
   List<Outfit> redo;
   Map<String, int> ownedFood;
   List<String> ownedToy;
+  List<String> ownedTops;
+  List<String> ownedBottoms;
   bool newPet;
 
   PetState({
@@ -42,8 +44,17 @@ class PetState {
     this.redo = const [],
     this.ownedFood = const {},
     this.ownedToy = const [],
+    this.ownedTops = const [],
+    this.ownedBottoms = const [],
     this.newPet = true,
-  });
+  }){
+    undo = List.of(undo);
+    redo = List.of(redo);
+    ownedFood = Map.of(ownedFood);
+    ownedToy = List.of(ownedToy);
+    ownedTops = List.of(ownedTops);
+    ownedBottoms = List.of(ownedBottoms);
+  }
 
   Map<String, dynamic> toJson() => {
     'petType': petType.name,
@@ -61,6 +72,8 @@ class PetState {
     'redo': redo.map((e) => e.toJson()).toList(),
     'ownedFood': ownedFood,
     'ownedToy': ownedToy,
+    'ownedTops': ownedTops,
+    'ownedBottoms': ownedBottoms,
     'newPet': newPet,
   };
 
@@ -81,6 +94,8 @@ class PetState {
       redo: json['redo'] != null ? (json['redo'] as List).map((e) => Outfit.fromJson(e)).toList() : [],
       ownedFood: Map<String, int>.from(json['ownedFood']),
       ownedToy: List<String>.from(json['ownedToy']),
+      ownedTops: (json['ownedTops']) != null ? List<String>.from(json['ownedTops']) : [],
+      ownedBottoms: (json['ownedBottoms']) != null ? List<String>.from(json['ownedBottoms']) : [],
       newPet: json['newPet'] as bool,
     );
   }
@@ -89,13 +104,13 @@ class PetState {
     final defaultFood = {
       PetType.sky: {'carrot': 2, 'hay': 2},
       PetType.ocean: {'shrimp': 2, 'salmon': 2},
-      PetType.forest: {'steak': 2, 'chicken': 2},
+
     };
 
     final defaultToy = {
       PetType.sky: ['socks'],
       PetType.ocean: ['socks'],
-      PetType.forest: ['socks'],
+
     };
 
     return PetState(
@@ -104,9 +119,11 @@ class PetState {
       sleepTime: DateTime(2026, 5, 24, 21, 30),
       ownedFood: defaultFood[type]!,
       ownedToy: defaultToy[type]!,
+      ownedTops: ['yellow_top', 'navy_top'],
+      ownedBottoms: ['beige_bottom', 'checked_skirt'],
       newPet: true,
     );
   }
 
-  //Object? get petName => null;
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
@@ -19,20 +20,19 @@ class _OutfitPageState extends State<OutfitPage> {
     final petState = provider.state;
 
     // FIXED: Reads directly from your real petState.ownedToy list
-    final availableTops = petState.ownedToy
-        .where((id) => id.startsWith('t'))
-        .toList();
-    final availableBottoms = petState.ownedToy
-        .where((id) => id.startsWith('b'))
-        .toList();
+    final availableTops = petState.ownedTops;
+    final availableBottoms = petState.ownedBottoms;
     final activeInventory = viewingTops ? availableTops : availableBottoms;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F1EA), // Notebook cream base color
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'OUTFIT',
-          style: TextStyle(fontFamily: 'PixelFont', fontSize: 22),
+          style: GoogleFonts.pixelifySans(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+          )              
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -54,11 +54,10 @@ class _OutfitPageState extends State<OutfitPage> {
                   const SizedBox(width: 6),
                   Text(
                     'Coins: ${petState.coins}',
-                    style: const TextStyle(
-                      fontFamily: 'PixelFont',
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF2B2B2B),
+                    style: GoogleFonts.pixelifySans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2B2B2B)
                     ),
                   ),
                 ],
@@ -79,35 +78,41 @@ class _OutfitPageState extends State<OutfitPage> {
                 color: const Color(0xFFEFECE4),
                 border: Border.all(color: const Color(0xFF2B2B2B), width: 3),
               ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Base dynamic character layer (Sky or Ocean)
-                  Image.asset(
-                    'assets/pets/${petState.petType == PetType.sky ? 'sky' : 'ocean'}.png',
-                    width: 160,
-                    height: 160,
-                    fit: BoxFit.contain,
-                    filterQuality: FilterQuality.none,
-                  ),
-
-                  if (provider.state.currOutfit.top != null)
-                    Positioned.fill(
-                      child: Image.asset(
-                        provider.state.currOutfit.top,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
-                      ),
+              child: Center(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Base dynamic character layer (Sky or Ocean)
+                    Image.asset(
+                      'assets/pets/${petState.petType == PetType.sky ? 'sky' : 'ocean'}.png',
+                      width: 160,
+                      height: 160,
+                      fit: BoxFit.contain,
+                      filterQuality: FilterQuality.none,
                     ),
-                  if (provider.state.currOutfit.bottom != null)
-                    Positioned.fill(
-                      child: Image.asset(
-                        provider.state.currOutfit.bottom,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
-                      ),
-                    ),
-                ],
+                
+                    if (petState.currOutfit.top != '')
+                     // Positioned.fill(
+                        /*child:*/Image.asset(
+                          'assets/outfits/tops/${petState.currOutfit.top}.png',
+                          width: 160,
+                          height: 160,
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.none,
+                        ),
+                     // ),
+                    if (petState.currOutfit.bottom != '')
+                     // Positioned.fill(
+                        /*child:*/ Image.asset(
+                          'assets/outfits/bottoms/${petState.currOutfit.bottom}.png',
+                          width: 160,
+                          height: 160,
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.none,
+                        ),
+                     // ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -177,16 +182,16 @@ class _OutfitPageState extends State<OutfitPage> {
             child: activeInventory.isEmpty
                 ? Center(
                     child: Text(
-                      'No ${viewingTops ? 'tops' : 'bottoms'} owned yet.\nVisit the shop! 🛍️',
+                      'No ${viewingTops ? 'tops' : 'bottoms'} owned yet.\nVisit the shop!',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontFamily: 'PixelFont',
+                      style: GoogleFonts.pixelifySans(
                         color: Colors.grey,
                         height: 1.3,
-                      ),
+                      ),  
                     ),
                   )
                 : GridView.builder(
+                    key: ValueKey(viewingTops),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
                       vertical: 12,
@@ -198,24 +203,58 @@ class _OutfitPageState extends State<OutfitPage> {
                           mainAxisSpacing: 16,
                           childAspectRatio: 1.0,
                         ),
-                    itemCount: activeInventory.length,
+                    itemCount: activeInventory.length + 1,
                     itemBuilder: (context, index) {
-                      final itemId = activeInventory[index];
+                      
+
+                      if(index == 0){
+                        petState.currOutfit.bottom == '';
+                        return GestureDetector(
+                          onTap:() {
+                            if(viewingTops){
+                              provider.changeOutfit(top: '');
+                            }else{
+                              provider.changeOutfit(bottom: '');
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFEFECE4),
+                              border: Border.all(
+                                  color: const Color(0xFF2B2B2B),
+                                  width: 2,
+                              ), 
+                            ),
+                            child: Center(
+                              child: Text(
+                                'None',
+                               style: GoogleFonts.pixelifySans(
+                                fontSize: 14,
+                                color: const Color(0xFF2B2B2B)
+                              ),
+                            ),
+                          )
+                          )
+                        );
+                      }
+                      final itemId = activeInventory[index - 1];
 
                       String exactAssetPath = '';
                       if (viewingTops) {
-                        exactAssetPath = itemId == 't1'
-                            ? 'assets/outfits/tops/navy_top.png'
-                            : 'assets/outfits/tops/yellow_top.png';
+                        exactAssetPath = 'assets/outfits/tops/${itemId}.png';
                       } else {
-                        exactAssetPath = itemId == 'b1'
-                            ? 'assets/outfits/bottoms/beige_bottom.png'
-                            : 'assets/outfits/bottoms/checked_skirt.png';
+                        exactAssetPath = 'assets/outfits/bottoms/${itemId}.png';
                       }
 
                       return GestureDetector(
                         onTap: () {
-                          provider.equipClothingItem(itemId, viewingTops);
+                          //provider.equipClothingItem(itemId, viewingTops);
+
+                          if(viewingTops){
+                            provider.changeOutfit(top: itemId);
+                          } else {
+                            provider.changeOutfit(bottom: itemId);
+                          }
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -239,12 +278,11 @@ class _OutfitPageState extends State<OutfitPage> {
                               Text(
                                 'pic of\n${viewingTops ? 'top' : 'bottom'}',
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontFamily: 'PixelFont',
-                                  fontSize: 10,
+                                style: GoogleFonts.pixelifySans(
                                   color: Color(0xFF2B2B2B),
                                   height: 1.1,
-                                ),
+                                  fontSize: 10,
+                                ), 
                               ),
                             ],
                           ),
@@ -275,22 +313,14 @@ class _OutfitPageState extends State<OutfitPage> {
                     borderRadius: BorderRadius.zero,
                   ),
                 ),
-                onPressed: () {
-                  provider.saveCurrentOutfitState();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Wardrobe choices synchronized! ✨'),
-                    ),
-                  );
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
                   'SAVE & CLOSE',
-                  style: TextStyle(
-                    fontFamily: 'PixelFont',
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                  style: GoogleFonts.pixelifySans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                   ),
+                  
                 ),
               ),
             ),
@@ -315,11 +345,10 @@ class _OutfitPageState extends State<OutfitPage> {
         ),
         child: Text(
           text,
-          style: TextStyle(
-            fontFamily: 'PixelFont',
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: isSelected ? Colors.white : const Color(0xFF2B2B2B),
+          style: GoogleFonts.pixelifySans(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: isSelected ? Colors.white : const Color(0xFF2B2B2B),
           ),
         ),
       ),
