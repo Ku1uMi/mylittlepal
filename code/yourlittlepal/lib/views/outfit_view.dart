@@ -117,12 +117,13 @@ class _OutfitPageState extends State<OutfitView> {
                     alignment: Alignment.center,
                     children: [
                       // Base Pet Layer
-                      Image.asset(
-                        'assets/pets/${petState.petType == PetType.sky ? 'sky' : 'ocean'}.png',
-                        width: 160,
-                        height: 160,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
+
+                      Positioned.fill(
+                        child: Image.asset(
+                          'assets/pets/${petState.petType == PetType.sky ? 'sky' : 'ocean'}.png',
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.none,
+                        ),
                       ),
 
                       // Tops Layer
