@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -5,7 +7,9 @@ import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 
+/// The view where users select their initial pet type.
 class SelectView extends StatefulWidget {
+  /// Creates the pet selection interface.
   const SelectView({super.key});
 
   @override
@@ -13,8 +17,10 @@ class SelectView extends StatefulWidget {
 }
 
 class _SelectViewState extends State<SelectView> {
+  /// Tracks the index of the currently selected pet.
   int? _selectedIndex;
-  
+
+  /// Defines the available pet options.
   final List<Map<String, dynamic>> totalPets = [
     {'name': 'CLOUDY', 'type': PetType.sky, 'image': 'assets/pets/sky.png'},
     {'name': 'BUBBLE', 'type': PetType.ocean, 'image': 'assets/pets/ocean.png'},
@@ -25,6 +31,7 @@ class _SelectViewState extends State<SelectView> {
     final petProvider = Provider.of<PetProvider>(context, listen: false);
     final isAnyPetSelected = _selectedIndex != null;
     final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF4F1EA),
       extendBodyBehindAppBar: true,
@@ -67,11 +74,7 @@ class _SelectViewState extends State<SelectView> {
                         final isSelected = _selectedIndex == index;
 
                         return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _selectedIndex = index;
-                            });
-                          },
+                          onTap: () => setState(() => _selectedIndex = index),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 150),
                             margin: const EdgeInsets.symmetric(
@@ -90,7 +93,12 @@ class _SelectViewState extends State<SelectView> {
                               boxShadow: isSelected
                                   ? [
                                       const BoxShadow(
-                                        color: Color.fromARGB(103, 255, 255, 255),
+                                        color: Color.fromARGB(
+                                          103,
+                                          255,
+                                          255,
+                                          255,
+                                        ),
                                         offset: Offset(4, 4),
                                         blurRadius: 0,
                                       ),
@@ -111,13 +119,12 @@ class _SelectViewState extends State<SelectView> {
                                       fit: BoxFit.contain,
                                       filterQuality: FilterQuality.none,
                                       errorBuilder:
-                                          (context, error, stackTrace) {
-                                            return const Icon(
-                                              Icons.pets,
-                                              size: 100,
-                                              color: Color(0xFF2B2B2B),
-                                            );
-                                          },
+                                          (context, error, stackTrace) =>
+                                              const Icon(
+                                                Icons.pets,
+                                                size: 100,
+                                                color: Color(0xFF2B2B2B),
+                                              ),
                                     ),
                                   ),
                                 ),
@@ -125,12 +132,10 @@ class _SelectViewState extends State<SelectView> {
                                 Text(
                                   pet['name']!,
                                   style: GoogleFonts.pixelifySans(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color.fromARGB(88, 43, 43, 43),
-                                 
-                                    // Added shadow for better contrast against background
-                                    shadows: [
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color.fromARGB(88, 43, 43, 43),
+                                    shadows: const [
                                       Shadow(
                                         color: Colors.white,
                                         offset: Offset(1.5, 1.5),
@@ -173,14 +178,9 @@ class _SelectViewState extends State<SelectView> {
                         : () async {
                             final selectedPetType =
                                 totalPets[_selectedIndex!]['type'] as PetType;
-                            /*try {
-                              petProvider.selectPet(selectedPetType);
-                            } catch (e) {
-                              debugPrint("Selection save error: $e");
-                            }*/
                             await petProvider.resetPet(selectedPetType);
-                            if(mounted){
-                                Navigator.of(
+                            if (mounted) {
+                              Navigator.of(
                                 context,
                               ).pushReplacementNamed('/playground');
                             }
@@ -190,7 +190,7 @@ class _SelectViewState extends State<SelectView> {
                       style: GoogleFonts.pixelifySans(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 255, 244, 215)
+                        color: const Color.fromARGB(255, 255, 244, 215),
                       ),
                     ),
                   ),

@@ -3,13 +3,18 @@ import 'package:provider/provider.dart';
 import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 
+/// The [StartPage] serves as the initial entry point of the application.
+/// It detects if a saved pet profile exists and provides options to either
+/// continue an existing game or start a new one.
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Access the provider to check for existing save data.
     final petProvider = Provider.of<PetProvider>(context);
     final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -18,9 +23,9 @@ class StartPage extends StatelessWidget {
             child: Image.asset(
               'assets/backgrounds/background.png',
               fit: BoxFit
-                  .cover, // Forces the art to stretch seamlessly to fill any mobile screen sizes
-              filterQuality: FilterQuality
-                  .none, // Keeps your custom pixel lines crisp and sharp
+                  .cover, // Ensures the background fills the device screen.
+              filterQuality:
+                  FilterQuality.none, // Maintains pixel-art sharpness.
             ),
           ),
 
@@ -30,7 +35,7 @@ class StartPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // App Title container card block to guarantee high text contrast against the cloud art
+                  // App Title container: Provides a high-contrast backdrop for the title.
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
@@ -38,9 +43,7 @@ class StartPage extends StatelessWidget {
                     ),
                     margin: const EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF4F1EA).withValues(
-                        alpha: 0.9,
-                      ), // Match your notebook tint with opacity
+                      color: const Color(0xFFF4F1EA).withValues(alpha: 0.9),
                       border: Border.all(
                         color: const Color(0xFF2B2B2B),
                         width: 3,
@@ -60,7 +63,8 @@ class StartPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 80),
 
-                  // --- OPTION A: If a pet save profile is already found ---
+                  // --- OPTION A: Resume Game ---
+                  // Only rendered if petProvider confirms a save profile exists.
                   if (petProvider.isLoaded) ...[
                     ElevatedButton(
                       style: _pixelButtonStyle(),
@@ -71,13 +75,17 @@ class StartPage extends StatelessWidget {
                       },
                       child: Text(
                         l10n.continueGame,
-                        style: TextStyle(fontFamily: 'PixelFont', fontSize: 16),
+                        style: const TextStyle(
+                          fontFamily: 'PixelFont',
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
                   ],
 
-                  // --- OPTION B: Always offer the option to start a fresh game / select a new pet ---
+                  // --- OPTION B: Start New Game ---
+                  // Always available to allow users to reset or initiate a new pet selection.
                   ElevatedButton(
                     style: _pixelButtonStyle(
                       invertColors: !petProvider.isLoaded,
@@ -87,7 +95,10 @@ class StartPage extends StatelessWidget {
                     },
                     child: Text(
                       l10n.start,
-                      style: TextStyle(fontFamily: 'PixelFont', fontSize: 16),
+                      style: const TextStyle(
+                        fontFamily: 'PixelFont',
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ],
@@ -99,7 +110,8 @@ class StartPage extends StatelessWidget {
     );
   }
 
-  // Consistent retro theme button styling helper
+  /// Helper method to generate consistent, retro-themed button styling.
+  /// [invertColors] toggles the button visual scheme for primary/secondary buttons.
   ButtonStyle _pixelButtonStyle({bool invertColors = false}) {
     return ElevatedButton.styleFrom(
       backgroundColor: invertColors ? const Color(0xFF2B2B2B) : Colors.white,

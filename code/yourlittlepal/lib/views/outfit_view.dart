@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -5,7 +7,9 @@ import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 
+/// The view where users manage their pet's appearance by dragging and dropping clothing items.
 class OutfitView extends StatefulWidget {
+  /// Creates the outfit management interface.
   const OutfitView({super.key});
 
   @override
@@ -13,6 +17,7 @@ class OutfitView extends StatefulWidget {
 }
 
 class _OutfitPageState extends State<OutfitView> {
+  /// Controls whether the user is currently browsing tops or bottoms.
   bool viewingTops = true;
 
   @override
@@ -20,11 +25,11 @@ class _OutfitPageState extends State<OutfitView> {
     final provider = Provider.of<PetProvider>(context);
     final petState = provider.state;
     final l10n = AppLocalizations.of(context)!;
-    // FIXED: Reads directly from your real petState.ownedToy list
+
+    // Retrieve owned inventory lists based on category
     final availableTops = petState.ownedTops;
     final availableBottoms = petState.ownedBottoms;
     final activeInventory = viewingTops ? availableTops : availableBottoms;
-
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F1EA),
@@ -32,9 +37,9 @@ class _OutfitPageState extends State<OutfitView> {
         title: Text(
           l10n.outfit,
           style: GoogleFonts.pixelifySans(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-          )              
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -85,7 +90,7 @@ class _OutfitPageState extends State<OutfitView> {
                 final String itemId = data['id'];
                 final bool isTop = data['isTop'];
 
-                // Equips the item onto the character when dropped!
+                // Equips the item onto the character when dropped
                 if (isTop) {
                   provider.changeOutfit(top: itemId);
                 } else {
@@ -93,7 +98,7 @@ class _OutfitPageState extends State<OutfitView> {
                 }
               },
               builder: (context, candidateData, rejectedData) {
-                // Highlight the background slightly when a user hovers a clothing item over the character
+                // Highlight background when hovering an item over the character
                 final bool isHovering = candidateData.isNotEmpty;
 
                 return Container(
@@ -117,7 +122,6 @@ class _OutfitPageState extends State<OutfitView> {
                     alignment: Alignment.center,
                     children: [
                       // Base Pet Layer
-
                       Positioned.fill(
                         child: Image.asset(
                           'assets/pets/${petState.petType == PetType.sky ? 'sky' : 'ocean'}.png',
@@ -125,7 +129,6 @@ class _OutfitPageState extends State<OutfitView> {
                           filterQuality: FilterQuality.none,
                         ),
                       ),
-
                       // Tops Layer
                       if (petState.currOutfit.top.isNotEmpty)
                         Positioned.fill(
@@ -137,7 +140,6 @@ class _OutfitPageState extends State<OutfitView> {
                                 const SizedBox.shrink(),
                           ),
                         ),
-
                       // Bottoms Layer
                       if (petState.currOutfit.bottom.isNotEmpty)
                         Positioned.fill(
@@ -155,7 +157,6 @@ class _OutfitPageState extends State<OutfitView> {
               },
             ),
           ),
-
           // 2. INTERMEDIATE CONTROLS TOOLBAR
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -207,14 +208,12 @@ class _OutfitPageState extends State<OutfitView> {
               ],
             ),
           ),
-
           const Divider(
             color: Color(0xFF2B2B2B),
             thickness: 2,
             indent: 24,
             endIndent: 24,
           ),
-
           // 3. DRAGGABLE CLOTHING SELECTION GRID
           Expanded(
             flex: 4,
@@ -229,7 +228,7 @@ class _OutfitPageState extends State<OutfitView> {
               ),
               itemCount: activeInventory.length + 1,
               itemBuilder: (context, index) {
-                // "None" Button (Kept as tap-only for ease of clearing outfits)
+                // "None" Button (Clears active outfit layer)
                 if (index == 0) {
                   return GestureDetector(
                     onTap: () {
@@ -277,7 +276,6 @@ class _OutfitPageState extends State<OutfitView> {
                     )
                     .join(' ');
 
-                // Item Base Layout Widget
                 Widget cardContent(bool isFeedback) {
                   return Container(
                     decoration: BoxDecoration(
@@ -312,8 +310,7 @@ class _OutfitPageState extends State<OutfitView> {
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF2B2B2B),
-                            decoration: TextDecoration
-                                .none, // Strips out yellow text baseline bugs during drag
+                            decoration: TextDecoration.none,
                           ),
                         ),
                       ],
@@ -321,24 +318,22 @@ class _OutfitPageState extends State<OutfitView> {
                   );
                 }
 
-                // Wrap grid item in a Draggable widget
                 return Draggable<Map<String, dynamic>>(
                   data: {'id': itemId, 'isTop': viewingTops},
                   feedback: SizedBox(
                     width: 90,
                     height: 105,
-                    child: cardContent(true), // Floating item under finger
+                    child: cardContent(true),
                   ),
                   childWhenDragging: Opacity(
                     opacity: 0.3,
-                    child: cardContent(false), // Ghost item left behind in slot
+                    child: cardContent(false),
                   ),
-                  child: cardContent(false), // Base item state
+                  child: cardContent(false),
                 );
               },
             ),
           ),
-
           // 4. ACTION SUBMIT PERSISTENCE FOOTER
           Padding(
             padding: const EdgeInsets.only(
@@ -364,10 +359,9 @@ class _OutfitPageState extends State<OutfitView> {
                 child: Text(
                   l10n.saveClose,
                   style: GoogleFonts.pixelifySans(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
-                  
                 ),
               ),
             ),
@@ -377,6 +371,7 @@ class _OutfitPageState extends State<OutfitView> {
     );
   }
 
+  /// Builds a tab button for switching between top and bottom inventory categories.
   Widget _buildSubCategoryTab(
     String text,
     bool isSelected,
@@ -393,9 +388,9 @@ class _OutfitPageState extends State<OutfitView> {
         child: Text(
           text,
           style: GoogleFonts.pixelifySans(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: isSelected ? Colors.white : const Color(0xFF2B2B2B),
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: isSelected ? Colors.white : const Color(0xFF2B2B2B),
           ),
         ),
       ),
