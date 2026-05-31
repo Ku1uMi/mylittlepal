@@ -31,11 +31,10 @@ class _SelectViewState extends State<SelectView> {
         title: Text(
           'CHOOSE YOUR PAL',
           style: GoogleFonts.pixelifySans(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF2B2B2B)
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF2B2B2B),
           ),
-          
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -79,7 +78,6 @@ class _SelectViewState extends State<SelectView> {
                             ),
                             padding: const EdgeInsets.all(16.0),
                             decoration: BoxDecoration(
-                              // --- UPDATED: Now Transparent ---
                               color: Colors.transparent,
                               border: Border.all(
                                 color: isSelected
@@ -158,9 +156,7 @@ class _SelectViewState extends State<SelectView> {
                       backgroundColor: isAnyPetSelected
                           ? const Color.fromARGB(255, 255, 166, 49)
                           : const Color(0xFFD6D1C4),
-                      foregroundColor: isAnyPetSelected
-                          ? Colors.white
-                          : const Color(0xFF8A857B),
+                      foregroundColor: Colors.white,
                       elevation: 0,
                       side: const BorderSide(
                         color: Color(0xFF2B2B2B),
@@ -182,14 +178,15 @@ class _SelectViewState extends State<SelectView> {
                               debugPrint("Selection save error: $e");
                             }*/
                             await petProvider.resetPet(selectedPetType);
-                            Navigator.of(
-                              context,
-                            ).pushReplacementNamed('/playground');
+                            if(mounted){
+                                Navigator.of(
+                                context,
+                              ).pushReplacementNamed('/playground');
+                            }
                           },
-                    child: const Text(
+                    child: Text(
                       'CONFIRM PAL',
-                      style: TextStyle(
-                        fontFamily: 'Pixelify Sans',
+                      style: GoogleFonts.pixelifySans(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 255, 244, 215)

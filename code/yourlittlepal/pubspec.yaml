@@ -31,7 +31,10 @@ flutter:
     - assets/outfits/tops/
     - assets/outfits/bottoms/
     - assets/icons/
+<<<<<<< HEAD
+=======
     - assets/backgrounds/
+>>>>>>> d1ab4bb341d71674d45809598fc43b5509a5698b
     - assets/effects/bubble.png
     - assets/backgrounds/
 

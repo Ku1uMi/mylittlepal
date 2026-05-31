@@ -218,5 +218,13 @@ class PetProvider extends ChangeNotifier {
   Future<void> saveCurrentOutfitState() async {
     await _save(); // Saves everything neatly down to local device disk storage
     notifyListeners();
+  }
+
+  Future<void> spendCoins(int amount) async {
+    _state.coins -=
+        amount; // Subtracts the cost from the current state's coin count
+    await _save(); // Persists the change to device storage
+    notifyListeners(); // Refreshes the UI
+  }
   }*/
 }
