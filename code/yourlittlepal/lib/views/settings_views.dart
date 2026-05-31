@@ -112,27 +112,8 @@ class _SettingsViewState extends State<SettingsView> {
                       ),
                     ),
                     const Divider(),
-<<<<<<< HEAD
-                    ListTile(
-                      title: Text(
-                        l10n.fontSize,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Slider(
-                        value: fontSize,
-                        min: 12.0,
-                        max: 24.0,
-                        divisions: 4,
-                        activeColor: const Color(0xFF2B2B2B),
-                        label: '${fontSize.toInt()}px',
-                        onChanged: (val) => provider.setFontSize(val),
-                      ),
-                    ),
-                    const Divider(),
-=======
 
                     // Brightness Selection
->>>>>>> 80f4f6d1541bef18cb82d4f347067902b8848935
                     ListTile(
                       title: Text(
                         l10n.brightness,
@@ -198,63 +179,6 @@ class _SettingsViewState extends State<SettingsView> {
                 ],
               ),
             ),
-<<<<<<< HEAD
-            const SizedBox(height: 20),
-
-            // Section 3: Notification Simulation
-            Text(
-              l10n.notificationsSimulator,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF2B2B2B),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Card(
-              color: Colors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: Color(0xFF2B2B2B), width: 2),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Column(
-                children: [
-                  _buildNotificationTile(
-                    l10n.careReminders,
-                    l10n.careRemindersDesc,
-                    l10n.test,
-                    () => ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(l10n.snackCareReminder)),
-                    ),
-                  ),
-                  const Divider(),
-                  _buildNotificationTile(
-                    l10n.petMessageStatuses,
-                    l10n.petMessageSimDesc,
-                    l10n.test,
-                    () => ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(l10n.snackPetMessage)),
-                    ),
-                  ),
-                  const Divider(),
-                  _buildNotificationTile(
-                    l10n.sleepAlertTitle,
-                    l10n.sleepAlertSimDesc,
-                    l10n.test,
-                    () => ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          l10n.snackBedtime(_sleepTime.format(context)),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-=======
->>>>>>> 80f4f6d1541bef18cb82d4f347067902b8848935
           ],
         ),
       ),

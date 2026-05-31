@@ -277,13 +277,6 @@ class PetProvider extends ChangeNotifier {
     _timer?.cancel();
     super.dispose();
   }
-<<<<<<< HEAD
-
-  /// Wipes active pet storage profiles to instantiate clean fallback models.
-  /// Parameters:
-  /// - PetType selectedPetType: The targeted baseline variant group configuration.
-  Future<void> resetPet(PetType selectedPetType) async {}
-=======
 
   /// Handles undoing an outfit adjustment sequence step
   Future<void> undoOutfitChange() async {
@@ -311,13 +304,17 @@ class PetProvider extends ChangeNotifier {
     await _save();
     notifyListeners();
   }
-
+  ///deduct a given amount of coins from the pet's current amount of coins
+  ///Parameters:
+  /// - int amount: The  number of coions to be deducted
   Future<void> spendCoins(int amount) async {
     _state.coins -= amount;
     await _save();
     notifyListeners();
   }
-
+  /// Wipes active pet storage profiles to instantiate clean fallback models.
+  /// Parameters:
+  /// - PetType selectedPetType: The targeted baseline variant group configuration.
   Future<void> resetPet(PetType type) async {
     _state =PetState.newPet(type);
     _state.newPet = false;
@@ -326,7 +323,6 @@ class PetProvider extends ChangeNotifier {
   }
 
 
->>>>>>> 80f4f6d1541bef18cb82d4f347067902b8848935
 }
 
 
