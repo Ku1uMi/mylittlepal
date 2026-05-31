@@ -1,4 +1,5 @@
 //from as5 foodfinder weather_checker.dart
+import 'package:flutter/foundation.dart';
 import 'package:yourlittlepal/providers/weather_provider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -12,7 +13,7 @@ class WeatherChecker {
 
   WeatherChecker(this.weatherProvider, {this.client});
 
-  void updateLocation(double latitude, double longitude){
+  void updateLocation(double latitude, double longitude) {
     _longitude = longitude;
     _latitude = latitude;
   }
@@ -21,7 +22,8 @@ class WeatherChecker {
     try {
       final http.Client client = this.client ?? http.Client();
       final gridResponse = await client.get(
-          Uri.parse('https://api.weather.gov/points/$_latitude,$_longitude'));
+        Uri.parse('https://api.weather.gov/points/$_latitude,$_longitude'),
+      );
       final gridParsed = (jsonDecode(gridResponse.body));
       final String? forecastURL = gridParsed['properties']?['forecast'];
       if (forecastURL == null) {
@@ -33,8 +35,11 @@ class WeatherChecker {
         if (currentPeriod != null) {
           final temperature = currentPeriod['temperature'];
           final shortForecast = currentPeriod['shortForecast'];
-          print(
-              'Got the weather at ${DateTime.now()}. $temperature F and $shortForecast');
+          if (kDebugMode) {
+            print(
+              'Got the weather at ${DateTime.now()}. $temperature F and $shortForecast',
+            );
+          }
           if (temperature != null && shortForecast != null) {
             final condition = _shortForecastToCondition(shortForecast);
             weatherProvider.updateWeather(temperature, condition);
@@ -57,4 +62,4 @@ class WeatherChecker {
     }
     return WeatherCondition.gloomy;
   }
-}  
+}

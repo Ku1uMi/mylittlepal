@@ -10,14 +10,10 @@ class ShopView extends StatefulWidget {
 }
 
 class _ShopViewState extends State<ShopView> {
-  // Tabs: 'food' or 'toy'
   String activeTab = 'food';
-
-  // Track the currently selected item name
   String? selectedItem;
   int? selectedPrice;
 
-  // Define shop item data with prices and asset paths
   final Map<String, Map<String, dynamic>> foodItems = {
     'Carrot': {'price': 5, 'asset': 'assets/icons/carrot.png'},
     'Salmon': {'price': 15, 'asset': 'assets/icons/salmon.png'},
@@ -36,41 +32,43 @@ class _ShopViewState extends State<ShopView> {
   Widget build(BuildContext context) {
     final provider = context.watch<PetProvider>();
     final state = provider.state;
-
-    // Switch items depending on active tab selection
     final currentItems = activeTab == 'food' ? foodItems : toyItems;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 48, 221, 240),
+      backgroundColor: const Color(0xFFF4F1EA),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        toolbarHeight: 50,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF2B2B2B)),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Color(0xFF2B2B2B),
+            size: 24,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'SHOP',
           style: TextStyle(
             fontFamily: 'Pixelify Sans',
-            fontSize: 22,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Color(0xFF2B2B2B),
           ),
         ),
         actions: [
-          // Coin display top right matching wireframe layout
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: Row(
               children: [
-                Image.asset('assets/icons/coins.png', width: 24, height: 24),
-                const SizedBox(width: 4),
+                Image.asset('assets/icons/coins.png', width: 20, height: 20),
+                const SizedBox(width: 6),
                 Text(
                   '${state.coins}',
                   style: const TextStyle(
                     fontFamily: 'Pixelify Sans',
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF2B2B2B),
                   ),
@@ -83,7 +81,6 @@ class _ShopViewState extends State<ShopView> {
       body: SafeArea(
         child: Column(
           children: [
-            // --- Tab Selection Bar (Food / Toy) ---
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -92,24 +89,20 @@ class _ShopViewState extends State<ShopView> {
               child: Row(
                 children: [
                   _buildTabButton('Food', 'food'),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 8),
                   _buildTabButton('Toy', 'toy'),
                 ],
               ),
             ),
-
-            const SizedBox(height: 16),
-
-            // --- Items Grid Layout ---
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.85,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    childAspectRatio: 0.8,
                   ),
                   itemCount: currentItems.length,
                   itemBuilder: (context, index) {
@@ -118,22 +111,19 @@ class _ShopViewState extends State<ShopView> {
                     bool isSelected = selectedItem == itemName;
 
                     return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedItem = itemName;
-                          selectedPrice = itemData['price'];
-                        });
-                      },
+                      onTap: () => setState(() {
+                        selectedItem = itemName;
+                        selectedPrice = itemData['price'];
+                      }),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            // Highlights cyan when selected matching point
                             color: isSelected
                                 ? Colors.cyan
                                 : const Color(0xFF33250E),
-                            width: isSelected ? 3 : 2,
+                            width: isSelected ? 3 : 1,
                           ),
                         ),
                         child: Column(
@@ -141,11 +131,11 @@ class _ShopViewState extends State<ShopView> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(6.0),
                                 child: Image.asset(
                                   itemData['asset'],
-                                  filterQuality: FilterQuality
-                                      .none, // Retains pixel aesthetic
+                                  filterQuality: FilterQuality.none,
+                                  fit: BoxFit.contain,
                                 ),
                               ),
                             ),
@@ -153,19 +143,20 @@ class _ShopViewState extends State<ShopView> {
                               itemName,
                               style: const TextStyle(
                                 fontFamily: 'Pixelify Sans',
-                                fontSize: 12,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(height: 4),
                             Text(
                               '\$${itemData['price']}',
                               style: const TextStyle(
                                 fontFamily: 'Pixelify Sans',
-                                fontSize: 14,
+                                fontSize: 12,
+                                color: Colors.green,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 4),
                           ],
                         ),
                       ),
@@ -174,42 +165,30 @@ class _ShopViewState extends State<ShopView> {
                 ),
               ),
             ),
-
-            // --- Action Buy Button (Point ②) ---
             if (selectedItem != null)
               Padding(
-                padding: const EdgeInsets.all(24.0),
+                padding: const EdgeInsets.all(16.0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.amber[100],
                     side: const BorderSide(color: Color(0xFF33250E), width: 2),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 48,
-                      vertical: 16,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    minimumSize: const Size(120, 40),
                   ),
                   onPressed: () {
-                    if (selectedPrice != null &&
-                        state.coins >= selectedPrice!) {
-                      // Process Purchase inside your PetProvider
-                      if (activeTab == 'food') {
-                        provider.buyFood(selectedItem!, selectedPrice!);
-                      } else {
-                        provider.buyToy(selectedItem!, selectedPrice!);
-                      }
+                    if (state.coins >= selectedPrice!) {
+                      provider.spendCoins(selectedPrice!);
+                      activeTab == 'food'
+                          ? provider.buyFood(selectedItem!, selectedPrice!)
+                          : provider.buyToy(selectedItem!, selectedPrice!);
 
                       provider.showDialogue(
-                        'Successfully bought $selectedItem! 🎉',
+                        'Successfully purchased $selectedItem! 🎉',
                       );
                       setState(() {
-                        selectedItem = null; // Reset selection after buying
+                        selectedItem = null;
                         selectedPrice = null;
                       });
                     } else {
-                      // Insufficient funds trigger dialogue matching wireframe logic notes
                       provider.showDialogue(
                         'No coins! ( ;´ - `;) Go play with your pet!',
                       );
@@ -219,7 +198,7 @@ class _ShopViewState extends State<ShopView> {
                     'Buy',
                     style: TextStyle(
                       fontFamily: 'Pixelify Sans',
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF33250E),
                     ),
@@ -232,23 +211,19 @@ class _ShopViewState extends State<ShopView> {
     );
   }
 
-  // Custom helper widget to render stylized pixel design tabs
   Widget _buildTabButton(String label, String tabKey) {
     bool isActive = activeTab == tabKey;
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          activeTab = tabKey;
-          selectedItem = null; // Clear selection when switching categories
-          selectedPrice = null;
-        });
-      },
+      onTap: () => setState(() {
+        activeTab = tabKey;
+        selectedItem = null;
+      }),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(
           color: isActive ? Colors.amber[100] : Colors.white,
-          borderRadius: BorderRadius.circular(4),
-          border: Border.all(color: const Color(0xFF33250E), width: 2),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: const Color(0xFF33250E), width: 1.5),
         ),
         child: Text(
           label,

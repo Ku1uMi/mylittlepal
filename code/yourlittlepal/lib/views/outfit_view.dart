@@ -13,12 +13,16 @@ class OutfitPage extends StatefulWidget {
 class _OutfitPageState extends State<OutfitPage> {
   bool viewingTops = true;
 
+  String _getCleanPath(String category, String filename) {
+    String base = filename.replaceAll('.png', '');
+    return 'assets/outfits/$category/$base.png';
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PetProvider>(context);
     final petState = provider.state;
 
-    // Hardcoded item configurations so inventory options are always available
     const alwaysAvailableTops = ['t1', 't2'];
     const alwaysAvailableBottoms = ['b1', 'b2'];
 
@@ -48,27 +52,14 @@ class _OutfitPageState extends State<OutfitPage> {
           Center(
             child: Padding(
               padding: const EdgeInsets.only(right: 16.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    'assets/icons/coins.png',
-                    width: 22,
-                    height: 22,
-                    fit: BoxFit.contain,
-                    filterQuality: FilterQuality.none,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    'Coins: ${petState.coins}',
-                    style: const TextStyle(
-                      fontFamily: 'Pixelify Sans',
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF2B2B2B),
-                    ),
-                  ),
-                ],
+              child: Text(
+                'Coins: ${petState.coins}',
+                style: const TextStyle(
+                  fontFamily: 'Pixelify Sans',
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF2B2B2B),
+                ),
               ),
             ),
           ),
@@ -76,7 +67,6 @@ class _OutfitPageState extends State<OutfitPage> {
       ),
       body: Column(
         children: [
-          // 1. MAIN CHARACTER PREVIEW COMPARTMENT
           Expanded(
             flex: 5,
             child: Container(
@@ -86,39 +76,51 @@ class _OutfitPageState extends State<OutfitPage> {
                 color: const Color(0xFFEFECE4),
                 border: Border.all(color: const Color(0xFF2B2B2B), width: 3),
               ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Image.asset(
-                    'assets/pets/${petState.petType == PetType.sky ? 'sky' : 'ocean'}.png',
-                    width: 160,
-                    height: 160,
-                    fit: BoxFit.contain,
-                    filterQuality: FilterQuality.none,
+              child: GestureDetector(
+                onPanStart: (details) => debugPrint("Gesture Started"),
+                onPanUpdate: (details) =>
+                    debugPrint("Pan Update: ${details.delta.dx}"),
+                onPanEnd: (details) => debugPrint("Gesture Ended"),
+                child: CustomPaint(
+                  foregroundPainter: PremiumBadgePainter(),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/pets/${petState.petType == PetType.sky ? 'sky' : 'ocean'}.png',
+                        width: 160,
+                        height: 160,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.none,
+                      ),
+                      if (provider.state.currOutfit.top.isNotEmpty)
+                        Positioned.fill(
+                          child: Image.asset(
+                            _getCleanPath(
+                              'tops',
+                              provider.state.currOutfit.top,
+                            ),
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.none,
+                          ),
+                        ),
+                      if (provider.state.currOutfit.bottom.isNotEmpty)
+                        Positioned.fill(
+                          child: Image.asset(
+                            _getCleanPath(
+                              'bottoms',
+                              provider.state.currOutfit.bottom,
+                            ),
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.none,
+                          ),
+                        ),
+                    ],
                   ),
-
-                  if (provider.state.currOutfit.top != null)
-                    Positioned.fill(
-                      child: Image.asset(
-                        provider.state.currOutfit.top,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
-                      ),
-                    ),
-                  if (provider.state.currOutfit.bottom != null)
-                    Positioned.fill(
-                      child: Image.asset(
-                        provider.state.currOutfit.bottom,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
-                      ),
-                    ),
-                ],
+                ),
               ),
             ),
           ),
-
-          // 2. INTERMEDIATE CONTROLS TOOLBAR
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 24.0,
@@ -169,15 +171,12 @@ class _OutfitPageState extends State<OutfitPage> {
               ],
             ),
           ),
-
           const Divider(
             color: Color(0xFF2B2B2B),
             thickness: 2,
             indent: 24,
             endIndent: 24,
           ),
-
-          // 3. WARDROBE GRID SECTOR
           Expanded(
             flex: 4,
             child: GridView.builder(
@@ -191,37 +190,29 @@ class _OutfitPageState extends State<OutfitPage> {
               itemCount: activeInventory.length,
               itemBuilder: (context, index) {
                 final itemId = activeInventory[index];
-
                 String exactAssetPath = '';
                 String shortFileName = '';
                 String displayName = '';
-
                 if (viewingTops) {
-                  if (itemId == 't1') {
-                    exactAssetPath = 'assets/outfits/tops/navy_top.png';
-                    shortFileName = 'navy_top.png';
-                    displayName = 'Navy Top';
-                  } else {
-                    exactAssetPath = 'assets/outfits/tops/yellow_top.png';
-                    shortFileName = 'yellow_top.png';
-                    displayName = 'Yellow Top';
-                  }
+                  exactAssetPath = itemId == 't1'
+                      ? 'assets/outfits/tops/navy_top.png'
+                      : 'assets/outfits/tops/yellow_top.png';
+                  shortFileName = itemId == 't1'
+                      ? 'navy_top.png'
+                      : 'yellow_top.png';
+                  displayName = itemId == 't1' ? 'Navy Top' : 'Yellow Top';
                 } else {
-                  if (itemId == 'b1') {
-                    exactAssetPath = 'assets/outfits/bottoms/beige_bottom.png';
-                    shortFileName = 'beige_bottom.png';
-                    displayName = 'Beige Pants';
-                  } else {
-                    exactAssetPath = 'assets/outfits/bottoms/checked_skirt.png';
-                    shortFileName = 'checked_skirt.png';
-                    displayName = 'Skirt';
-                  }
+                  exactAssetPath = itemId == 'b1'
+                      ? 'assets/outfits/bottoms/beige_bottom.png'
+                      : 'assets/outfits/bottoms/checked_skirt.png';
+                  shortFileName = itemId == 'b1'
+                      ? 'beige_bottom.png'
+                      : 'checked_skirt.png';
+                  displayName = itemId == 'b1' ? 'Beige Pants' : 'Skirt';
                 }
-
                 return GestureDetector(
-                  onTap: () {
-                    provider.equipClothingItem(shortFileName, viewingTops);
-                  },
+                  onTap: () =>
+                      provider.equipClothingItem(shortFileName, viewingTops),
                   child: Container(
                     decoration: BoxDecoration(
                       color: const Color(0xFFEFECE4),
@@ -259,8 +250,6 @@ class _OutfitPageState extends State<OutfitPage> {
               },
             ),
           ),
-
-          // 4. PERSIST AND ESCAPE ACTION BAR
           Padding(
             padding: const EdgeInsets.only(
               left: 24,
@@ -329,4 +318,17 @@ class _OutfitPageState extends State<OutfitPage> {
       ),
     );
   }
+}
+
+class PremiumBadgePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.amber
+      ..style = PaintingStyle.fill;
+    canvas.drawCircle(Offset(size.width * 0.9, size.height * 0.1), 10, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

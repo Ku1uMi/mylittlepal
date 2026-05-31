@@ -31,11 +31,10 @@ class _SelectViewState extends State<SelectView> {
         title: Text(
           'CHOOSE YOUR PAL',
           style: GoogleFonts.pixelifySans(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF2B2B2B)
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF2B2B2B),
           ),
-          
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -79,7 +78,6 @@ class _SelectViewState extends State<SelectView> {
                             ),
                             padding: const EdgeInsets.all(20.0),
                             decoration: BoxDecoration(
-                              // --- UPDATED: Now Transparent ---
                               color: Colors.transparent,
                               border: Border.all(
                                 color: isSelected
@@ -102,47 +100,26 @@ class _SelectViewState extends State<SelectView> {
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SizedBox(
-                                    height: 120,
-                                    width: 120,
-                                    child: Image.asset(
-                                      pet['image']!,
-                                      fit: BoxFit.contain,
-                                      filterQuality: FilterQuality.none,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                            return const Icon(
-                                              Icons.pets,
-                                              size: 120,
-                                              color: Color(0xFF2B2B2B),
-                                            );
-                                          },
-                                    ),
+                                SizedBox(
+                                  height: 120,
+                                  width: 120,
+                                  child: Image.asset(
+                                    pet['image']!,
+                                    fit: BoxFit.contain,
+                                    filterQuality: FilterQuality.none,
                                   ),
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
                                   pet['name']!,
-                                  style: const TextStyle(
-                                    fontFamily: 'Pixelify Sans',
+                                  style: GoogleFonts.pixelifySans(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF2B2B2B),
-                                    // Added shadow for better contrast against background
-                                    shadows: [
-                                      Shadow(
-                                        color: Colors.white,
-                                        offset: Offset(1.5, 1.5),
-                                        blurRadius: 2.0,
-                                      ),
-                                    ],
+                                    color: const Color(0xFF2B2B2B),
                                   ),
                                 ),
                               ],
                             ),
-<<<<<<< HEAD
                           ),
                         );
                       }),
@@ -159,82 +136,34 @@ class _SelectViewState extends State<SelectView> {
                       backgroundColor: isAnyPetSelected
                           ? const Color(0xFF2B2B2B)
                           : const Color(0xFFD6D1C4),
-                      foregroundColor: isAnyPetSelected
-                          ? Colors.white
-                          : const Color(0xFF8A857B),
+                      foregroundColor: Colors.white,
                       elevation: 0,
                       side: const BorderSide(
                         color: Color(0xFF2B2B2B),
                         width: 3,
-=======
-                            const SizedBox(height: 8),
-                            Text(
-                              pet['name']!,
-                              style: GoogleFonts.pixelifySans(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF2B2B2B)
-                              ),
-                            ),
-                          ],
-                        ),
->>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5
                       ),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 18),
                     ),
-<<<<<<< HEAD
                     onPressed: !isAnyPetSelected
                         ? null
                         : () {
                             final selectedPetType =
                                 totalPets[_selectedIndex!]['type'] as PetType;
-                            try {
-                              petProvider.selectPet(selectedPetType);
-                            } catch (e) {
-                              debugPrint("Selection save error: $e");
-                            }
+                            petProvider.selectPet(selectedPetType);
                             Navigator.of(
                               context,
                             ).pushReplacementNamed('/playground');
                           },
-                    child: const Text(
+                    child: Text(
                       'CONFIRM PAL',
-                      style: TextStyle(
-                        fontFamily: 'Pixelify Sans',
+                      style: GoogleFonts.pixelifySans(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-=======
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  onPressed: !isAnyPetSelected
-                      ? null
-                      : () {
-                          final selectedPetName =
-                              totalPets[_selectedIndex!]['name']!;
-
-                          // 1. Initialize and lock in the chosen pet data
-                          try {
-                            petProvider.selectPet(selectedPetName as PetType);
-                          } catch (_) {}
-
-                          // 2. Smoothly transition directly over to your main game loop arena!
-                          Navigator.of(
-                            context,
-                          ).pushReplacementNamed('/playground');
-                        },
-                  child: Text(
-                    'CONFIRM PAL',
-                    style: GoogleFonts.pixelifySans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                  
->>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5
                   ),
                 ),
               ),
