@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:yourlittlepal/models/pet_info.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
+import 'models/pet_info.dart';
 import 'package:yourlittlepal/views/pet_view.dart';
 
 import 'package:yourlittlepal/views/start_view.dart';
 import 'package:yourlittlepal/views/select_view.dart';
+import 'package:yourlittlepal/views/game_view.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MainApp());
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.clear();
+
+  final provider = PetProvider();
+  await provider.init();
+  runApp(ChangeNotifierProvider.value(value: provider, child: const MainApp()));
+  await provider.init();
 }
 
 class MainApp extends StatelessWidget {
@@ -19,7 +26,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => PetProvider(),
+      create: (_) => PetProvider()..init(),
       child: MaterialApp(
         title: 'Your Little Pal',
         debugShowCheckedModeBanner: false,
@@ -41,15 +48,15 @@ class MainApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           brightness: Brightness.light,
-          scaffoldBackgroundColor: const Color(0xFFF4F1EA),
+          scaffoldBackgroundColor: const Color.fromARGB(255, 248, 248, 248),
           textTheme: const TextTheme(
             bodyLarge: TextStyle(
-              fontFamily: 'PixelFont',
+              fontFamily: 'Pixelify Sans',
               fontSize: 16,
               color: Color(0xFF2B2B2B),
             ),
             headlineMedium: TextStyle(
-              fontFamily: 'PixelFont',
+              fontFamily: 'Pixelify Sans',
               fontSize: 22,
               fontWeight: FontWeight.bold,
               color: Color(0xFF2B2B2B),
@@ -62,13 +69,15 @@ class MainApp extends StatelessWidget {
         routes: {
           '/': (context) => const StartPage(),
           '/select': (context) => const SelectView(),
-          '/playground': (context) => const PetPlaygroundScreen(),
+          '/playground': (context) => const GameView(),
+          '/settings': (context) => const SettingsView(),
         },
       ),
     );
   }
 }
 
+/*
 // --- Main UI Playground Screen ---
 class PetPlaygroundScreen extends StatelessWidget {
   const PetPlaygroundScreen({super.key});
@@ -269,4 +278,5 @@ class PetPlaygroundScreen extends StatelessWidget {
       ),
     );
   }
-}
+  
+}  */

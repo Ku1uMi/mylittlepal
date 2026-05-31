@@ -1,5 +1,6 @@
 import 'package:yourlittlepal/models/outfit.dart';
 
+<<<<<<< HEAD
 enum PetType {
   sky,
   ocean,
@@ -13,6 +14,9 @@ enum PetType {
     return "Hi!";
   }
 }
+=======
+enum PetType { sky, ocean, forest}
+>>>>>>> 656640a97f88deb3c8fff5097b9cc7b21fee031b
 
 class PetState {
   PetType petType;
@@ -62,6 +66,9 @@ class PetState {
     'isWashed': isWashed,
     'sleepTime': sleepTime.toIso8601String(),
     'playTime': playTime,
+    'currOutfit': currOutfit.toJson(),
+    'undo': undo.map((e) => e.toJson()).toList(),
+    'redo': redo.map((e) => e.toJson()).toList(),
     'ownedFood': ownedFood,
     'ownedToy': ownedToy,
     'newPet': newPet,
@@ -70,8 +77,8 @@ class PetState {
   factory PetState.fromJson(Map<String, dynamic> json) {
     return PetState(
       petType: PetType.values.byName(json['petType']),
-      health: json['health'] as double,
-      closeness: json['closeness'] as double,
+      health: (json['health'] as num).toDouble(),
+      closeness: (json['closeness'] as num).toDouble(),
       coins: json['coins'] as int,
       lastSaved: DateTime.parse(json['lastSaved']),
       waterTime: json['waterTime'] as int,
@@ -79,11 +86,11 @@ class PetState {
       isWashed: json['isWashed'] as bool,
       sleepTime: DateTime.parse(json['sleepTime']),
       playTime: json['playTime'] as int,
-      currOutfit: Outfit.fromJson(json['currOutfit']),
-      undo: (json['undo'] as List).map((e) => Outfit.fromJson(e)).toList(),
-      redo: (json['redo'] as List).map((e) => Outfit.fromJson(e)).toList(),
+      currOutfit: (json['currOutfit']) != null ? Outfit.fromJson(json['currOutfit']) : const Outfit(),
+      undo: json['undo'] != null ? (json['undo'] as List).map((e) => Outfit.fromJson(e)).toList() : [],
+      redo: json['redo'] != null ? (json['redo'] as List).map((e) => Outfit.fromJson(e)).toList() : [],
       ownedFood: Map<String, int>.from(json['ownedFood']),
-      ownedToy: List<String>.from(json['ownedToys']),
+      ownedToy: List<String>.from(json['ownedToy']),
       newPet: json['newPet'] as bool,
     );
   }
@@ -111,5 +118,5 @@ class PetState {
     );
   }
 
-  Object? get petName => null;
+  //Object? get petName => null;
 }

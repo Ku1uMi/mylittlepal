@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
+import 'package:yourlittlepal/widgets/dialogue.dart';
 
 class PetView extends StatefulWidget {
   const PetView({super.key});
@@ -15,7 +18,11 @@ class _PetViewState extends State<PetView> {
   @override
   Widget build(BuildContext context) {
     final petProvider = Provider.of<PetProvider>(context);
+    final state = petProvider.state;
+    final top = state.currOutfit.top;
+    final bottom = state.currOutfit.bottom;
 
+/*
     // Fallback safe-check to grab the chosen pet name string
     final Object selectedPet =
         (petProvider.isLoaded && petProvider.state.petName != null)
@@ -27,10 +34,9 @@ class _PetViewState extends State<PetView> {
     if (selectedPet == 'GOAT') {
       assetPath = 'assets/pets/goat.png';
     }
-
+*/
     // Generate a list of soap bubbles if the pet is dirty/being washed
-    final state = petProvider.state;
-    if (state.isWashed == false && bubbleScrubPoints.isEmpty) {
+    /*if (state.isWashed == false && bubbleScrubPoints.isEmpty) {
       bubbleScrubPoints = [
         const Offset(40, 40),
         const Offset(100, 50),
@@ -41,7 +47,7 @@ class _PetViewState extends State<PetView> {
         const Offset(70, 30),
         const Offset(110, 100),
       ];
-    }
+    }*/
 
     return GestureDetector(
       onPanUpdate: (DragUpdateDetails details) {
@@ -57,58 +63,86 @@ class _PetViewState extends State<PetView> {
           );
         });
 
-        if (bubbleScrubPoints.isEmpty && !state.isWashed) {
+        if (bubbleScrubPoints.isEmpty && !state.isWashed && petProvider.washing.value) {
           petProvider.wash();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Clean and refreshed! 🧼')),
-          );
+          petProvider.washing.value = false;
+          petProvider.showDialogue('I am so clean now!\n٩(^ᗜ^ )و ´-');
+          
         }
       },
-      child: Container(
-        width: 150,
-        height: 150,
-        color: Colors.transparent, // Keeps the room seamless
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // 1. THE PET IMAGE LAYER (Shows your selected pet!)
-            Image.asset(
-              assetPath,
-              fit: BoxFit.contain,
-              filterQuality: FilterQuality.none, // Keeps pixels crisp
-              errorBuilder: (context, error, stackTrace) {
-                return const Icon(
-                  Icons.pets,
-                  size: 60,
-                  color: Color(0xFF2B2B2B),
-                );
-              },
-            ),
+      child: LayoutBuilder(
+        builder: (context, constraints){
+          final size = constraints.maxWidth < constraints.maxHeight ? 
+          constraints.maxWidth : constraints.maxHeight;
 
-            // 2. THE INTERACTIVE BUBBLE LAYER
-            if (!state.isWashed)
-              ...bubbleScrubPoints.map((point) {
-                return Positioned(
-                  left: point.dx,
-                  top: point.dy,
-                  child: Container(
-                    width: 16,
-                    height: 16,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 1.5),
-                    ),
-                  ),
-                );
-              }),
-          ],
-        ),
-      ),
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+            Image.asset(
+              'assets/pets/${state.petType.name}.png',
+              width: size,
+              height: size,
+              filterQuality: FilterQuality.none,
+            ),
+            if(bottom != '')
+              Image.asset(
+                'assets/outfits/bottoms/$bottom.png',
+                width: size,
+                height: size,
+                filterQuality: FilterQuality.none,
+              ),
+
+              if(top != '')
+              Image.asset(
+                'assets/outfits/tops/$top.png',
+                width: size,
+                height: size,
+                filterQuality: FilterQuality.none,
+              ),
+            
+            for(var bubblePos in bubbleScrubPoints)
+              Positioned(
+                left: bubblePos.dx - 15,
+                top: bubblePos.dy -15,
+                child: Image.asset(
+                  'assets/effects/bubble.png',
+                  width: 30,
+                  height: 30,
+                  filterQuality: FilterQuality.none,
+                ),
+              ),
+              ValueListenableBuilder<bool>(
+              valueListenable: petProvider.washing, 
+              builder: (context, washing, _){
+                if(washing && bubbleScrubPoints.isEmpty){
+                  WidgetsBinding.instance.addPostFrameCallback((_){
+                    if(mounted) setState(() => reset(size));
+                  });
+                }
+                return const SizedBox.shrink();
+              }
+            )
+            ], 
+          );
+        }
+      )
     );
   }
-}
 
+  void reset(double size){
+    final random = Random();
+    final min = size * 0.2;
+    final max = size * 0.8;
+    bubbleScrubPoints = List.generate(
+      8,
+      (_) => Offset(min + random.nextDouble() * (max-min), 
+      max + random.nextDouble() * (max-min)) 
+      );
+  }
+
+
+}
+/*
 extension on Object {
   Future<void> toUpperCase() async {}
-}
+}*/

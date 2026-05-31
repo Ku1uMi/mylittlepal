@@ -128,6 +128,24 @@ class PetProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  final ValueNotifier<bool> washing = ValueNotifier(false);
+
+  Future<void> startWashing() async {
+    washing.value = true;
+    notifyListeners();
+  }
+
+  String? _tempDialogue;
+  String? get tempDialogue => _tempDialogue;
+  
+  Future<void> showDialogue(String text, {int seconds = 5}) async {
+    _tempDialogue = text;
+    notifyListeners();
+    await Future.delayed(Duration(seconds: seconds));
+    _tempDialogue = null;
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
