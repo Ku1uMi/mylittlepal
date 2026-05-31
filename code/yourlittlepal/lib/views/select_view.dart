@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
@@ -28,14 +29,14 @@ class _SelectViewState extends State<SelectView> {
       backgroundColor: const Color(0xFFF4F1EA),
       
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'CHOOSE YOUR PAL',
-          style: TextStyle(
-            fontFamily: 'Pixelify Sans',
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF2B2B2B),
+          style: GoogleFonts.pixelifySans(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF2B2B2B)
           ),
+          
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -105,11 +106,10 @@ class _SelectViewState extends State<SelectView> {
                             const SizedBox(height: 8),
                             Text(
                               pet['name']!,
-                              style: const TextStyle(
-                                fontFamily: 'Pixelify Sans',
+                              style: GoogleFonts.pixelifySans(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF2B2B2B),
+                                color: Color(0xFF2B2B2B)
                               ),
                             ),
                           ],
@@ -157,13 +157,13 @@ class _SelectViewState extends State<SelectView> {
                             context,
                           ).pushReplacementNamed('/playground');
                         },
-                  child: const Text(
+                  child: Text(
                     'CONFIRM PAL',
-                    style: TextStyle(
-                      fontFamily: 'Pixelify Sans',
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: GoogleFonts.pixelifySans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                  
                   ),
                 ),
               ),

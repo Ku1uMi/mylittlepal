@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/models/pet_info.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
+import 'package:yourlittlepal/providers/position_provider.dart';
+import 'package:yourlittlepal/providers/weather_provider.dart';
 import 'package:yourlittlepal/views/pet_view.dart';
+import 'package:yourlittlepal/weather_conditions.dart';
 import 'package:yourlittlepal/widgets/dialogue.dart';
 import 'package:yourlittlepal/widgets/food_sheet.dart';
 import 'package:yourlittlepal/widgets/stat_bar.dart';
@@ -16,7 +19,13 @@ class GameView extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     final provider = context.watch<PetProvider>();
-    //final info = state.petType.info;
+    final positionProvider = context.watch<PositionProvider>();
+    final weatherProvider = context.watch<WeatherProvider>();
+    
+    if(positionProvider.positionKnown){
+      weatherProvider.updateLocation(positionProvider.latitude!, positionProvider.longitude!);
+    }
+    
     if (!provider.isLoaded) {
       return const Scaffold(
         body: Center(
@@ -39,19 +48,50 @@ class GameView extends StatelessWidget{
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, 'settings'),
-                    child: 
-                    Image.asset(
-                    'assets/icons/setting.png',
-                    width: 28,
-                    height: 28,
-                    semanticLabel: 'Press to go to setting page',
-                  )
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () => Navigator.pushNamed(context, '/settings'), 
+                    icon: Image.asset(
+                      'assets/icons/setting.png',
+                      width: 28,
+                      height: 28,
+                      semanticLabel: 'Settings',
+                    ),
+                    
+                  ),
+                  //weather -------
+                  Consumer<WeatherProvider>(
+                    builder: (context, weather, _){
+                      if(!weather.isValid){
+                        return const SizedBox.shrink();
+                      }
+                      return Row(
+                        children: [
+                          Image.asset(
+                            weatherIcon(weather.condition),
+                            width: 28,
+                            height: 28,
+                            filterQuality: FilterQuality.none,
+                          ),
+                          const SizedBox(width: 3,),
+                          Text(
+                            '${weather.tempInFahrenheit}°F',
+                            style: const TextStyle(
+                              fontFamily: 'Pixelify Sans',
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold
+
+                            ),
+                          )
+                        ],
+                      );
+                      
+                    }
                   )
                 ],
               ),
             ),
+            //stat bar
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Column(
@@ -70,6 +110,7 @@ class GameView extends StatelessWidget{
                 ],
               ),
             ),
+            //dialogue
             const SizedBox(height: 16,), 
             SizedBox(
               height: 100,
@@ -84,6 +125,7 @@ class GameView extends StatelessWidget{
                 child: PetView(),
               )
             ),
+            //coins
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
               child: Row(
@@ -106,13 +148,13 @@ class GameView extends StatelessWidget{
                 ],
               ),
             ),
-
+            //bottom bar
             Container(
               decoration: BoxDecoration(
                 color: Colors.amber[100],
                 border: Border(
                   top: BorderSide(
-                    color: const Color.fromARGB(255, 51, 37, 14),
+                    color: const Color.fromRGBO(255, 236, 179, 1),
                     width: 2,
                   )
                 ),
@@ -217,22 +259,6 @@ class GameView extends StatelessWidget{
                   provider.showDialogue('This is so fun!');
                   Navigator.pop(context);
 
-                  /*final overlay = Overlay.of(context);
-                      final entry = OverlayEntry(
-                        builder: (_) => Positioned(
-                          top: 120,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                              child: Dialogue(
-                                dialogue: 'This is so fun!'
-                              ),
-                            )
-                          )
-                        );
-                      overlay.insert(entry);
-                      await Future.delayed(const Duration(seconds: 3));
-                      entry.remove();*/
                 }
               )
             ).toList(),
@@ -241,6 +267,15 @@ class GameView extends StatelessWidget{
     );
   }
   
+}
+
+String weatherIcon(WeatherCondition condition){
+  return switch(condition) {
+    WeatherCondition.sunny => 'assets/icons/sunny.png',
+    WeatherCondition.rainy => 'assets/icons/rainy.png',
+    WeatherCondition.gloomy => 'assets/icons/gloomy.png',
+    _ => 'assets/icons/unknown.png'
+  };
 }
 
 

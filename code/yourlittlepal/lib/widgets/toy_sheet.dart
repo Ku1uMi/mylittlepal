@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ToySheet extends StatelessWidget{
   final String toy;
@@ -20,10 +21,9 @@ class ToySheet extends StatelessWidget{
         ),
         child: Text(
           toy,
-          style: const TextStyle(
-            fontFamily: 'Pixelify Sans',
-            fontSize: 12
-          ),
+          style: GoogleFonts.pixelifySans(
+                        fontSize: 12,
+                ),
         ),
       ),
     );

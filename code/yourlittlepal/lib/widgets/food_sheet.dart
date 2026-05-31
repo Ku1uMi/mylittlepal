@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FoodSheet extends StatelessWidget{
   final String food;
@@ -25,16 +26,14 @@ class FoodSheet extends StatelessWidget{
           children: [
             Text(
               food,
-              style: const TextStyle(
-                fontFamily: 'Pixelify Sans',
-                fontSize: 12
+              style: GoogleFonts.pixelifySans(
+                      fontSize: 12,
               ),
             ),
             Text(
                 ' x$num',
-                style: const TextStyle(
-                  fontFamily: 'Pixelify Sans',
-                  fontSize: 12
+                style: GoogleFonts.pixelifySans(
+                        fontSize: 12,
                 ),
             )
           ],

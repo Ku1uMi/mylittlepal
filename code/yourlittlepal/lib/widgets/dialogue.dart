@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Dialogue extends StatelessWidget{
   final String dialogue;
@@ -31,10 +32,9 @@ class Dialogue extends StatelessWidget{
               child: Text(
                 dialogue,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Pixelify Sans',
-                  fontSize: 14
+                style: GoogleFonts.pixelifySans(
+                        fontSize: 14,
+                        color: Colors.black
                 ),
               ),
             )
