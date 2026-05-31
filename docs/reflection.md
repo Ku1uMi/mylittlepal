@@ -6,7 +6,7 @@
 
 * Async Code & APIs: Loading files, checking location coordinates (`geolocator`), and grabbing data from the weather API take time. We used `Future` and async code to handle these tasks in the background so the app doesn't freeze while waiting for data.
 
-* Timers: We used `Timer.periodic` to run a clock loop every 10 minutes in the background. This automatically lowers the pet's health and happiness stats over time even if the player isn't actively pressing buttons.
+* Timers: We used `Timer.periodic` to automatically lowers the pet's health and happiness stats over time even if the player isn't actively pressing buttons.
 
 * *Layouts and Stacking: To put clothes on our pet, we layered multiple pixel-art images directly on top of each other using `Stack` and `Positioned.fill`. We used `FilterQuality.none` to keep the pixel art looking crisp and sharp.
 
