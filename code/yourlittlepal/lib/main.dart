@@ -39,9 +39,18 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return MaterialApp(
       title: 'Your Little Pal',
       debugShowCheckedModeBanner: false,
+=======
+    final provider = context.watch<PetProvider>();
+    return ChangeNotifierProvider(
+      create: (_) => PetProvider()..init(),
+      child: MaterialApp(
+        title: 'Your Little Pal',
+        debugShowCheckedModeBanner: false,
+>>>>>>> d1ab4bb341d71674d45809598fc43b5509a5698b
 
       // --- Internationalization Configuration ---
       locale: const Locale('en', ''),
@@ -56,12 +65,45 @@ class MainApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
 
+<<<<<<< HEAD
       // --- Retro Sketch/Pixel Vibe Theme ---
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
         scaffoldBackgroundColor: const Color.fromARGB(255, 248, 248, 248),
         textTheme: GoogleFonts.pixelifySansTextTheme(),
+=======
+        // --- Retro Sketch/Pixel Vibe Theme ---
+        theme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: const Color.fromARGB(255, 248, 248, 248),
+          textTheme: TextTheme(
+            bodyLarge: TextStyle(
+              fontFamily: 'Pixelify Sans',
+              fontSize: provider.fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.black
+            ),
+            headlineMedium: TextStyle(
+              fontFamily: 'Pixelify Sans',
+              fontSize: provider.fontSize + 10,
+              fontWeight: FontWeight.bold,
+              color: Colors.black
+            ) 
+          ),
+        ),
+
+        // --- Application Route Flow Hierarchy ---
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const StartPage(),
+          '/select': (context) => const SelectView(),
+          '/playground': (context) => const GameView(),
+          '/settings': (context) => const SettingsView(),
+          '/outfit': (context) => const OutfitView()
+        },
+>>>>>>> d1ab4bb341d71674d45809598fc43b5509a5698b
       ),
 
       // --- Application Route Flow Hierarchy ---
@@ -78,3 +120,8 @@ class MainApp extends StatelessWidget {
     );
   }
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> d1ab4bb341d71674d45809598fc43b5509a5698b

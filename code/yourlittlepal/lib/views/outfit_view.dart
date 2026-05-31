@@ -4,14 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 
-class OutfitPage extends StatefulWidget {
-  const OutfitPage({super.key});
+class OutfitView extends StatefulWidget {
+  const OutfitView({super.key});
 
   @override
-  State<OutfitPage> createState() => _OutfitPageState();
+  State<OutfitView> createState() => _OutfitPageState();
 }
 
-class _OutfitPageState extends State<OutfitPage> {
+class _OutfitPageState extends State<OutfitView> {
   bool viewingTops = true;
 
   String _getCleanPath(String category, String filename) {
@@ -227,6 +227,7 @@ class _OutfitPageState extends State<OutfitPage> {
                         width: 2,
                       ),
                     ),
+<<<<<<< HEAD
                     padding: const EdgeInsets.all(10),
                     child: Column(
                       children: [
@@ -235,6 +236,104 @@ class _OutfitPageState extends State<OutfitPage> {
                             exactAssetPath,
                             fit: BoxFit.contain,
                             filterQuality: FilterQuality.none,
+=======
+                  )
+                : GridView.builder(
+                    key: ValueKey(viewingTops),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 1.0,
+                        ),
+                    itemCount: activeInventory.length + 1,
+                    itemBuilder: (context, index) {
+                      
+
+                      if(index == 0){
+                        petState.currOutfit.bottom == '';
+                        return GestureDetector(
+                          onTap:() {
+                            if(viewingTops){
+                              provider.changeOutfit(top: '');
+                            }else{
+                              provider.changeOutfit(bottom: '');
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFEFECE4),
+                              border: Border.all(
+                                  color: const Color(0xFF2B2B2B),
+                                  width: 2,
+                              ), 
+                            ),
+                            child: Center(
+                              child: Text(
+                                'None',
+                               style: GoogleFonts.pixelifySans(
+                                fontSize: 14,
+                                color: const Color(0xFF2B2B2B)
+                              ),
+                            ),
+                          )
+                          )
+                        );
+                      }
+                      final itemId = activeInventory[index - 1];
+
+                      String exactAssetPath = '';
+                      if (viewingTops) {
+                        exactAssetPath = 'assets/outfits/tops/$itemId.png';
+                      } else {
+                        exactAssetPath = 'assets/outfits/bottoms/$itemId.png';
+                      }
+
+                      return GestureDetector(
+                        onTap: () {
+                          //provider.equipClothingItem(itemId, viewingTops);
+
+                          if(viewingTops){
+                            provider.changeOutfit(top: itemId);
+                          } else {
+                            provider.changeOutfit(bottom: itemId);
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFEFECE4),
+                            border: Border.all(
+                              color: const Color(0xFF2B2B2B),
+                              width: 2,
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Image.asset(
+                                  exactAssetPath,
+                                  fit: BoxFit.contain,
+                                  filterQuality: FilterQuality.none,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                'pic of\n${viewingTops ? 'top' : 'bottom'}',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.pixelifySans(
+                                  color: Color(0xFF2B2B2B),
+                                  height: 1.1,
+                                  fontSize: 10,
+                                ), 
+                              ),
+                            ],
+>>>>>>> d1ab4bb341d71674d45809598fc43b5509a5698b
                           ),
                         ),
                         const SizedBox(height: 4),

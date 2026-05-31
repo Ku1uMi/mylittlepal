@@ -13,6 +13,7 @@ import 'package:yourlittlepal/widgets/stat_bar.dart';
 import 'package:yourlittlepal/widgets/bottom_bar.dart';
 import 'package:yourlittlepal/widgets/action_sheet.dart';
 import 'package:yourlittlepal/widgets/toy_sheet.dart';
+import 'package:yourlittlepal/views/outfit_view.dart';
 
 class GameView extends StatelessWidget {
   const GameView({super.key});
@@ -153,7 +154,11 @@ class GameView extends StatelessWidget {
                 color: Colors.amber[100],
                 border: const Border(
                   top: BorderSide(
+<<<<<<< HEAD
                     color:  Color.fromRGBO(255, 236, 179, 1),
+=======
+                    color: Color.fromARGB(255, 51, 37, 14),
+>>>>>>> d1ab4bb341d71674d45809598fc43b5509a5698b
                     width: 2,
                   ),
                 ),
@@ -280,12 +285,21 @@ class GameView extends StatelessWidget {
                           provider.play(e);
                           provider.showDialogue('This is so fun!');
                           Navigator.pop(context);
+<<<<<<< HEAD
 
                 }
               )
             ).toList(),
           )
       )
+=======
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
+      ),
+>>>>>>> d1ab4bb341d71674d45809598fc43b5509a5698b
     );
   }
   

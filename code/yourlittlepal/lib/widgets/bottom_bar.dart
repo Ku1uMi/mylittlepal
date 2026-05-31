@@ -21,8 +21,9 @@ class BottomBar extends StatelessWidget{
         children: [
           Image.asset(
             icon,
-            width:48,
-            height: 48,
+            width:64,
+            height: 64,
+            fit: BoxFit.contain, 
             filterQuality: FilterQuality.none,
           ),
           const SizedBox(
@@ -31,7 +32,7 @@ class BottomBar extends StatelessWidget{
           Text(
             name,
             style: GoogleFonts.pixelifySans(
-                    fontSize: 12,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,             
             ),
           )
