@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'package:yourlittlepal/views/outfit_view.dart';
 import 'package:yourlittlepal/views/settings_views.dart';
+import 'package:yourlittlepal/views/shop_view.dart';
 //import 'models/pet_info.dart';
 //import 'package:yourlittlepal/views/pet_view.dart';
 import 'package:yourlittlepal/views/start_view.dart';
@@ -87,7 +88,8 @@ class MainApp extends StatelessWidget {
           '/select': (context) => const SelectView(),
           '/playground': (context) => const GameView(),
           '/settings': (context) => const SettingsView(),
-          '/outfit': (context) => const OutfitView()
+          '/outfit': (context) => const OutfitView(),
+          '/shop': (context) => const ShopView()
         },
       ),
     );

@@ -177,6 +177,13 @@ class PetProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> resetPet(PetType type) async{
+    _state = PetState.newPet(type);
+    _state.newPet = false;
+    await _save();
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     ScreenBrightness().resetApplicationScreenBrightness();

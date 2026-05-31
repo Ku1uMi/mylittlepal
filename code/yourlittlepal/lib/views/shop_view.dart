@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 
@@ -41,7 +42,7 @@ class _ShopViewState extends State<ShopView> {
     final currentItems = activeTab == 'food' ? foodItems : toyItems;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 48, 221, 240),
+      backgroundColor: Colors.teal[50],
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -49,14 +50,14 @@ class _ShopViewState extends State<ShopView> {
           icon: const Icon(Icons.arrow_back, color: Color(0xFF2B2B2B)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'SHOP',
-          style: TextStyle(
-            fontFamily: 'Pixelify Sans',
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF2B2B2B),
+          style: GoogleFonts.pixelifySans(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,  
+                        color: const Color(0xFF2B2B2B),          
           ),
+          
         ),
         actions: [
           // Coin display top right matching wireframe layout
@@ -68,12 +69,11 @@ class _ShopViewState extends State<ShopView> {
                 const SizedBox(width: 4),
                 Text(
                   '${state.coins}',
-                  style: const TextStyle(
-                    fontFamily: 'Pixelify Sans',
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF2B2B2B),
-                  ),
+                  style: GoogleFonts.pixelifySans(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,  
+                        color:Color(0xFF2B2B2B),          
+                    ),
                 ),
               ],
             ),
@@ -151,19 +151,21 @@ class _ShopViewState extends State<ShopView> {
                             ),
                             Text(
                               itemName,
-                              style: const TextStyle(
-                                fontFamily: 'Pixelify Sans',
-                                fontSize: 12,
+                              style: GoogleFonts.pixelifySans(
+                                  fontSize: 12,
+                                  
                               ),
+                              
                             ),
                             const SizedBox(height: 4),
                             Text(
                               '\$${itemData['price']}',
-                              style: const TextStyle(
-                                fontFamily: 'Pixelify Sans',
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                              style: GoogleFonts.pixelifySans(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,  
+                                 
                               ),
+
                             ),
                             const SizedBox(height: 8),
                           ],
@@ -215,14 +217,14 @@ class _ShopViewState extends State<ShopView> {
                       );
                     }
                   },
-                  child: const Text(
+                  child: Text(
                     'Buy',
-                    style: TextStyle(
-                      fontFamily: 'Pixelify Sans',
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF33250E),
+                    style: GoogleFonts.pixelifySans(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,  
+                        color: Color(0xFF33250E),          
                     ),
+                    
                   ),
                 ),
               ),
@@ -252,11 +254,11 @@ class _ShopViewState extends State<ShopView> {
         ),
         child: Text(
           label,
-          style: TextStyle(
-            fontFamily: 'Pixelify Sans',
-            fontSize: 14,
-            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+          style: GoogleFonts.pixelifySans(
+                        fontSize: 14,
+                        fontWeight: isActive ? FontWeight.bold : FontWeight.normal          
           ),
+          
         ),
       ),
     );

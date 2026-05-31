@@ -59,7 +59,7 @@ class _SelectViewState extends State<SelectView> {
               Expanded(
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(totalPets.length, (index) {
@@ -75,9 +75,9 @@ class _SelectViewState extends State<SelectView> {
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 150),
                             margin: const EdgeInsets.symmetric(
-                              horizontal: 20.0,
+                              horizontal: 18.0,
                             ),
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.all(16.0),
                             decoration: BoxDecoration(
                               // --- UPDATED: Now Transparent ---
                               color: Colors.transparent,
@@ -91,7 +91,7 @@ class _SelectViewState extends State<SelectView> {
                               boxShadow: isSelected
                                   ? [
                                       const BoxShadow(
-                                        color: Color(0xFF2B2B2B),
+                                        color: Color.fromARGB(103, 255, 255, 255),
                                         offset: Offset(4, 4),
                                         blurRadius: 0,
                                       ),
@@ -105,8 +105,8 @@ class _SelectViewState extends State<SelectView> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox(
-                                    height: 120,
-                                    width: 120,
+                                    height: 100,
+                                    width: 100,
                                     child: Image.asset(
                                       pet['image']!,
                                       fit: BoxFit.contain,
@@ -115,7 +115,7 @@ class _SelectViewState extends State<SelectView> {
                                           (context, error, stackTrace) {
                                             return const Icon(
                                               Icons.pets,
-                                              size: 120,
+                                              size: 100,
                                               color: Color(0xFF2B2B2B),
                                             );
                                           },
@@ -125,11 +125,11 @@ class _SelectViewState extends State<SelectView> {
                                 const SizedBox(height: 12),
                                 Text(
                                   pet['name']!,
-                                  style: const TextStyle(
-                                    fontFamily: 'Pixelify Sans',
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF2B2B2B),
+                                  style: GoogleFonts.pixelifySans(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color.fromARGB(88, 43, 43, 43),
+                                 
                                     // Added shadow for better contrast against background
                                     shadows: [
                                       Shadow(
@@ -156,7 +156,7 @@ class _SelectViewState extends State<SelectView> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isAnyPetSelected
-                          ? const Color(0xFF2B2B2B)
+                          ? const Color.fromARGB(255, 255, 166, 49)
                           : const Color(0xFFD6D1C4),
                       foregroundColor: isAnyPetSelected
                           ? Colors.white
@@ -173,14 +173,15 @@ class _SelectViewState extends State<SelectView> {
                     ),
                     onPressed: !isAnyPetSelected
                         ? null
-                        : () {
+                        : () async {
                             final selectedPetType =
                                 totalPets[_selectedIndex!]['type'] as PetType;
-                            try {
+                            /*try {
                               petProvider.selectPet(selectedPetType);
                             } catch (e) {
                               debugPrint("Selection save error: $e");
-                            }
+                            }*/
+                            await petProvider.resetPet(selectedPetType);
                             Navigator.of(
                               context,
                             ).pushReplacementNamed('/playground');
@@ -191,6 +192,7 @@ class _SelectViewState extends State<SelectView> {
                         fontFamily: 'Pixelify Sans',
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 255, 244, 215)
                       ),
                     ),
                   ),

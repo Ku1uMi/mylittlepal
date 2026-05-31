@@ -276,7 +276,7 @@ class _OutfitPageState extends State<OutfitView> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                'pic of\n${viewingTops ? 'top' : 'bottom'}',
+                                itemId,
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.pixelifySans(
                                   color: Color(0xFF2B2B2B),
