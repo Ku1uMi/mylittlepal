@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:screen_brightness/screen_brightness.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
@@ -15,20 +16,37 @@ class PetProvider extends ChangeNotifier {
   bool get newPet => _state.newPet;
   Locale _currentLocale = const Locale('en', '');
   bool _isDarkMode = false;
+  double _fontSize = 14.0;
+  double _brightness = 1.0;
 
   Locale get currentLocale => _currentLocale;
   bool get isDarkMode => _isDarkMode;
-
+  double get fontSize => _fontSize;
+  double get brightness => _brightness;
   bool get canUndo => _state.undo.isNotEmpty;
   bool get canRedo => _state.redo.isNotEmpty;
 
-  void setLocale(Locale locale) {
+  Future<void> setLocale(Locale locale) async{
     _currentLocale = locale;
+    await _save();
     notifyListeners();
   }
 
-  void toggleDarkMode() {
+  Future<void> toggleDarkMode() async{
     _isDarkMode = !_isDarkMode;
+    await _save();
+    notifyListeners();
+  }
+  Future<void> setBrightness(double value) async{
+    _brightness = value;
+    await ScreenBrightness().setApplicationScreenBrightness(_brightness);
+    await _save();
+    notifyListeners();
+  }
+
+  Future<void> setFontSize(double size) async{
+    _fontSize = size;
+    await _save();
     notifyListeners();
   }
 
@@ -45,6 +63,15 @@ class PetProvider extends ChangeNotifier {
     }
     _currentLocale = Locale(languageCode, countryCode);
     _isDarkMode = prefs.getBool('dark_mode') ?? false;
+    _fontSize = prefs.getDouble('font_size') ?? 14;
+    _brightness = prefs.getDouble('brightness') ?? 1;
+    
+    try{
+      await ScreenBrightness().setApplicationScreenBrightness(_brightness);
+    }catch (e){
+      debugPrint(e.toString());
+      throw 'Failed to set application brightness';
+    }
 
     PetLogic.hourlyDec(_state);
     await _save();
@@ -91,6 +118,7 @@ class PetProvider extends ChangeNotifier {
   }
 
   Future<void> changeOutfit({String? top, String? bottom}) async {
+<<<<<<< HEAD
     // 1. Determine fallback values if a category is omitted or unprovided
     final String finalTop = top ?? _state.currOutfit.top;
     final String finalBottom = bottom ?? _state.currOutfit.bottom;
@@ -108,6 +136,11 @@ class PetProvider extends ChangeNotifier {
 
     // Persist configurations locally
     await _saveToStorage();
+=======
+    PetLogic.changeOutfit(_state, top: top, bottom: bottom);
+    await _save();
+    notifyListeners();
+>>>>>>> 2d9719fdaad8eddf803af2d4b3e54259da40a364
   }
 
   Future<void> undo() async {
@@ -166,10 +199,11 @@ class PetProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    ScreenBrightness().resetApplicationScreenBrightness();
     _timer?.cancel();
     super.dispose();
   }
-
+/*
   /// Handles undoing an outfit adjustment sequence step
   Future<void> undoOutfitChange() async {
     await undo();
@@ -207,4 +241,8 @@ class PetProvider extends ChangeNotifier {
     // Forwards the data layer modifications into your shared preferences logic block
     await _save();
   }
+<<<<<<< HEAD
+=======
+  }*/
+>>>>>>> 2d9719fdaad8eddf803af2d4b3e54259da40a364
 }

@@ -6,10 +6,8 @@ enum PetType {
 
   dynamic get info => null;
 
-  String getDialogue(PetState state) {
-    return " ";
+
   }
-}
 
 class PetState {
   PetType petType;

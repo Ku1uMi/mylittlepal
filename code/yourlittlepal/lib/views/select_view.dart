@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 
@@ -13,7 +14,7 @@ class SelectView extends StatefulWidget {
 
 class _SelectViewState extends State<SelectView> {
   int? _selectedIndex;
-
+  
   final List<Map<String, dynamic>> totalPets = [
     {'name': 'CLOUDY', 'type': PetType.sky, 'image': 'assets/pets/sky.png'},
     {'name': 'BUBBLE', 'type': PetType.ocean, 'image': 'assets/pets/ocean.png'},
@@ -23,13 +24,13 @@ class _SelectViewState extends State<SelectView> {
   Widget build(BuildContext context) {
     final petProvider = Provider.of<PetProvider>(context, listen: false);
     final isAnyPetSelected = _selectedIndex != null;
-
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFFF4F1EA),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
-          'CHOOSE YOUR PAL',
+          l10n.chooseYourPal,
           style: GoogleFonts.pixelifySans(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -185,7 +186,7 @@ class _SelectViewState extends State<SelectView> {
                             }
                           },
                     child: Text(
-                      'CONFIRM PAL',
+                      l10n.confirmPal,
                       style: GoogleFonts.pixelifySans(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
