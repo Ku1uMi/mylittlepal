@@ -4,68 +4,64 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 
-class PositionProvider extends ChangeNotifier{
+/// A location provider that tracks and updates the geographic coordinates of the device.
+class PositionProvider extends ChangeNotifier {
+  /// The most recent north-south coordinate value recorded from the device hardware.
   double? latitude;
+
+  /// The most recent east-west coordinate value recorded from the device hardware.
   double? longitude;
-  
-  //return true if latitude and longitude are not null, otherwise false
-  //return: bool value which show whether latitude and longitude are null or not
+
+  /// Checks if both coordinate components contain active numerical tracking data.
+  /// Returns: A boolean stating true if the location readings are valid and loaded.
   bool get positionKnown => latitude != null && longitude != null;
 
-  //create a PositionProvider and a timer to update position
-  //return: PositionProvider object
-  PositionProvider(){
-    _determinePosition().then((s){
+  /// Creates a location tracker instance and sets up a recurring interval loop.
+  /// Parameters: None.
+  /// Returns: A PositionProvider object that begins immediate location requests.
+  PositionProvider() {
+    _determinePosition().then((s) {
       latitude = s.latitude;
       longitude = s.longitude;
       notifyListeners();
     });
     //ignore: unused_local_variable
     final Timer positionProviderTime = Timer.periodic(
-      const Duration(seconds: 1), 
+      const Duration(seconds: 1),
       (s) => _determinePosition().then((a) {
         latitude = a.latitude;
         longitude = a.longitude;
         notifyListeners();
-      })
+      }),
     );
   }
 
-  //code from https://pub.dev/packages/geolocator
+  /// Verifies active OS background services and permission parameters to pull raw coordinate values.
+  /// Parameters: None.
+  /// Returns: A Future that completes with the current tracking hardware position data.
   Future<Position> _determinePosition() async {
-  bool serviceEnabled;
-  LocationPermission permission;
+    bool serviceEnabled;
+    LocationPermission permission;
 
-  // Test if location services are enabled.
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    // Location services are not enabled don't continue
-    // accessing the position and request users of the 
-    // App to enable the location services.
-    return Future.error('Location services are disabled.');
-  }
-
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      // Permissions are denied, next time you could try
-      // requesting permissions again (this is also where
-      // Android's shouldShowRequestPermissionRationale 
-      // returned true. According to Android guidelines
-      // your App should show an explanatory UI now.
-      return Future.error('Location permissions are denied');
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
     }
-  }
-  
-  if (permission == LocationPermission.deniedForever) {
-    // Permissions are denied forever, handle appropriately. 
-    return Future.error(
-      'Location permissions are permanently denied, we cannot request permissions.');
-  } 
 
-  // When we reach here, permissions are granted and we can
-  // continue accessing the position of the device.
-  return await Geolocator.getCurrentPosition();
-}
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.',
+      );
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
 }

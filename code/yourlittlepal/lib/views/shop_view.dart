@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 
+/// The shop view where users can purchase food and toys for their pet.
 class ShopView extends StatefulWidget {
+  /// Creates the shop interface.
   const ShopView({super.key});
 
   @override
@@ -12,14 +14,13 @@ class ShopView extends StatefulWidget {
 }
 
 class _ShopViewState extends State<ShopView> {
-  // Tabs: 'food' or 'toy'
+  /// Currently active category tab: 'food' or 'toy'.
   String activeTab = 'food';
 
-  // Track the currently selected item name
+  /// Track the currently selected item and its cost.
   String? selectedItem;
   int? selectedPrice;
 
-  // Define shop item data with prices and asset paths
   final Map<String, Map<String, dynamic>> foodItems = {
     'Carrot': {'price': 5, 'asset': 'assets/icons/carrot.png'},
     'Salmon': {'price': 15, 'asset': 'assets/icons/salmon.png'},
@@ -39,7 +40,6 @@ class _ShopViewState extends State<ShopView> {
     final provider = context.watch<PetProvider>();
     final state = provider.state;
     final l10n = AppLocalizations.of(context)!;
-    // Switch items depending on active tab selection
     final currentItems = activeTab == 'food' ? foodItems : toyItems;
 
     return Scaffold(
@@ -54,14 +54,12 @@ class _ShopViewState extends State<ShopView> {
         title: Text(
           l10n.shop,
           style: GoogleFonts.pixelifySans(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,  
-                        color: const Color(0xFF2B2B2B),          
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF2B2B2B),
           ),
-          
         ),
         actions: [
-          // Coin display top right matching wireframe layout
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: Row(
@@ -71,10 +69,10 @@ class _ShopViewState extends State<ShopView> {
                 Text(
                   '${state.coins}',
                   style: GoogleFonts.pixelifySans(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,  
-                        color:Color(0xFF2B2B2B),          
-                    ),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF2B2B2B),
+                  ),
                 ),
               ],
             ),
@@ -84,7 +82,7 @@ class _ShopViewState extends State<ShopView> {
       body: SafeArea(
         child: Column(
           children: [
-            // --- Tab Selection Bar (Food / Toy) ---
+            // Tab Selection Bar
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -98,10 +96,9 @@ class _ShopViewState extends State<ShopView> {
                 ],
               ),
             ),
-
             const SizedBox(height: 16),
 
-            // --- Items Grid Layout ---
+            // Items Grid Layout
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -114,23 +111,20 @@ class _ShopViewState extends State<ShopView> {
                   ),
                   itemCount: currentItems.length,
                   itemBuilder: (context, index) {
-                    String itemName = currentItems.keys.elementAt(index);
-                    var itemData = currentItems[itemName]!;
-                    bool isSelected = selectedItem == itemName;
+                    final itemName = currentItems.keys.elementAt(index);
+                    final itemData = currentItems[itemName]!;
+                    final bool isSelected = selectedItem == itemName;
 
                     return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedItem = itemName;
-                          selectedPrice = itemData['price'];
-                        });
-                      },
+                      onTap: () => setState(() {
+                        selectedItem = itemName;
+                        selectedPrice = itemData['price'];
+                      }),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            // Highlights cyan when selected matching point
                             color: isSelected
                                 ? Colors.cyan
                                 : const Color(0xFF33250E),
@@ -145,28 +139,21 @@ class _ShopViewState extends State<ShopView> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Image.asset(
                                   itemData['asset'],
-                                  filterQuality: FilterQuality
-                                      .none, // Retains pixel aesthetic
+                                  filterQuality: FilterQuality.none,
                                 ),
                               ),
                             ),
                             Text(
                               itemName,
-                              style: GoogleFonts.pixelifySans(
-                                  fontSize: 12,
-                                  
-                              ),
-                              
+                              style: GoogleFonts.pixelifySans(fontSize: 12),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               '\$${itemData['price']}',
                               style: GoogleFonts.pixelifySans(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,  
-                                 
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
                               ),
-
                             ),
                             const SizedBox(height: 8),
                           ],
@@ -178,7 +165,7 @@ class _ShopViewState extends State<ShopView> {
               ),
             ),
 
-            // --- Action Buy Button (Point ②) ---
+            // Action Buy Button
             if (selectedItem != null)
               Padding(
                 padding: const EdgeInsets.all(24.0),
@@ -197,35 +184,27 @@ class _ShopViewState extends State<ShopView> {
                   onPressed: () {
                     if (selectedPrice != null &&
                         state.coins >= selectedPrice!) {
-                      // Process Purchase inside your PetProvider
                       if (activeTab == 'food') {
                         provider.buyFood(selectedItem!, selectedPrice!);
                       } else {
                         provider.buyToy(selectedItem!, selectedPrice!);
                       }
-
-                      provider.showDialogue(
-                        l10n.dialogueBought(selectedItem!),
-                      );
+                      provider.showDialogue(l10n.dialogueBought(selectedItem!));
                       setState(() {
-                        selectedItem = null; // Reset selection after buying
+                        selectedItem = null;
                         selectedPrice = null;
                       });
                     } else {
-                      // Insufficient funds trigger dialogue matching wireframe logic notes
-                      provider.showDialogue(
-                        l10n.dialogueNoCoins,
-                      );
+                      provider.showDialogue(l10n.dialogueNoCoins);
                     }
                   },
                   child: Text(
                     l10n.buyButton,
                     style: GoogleFonts.pixelifySans(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,  
-                        color: Color(0xFF33250E),          
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF33250E),
                     ),
-                    
                   ),
                 ),
               ),
@@ -235,17 +214,15 @@ class _ShopViewState extends State<ShopView> {
     );
   }
 
-  // Custom helper widget to render stylized pixel design tabs
+  /// Custom helper to render stylized pixel design tabs.
   Widget _buildTabButton(String label, String tabKey) {
-    bool isActive = activeTab == tabKey;
+    final bool isActive = activeTab == tabKey;
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          activeTab = tabKey;
-          selectedItem = null; // Clear selection when switching categories
-          selectedPrice = null;
-        });
-      },
+      onTap: () => setState(() {
+        activeTab = tabKey;
+        selectedItem = null;
+        selectedPrice = null;
+      }),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(
@@ -256,10 +233,9 @@ class _ShopViewState extends State<ShopView> {
         child: Text(
           label,
           style: GoogleFonts.pixelifySans(
-                        fontSize: 14,
-                        fontWeight: isActive ? FontWeight.bold : FontWeight.normal          
+            fontSize: 14,
+            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
           ),
-          
         ),
       ),
     );

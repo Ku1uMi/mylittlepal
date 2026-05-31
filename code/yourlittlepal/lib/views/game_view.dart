@@ -14,9 +14,10 @@ import 'package:yourlittlepal/widgets/stat_bar.dart';
 import 'package:yourlittlepal/widgets/bottom_bar.dart';
 import 'package:yourlittlepal/widgets/action_sheet.dart';
 import 'package:yourlittlepal/widgets/toy_sheet.dart';
-import 'package:yourlittlepal/views/outfit_view.dart';
 
+/// The primary game screen view that displays pet metrics, status, and control actions.
 class GameView extends StatelessWidget {
+  /// Creates the main game view interface.
   const GameView({super.key});
 
   @override
@@ -38,9 +39,7 @@ class GameView extends StatelessWidget {
         body: Center(
           child: Text(
             'LOADING PAL...',
-            style: GoogleFonts.pixelifySans(
-                        fontSize: 18,
-            ),
+            style: GoogleFonts.pixelifySans(fontSize: 18),
           ),
         ),
       );
@@ -67,7 +66,6 @@ class GameView extends StatelessWidget {
                       semanticLabel: 'Settings',
                     ),
                   ),
-                  //weather -------
                   Consumer<WeatherProvider>(
                     builder: (context, weather, _) {
                       if (!weather.isValid) {
@@ -96,7 +94,6 @@ class GameView extends StatelessWidget {
                 ],
               ),
             ),
-            //stat bar
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Column(
@@ -115,19 +112,13 @@ class GameView extends StatelessWidget {
                 ],
               ),
             ),
-            //dialogue
             const SizedBox(height: 16),
             SizedBox(
               height: 100,
-              child: Dialogue(
-                dialogue:
-                    provider.tempDialogue ?? l10n.hello,
-              ),
+              child: Dialogue(dialogue: provider.tempDialogue ?? l10n.hello),
             ),
             const SizedBox(height: 16),
-
             const Expanded(child: Center(child: PetView())),
-            //coins
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
               child: Row(
@@ -145,13 +136,12 @@ class GameView extends StatelessWidget {
                 ],
               ),
             ),
-            //bottom bar
             Container(
               decoration: BoxDecoration(
                 color: Colors.amber[100],
                 border: const Border(
                   top: BorderSide(
-                    color:  Color.fromRGBO(255, 236, 179, 1),
+                    color: Color.fromRGBO(255, 236, 179, 1),
                     width: 2,
                   ),
                 ),
@@ -170,9 +160,7 @@ class GameView extends StatelessWidget {
                     icon: 'assets/icons/water.png',
                     onTap: () async {
                       provider.water();
-                      provider.showDialogue(
-                        l10n.dialogueWater,
-                      );
+                      provider.showDialogue(l10n.dialogueWater);
                     },
                   ),
                   BottomBar(
@@ -180,9 +168,7 @@ class GameView extends StatelessWidget {
                     icon: 'assets/icons/wash.png',
                     onTap: () async {
                       provider.startWashing();
-                      provider.showDialogue(
-                        l10n.dialogueWash,
-                      );
+                      provider.showDialogue(l10n.dialogueWash);
                     },
                   ),
                   BottomBar(
@@ -200,7 +186,6 @@ class GameView extends StatelessWidget {
                   BottomBar(
                     name: l10n.shop,
                     icon: 'assets/icons/shop.png',
-                    // Navigates directly over to your store catalog overlay
                     onTap: () => Navigator.pushNamed(context, '/shop'),
                   ),
                 ],
@@ -212,6 +197,10 @@ class GameView extends StatelessWidget {
     );
   }
 
+  /// Returns the display name string mapped to the specific pet variant type.
+  /// Parameters:
+  /// - PetType type: The pet environment category.
+  /// Returns: The string name of the pet.
   String petName(PetType type) {
     switch (type) {
       case PetType.sky:
@@ -221,6 +210,10 @@ class GameView extends StatelessWidget {
     }
   }
 
+  /// Shows the bottom panel used for selecting and feeding food items to the pet.
+  /// Parameters:
+  /// - BuildContext context: The current widget tree context.
+  /// - PetProvider provider: The data source provider for pet state.
   void showFeedSheet(BuildContext context, PetProvider provider) {
     final state = provider.state;
     final name = petName(state.petType);
@@ -231,9 +224,7 @@ class GameView extends StatelessWidget {
         text: l10n.letsFeed(name),
         icon: 'assets/icons/close.png',
         child: state.ownedFood.isEmpty
-            ?  Center(
-                child: Text(l10n.noFood),
-              )
+            ? Center(child: Text(l10n.noFood))
             : Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -257,6 +248,10 @@ class GameView extends StatelessWidget {
     );
   }
 
+  /// Shows the bottom panel used for selecting toys to play with the pet.
+  /// Parameters:
+  /// - BuildContext context: The current widget tree context.
+  /// - PetProvider provider: The data source provider for pet state.
   void showPlaySheet(BuildContext context, PetProvider provider) {
     final state = provider.state;
     final name = petName(state.petType);
@@ -267,9 +262,7 @@ class GameView extends StatelessWidget {
         text: l10n.letsPlay(name),
         icon: 'assets/icons/close.png',
         child: state.ownedToy.isEmpty
-            ? Center(
-                child: Text(l10n.noToy),
-              )
+            ? Center(child: Text(l10n.noToy))
             : Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -291,6 +284,10 @@ class GameView extends StatelessWidget {
   }
 }
 
+/// Returns the asset path for the icon corresponding to the current weather condition.
+/// Parameters:
+/// - WeatherCondition condition: The current atmospheric state.
+/// Returns: A string representing the icon file location.
 String weatherIcon(WeatherCondition condition) {
   return switch (condition) {
     WeatherCondition.sunny => 'assets/icons/sunny.png',
