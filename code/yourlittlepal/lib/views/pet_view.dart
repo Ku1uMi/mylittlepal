@@ -21,33 +21,6 @@ class _PetViewState extends State<PetView> {
     final top = state.currOutfit.top;
     final bottom = state.currOutfit.bottom;
 
-/*
-    // Fallback safe-check to grab the chosen pet name string
-    final Object selectedPet =
-        (petProvider.isLoaded && petProvider.state.petName != null)
-        ? petProvider.state.petName!.toUpperCase()
-        : "RABBIT";
-
-    // Map the name to the correct asset path
-    String assetPath = 'assets/pets/rabbit.png';
-    if (selectedPet == 'GOAT') {
-      assetPath = 'assets/pets/goat.png';
-    }
-*/
-    // Generate a list of soap bubbles if the pet is dirty/being washed
-    /*if (state.isWashed == false && bubbleScrubPoints.isEmpty) {
-      bubbleScrubPoints = [
-        const Offset(40, 40),
-        const Offset(100, 50),
-        const Offset(50, 90),
-        const Offset(20, 70),
-        const Offset(80, 80),
-        const Offset(45, 110),
-        const Offset(70, 30),
-        const Offset(110, 100),
-      ];
-    }*/
-
     return GestureDetector(
       onPanUpdate: (DragUpdateDetails details) {
         if (state.isWashed) return;
@@ -65,64 +38,66 @@ class _PetViewState extends State<PetView> {
         if (bubbleScrubPoints.isEmpty && !state.isWashed && petProvider.washing.value) {
           petProvider.wash();
           petProvider.washing.value = false;
-          petProvider.showDialogue('I am so clean now!\n٩(^ᗜ^ )و ´-');
+          petProvider.showDialogue('I am so clean now!\n٩(^ᗜ^ )و ');
           
         }
       },
       child: LayoutBuilder(
-        builder: (context, constraints){
+        builder: (BuildContext context, BoxConstraints constraints){
           final size = constraints.maxWidth < constraints.maxHeight ? 
           constraints.maxWidth : constraints.maxHeight;
-
+          
           return Stack(
-            alignment: Alignment.center,
-            children: [
-            Image.asset(
-              'assets/pets/${state.petType.name}.png',
-              width: size,
-              height: size,
-              filterQuality: FilterQuality.none,
-            ),
-            if(bottom != '')
+              alignment: Alignment.center,
+              children: [
               Image.asset(
-                'assets/outfits/bottoms/$bottom.png',
+                'assets/pets/${state.petType.name}.png',
                 width: size,
                 height: size,
+                fit: BoxFit.contain,
                 filterQuality: FilterQuality.none,
               ),
-
-              if(top != '')
-              Image.asset(
-                'assets/outfits/tops/$top.png',
-                width: size,
-                height: size,
-                filterQuality: FilterQuality.none,
-              ),
-            
-            for(var bubblePos in bubbleScrubPoints)
-              Positioned(
-                left: bubblePos.dx - 15,
-                top: bubblePos.dy -15,
-                child: Image.asset(
-                  'assets/effects/bubble.png',
-                  width: 30,
-                  height: 30,
+              if(bottom != '')
+                Image.asset(
+                  'assets/outfits/bottoms/$bottom.png',
+                  width: size ,
+                  height: size ,
                   filterQuality: FilterQuality.none,
                 ),
-              ),
-              ValueListenableBuilder<bool>(
-              valueListenable: petProvider.washing, 
-              builder: (context, washing, _){
-                if(washing && bubbleScrubPoints.isEmpty){
-                  WidgetsBinding.instance.addPostFrameCallback((_){
-                    if(mounted) setState(() => reset(size));
-                  });
+            
+                if(top != '')
+                Image.asset(
+                  'assets/outfits/tops/$top.png',
+                  width: size,
+                  height: size ,
+                  filterQuality: FilterQuality.none,
+                ),
+              
+              for(var bubblePos in bubbleScrubPoints)
+                Positioned(
+                  left: bubblePos.dx - 15,
+                  top: bubblePos.dy -15,
+                  child: Image.asset(
+                    'assets/effects/bubble.png',
+                    width: 50,
+                    height: 50,
+                    filterQuality: FilterQuality.none,
+                  ),
+                ),
+                ValueListenableBuilder<bool>(
+                valueListenable: petProvider.washing, 
+                builder: (context, washing, _){
+                  if(washing && bubbleScrubPoints.isEmpty){
+                    WidgetsBinding.instance.addPostFrameCallback((_){
+                      if(mounted) setState(() => reset(size));
+                    });
+                  }
+                  return const SizedBox.shrink();
                 }
-                return const SizedBox.shrink();
-              }
-            )
-            ], 
-          );
+              )
+              ], 
+            );
+
         }
       )
     );
@@ -133,15 +108,12 @@ class _PetViewState extends State<PetView> {
     final min = size * 0.2;
     final max = size * 0.8;
     bubbleScrubPoints = List.generate(
-      8,
+      20,
       (_) => Offset(min + random.nextDouble() * (max-min), 
-      max + random.nextDouble() * (max-min)) 
+      min + random.nextDouble() * (max-min)) 
       );
   }
 
 
 }
-/*
-extension on Object {
-  Future<void> toUpperCase() async {}
-}*/
+

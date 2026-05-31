@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
@@ -27,14 +28,14 @@ class _SelectViewState extends State<SelectView> {
       backgroundColor: const Color(0xFFF4F1EA),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'CHOOSE YOUR PAL',
-          style: TextStyle(
-            fontFamily: 'Pixelify Sans',
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF2B2B2B),
+          style: GoogleFonts.pixelifySans(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF2B2B2B)
           ),
+          
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -141,6 +142,7 @@ class _SelectViewState extends State<SelectView> {
                                 ),
                               ],
                             ),
+<<<<<<< HEAD
                           ),
                         );
                       }),
@@ -164,12 +166,26 @@ class _SelectViewState extends State<SelectView> {
                       side: const BorderSide(
                         color: Color(0xFF2B2B2B),
                         width: 3,
+=======
+                            const SizedBox(height: 8),
+                            Text(
+                              pet['name']!,
+                              style: GoogleFonts.pixelifySans(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2B2B2B)
+                              ),
+                            ),
+                          ],
+                        ),
+>>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5
                       ),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 18),
                     ),
+<<<<<<< HEAD
                     onPressed: !isAnyPetSelected
                         ? null
                         : () {
@@ -192,6 +208,33 @@ class _SelectViewState extends State<SelectView> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+=======
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  onPressed: !isAnyPetSelected
+                      ? null
+                      : () {
+                          final selectedPetName =
+                              totalPets[_selectedIndex!]['name']!;
+
+                          // 1. Initialize and lock in the chosen pet data
+                          try {
+                            petProvider.selectPet(selectedPetName as PetType);
+                          } catch (_) {}
+
+                          // 2. Smoothly transition directly over to your main game loop arena!
+                          Navigator.of(
+                            context,
+                          ).pushReplacementNamed('/playground');
+                        },
+                  child: Text(
+                    'CONFIRM PAL',
+                    style: GoogleFonts.pixelifySans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                  
+>>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5
                   ),
                 ),
               ),

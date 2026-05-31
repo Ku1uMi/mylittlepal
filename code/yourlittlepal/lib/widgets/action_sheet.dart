@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ActionSheet extends StatelessWidget{
   final String text;
@@ -27,10 +28,9 @@ class ActionSheet extends StatelessWidget{
             children: [
               Text(
                 text,
-                style: const TextStyle(
-                  fontFamily: 'Pixelify Sans',
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold
+                style: GoogleFonts.pixelifySans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,            
                 ),
               ),
               IconButton(

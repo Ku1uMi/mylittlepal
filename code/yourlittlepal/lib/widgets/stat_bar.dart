@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StatBar extends StatelessWidget{
     final String name;
@@ -21,12 +22,11 @@ class StatBar extends StatelessWidget{
               width: 90,
               child: Text(
                 name,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Pixelify Sans',
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold
-                )
+                style: GoogleFonts.pixelifySans(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black
+                ),
               )
             ),
             Expanded(
@@ -48,11 +48,10 @@ class StatBar extends StatelessWidget{
               width: 36,
               child: Text(
                 '$percent',
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
-                  fontFamily: 'Pixelify Sans'
-                )
+                style: GoogleFonts.pixelifySans(
+                        fontSize: 12,
+                        color: Colors.black
+                ),
 
               ),
             )

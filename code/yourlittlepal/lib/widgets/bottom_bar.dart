@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BottomBar extends StatelessWidget{
   final String name;
@@ -29,10 +30,9 @@ class BottomBar extends StatelessWidget{
           ),
           Text(
             name,
-            style: const TextStyle(
-              fontFamily: 'Pixelify Sans',
-              fontSize: 12,
-              fontWeight: FontWeight.bold
+            style: GoogleFonts.pixelifySans(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,             
             ),
           )
         ],

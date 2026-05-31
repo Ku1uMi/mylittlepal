@@ -97,24 +97,18 @@ class _OutfitPageState extends State<OutfitPage> {
                     filterQuality: FilterQuality.none,
                   ),
 
-                  if (provider.currentTopAsset != null &&
-                      provider.currentTopAsset!.isNotEmpty)
+                  if (provider.state.currOutfit.top != null)
                     Positioned.fill(
                       child: Image.asset(
-                        provider.currentTopAsset!.startsWith('assets/')
-                            ? provider.currentTopAsset!
-                            : 'assets/outfits/tops/${provider.currentTopAsset}',
+                        provider.state.currOutfit.top,
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.none,
                       ),
                     ),
-                  if (provider.currentBottomAsset != null &&
-                      provider.currentBottomAsset!.isNotEmpty)
+                  if (provider.state.currOutfit.bottom != null)
                     Positioned.fill(
                       child: Image.asset(
-                        provider.currentBottomAsset!.startsWith('assets/')
-                            ? provider.currentBottomAsset!
-                            : 'assets/outfits/bottoms/${provider.currentBottomAsset}',
+                        provider.state.currOutfit.bottom,
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.none,
                       ),
@@ -143,7 +137,7 @@ class _OutfitPageState extends State<OutfitPage> {
                       ),
                       onPressed: petState.undo.isEmpty
                           ? null
-                          : () => provider.undoOutfitChange(),
+                          : () => provider.undo(),
                     ),
                     IconButton(
                       icon: const Icon(
@@ -153,7 +147,7 @@ class _OutfitPageState extends State<OutfitPage> {
                       ),
                       onPressed: petState.redo.isEmpty
                           ? null
-                          : () => provider.redoOutfitChange(),
+                          : () => provider.redo(),
                     ),
                   ],
                 ),
@@ -226,7 +220,6 @@ class _OutfitPageState extends State<OutfitPage> {
 
                 return GestureDetector(
                   onTap: () {
-                    // FIXED: Passes only the short file name that the background view logic naturally expects!
                     provider.equipClothingItem(shortFileName, viewingTops);
                   },
                   child: Container(
