@@ -68,6 +68,7 @@ class MainApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
 
+<<<<<<< HEAD
       // --- Theme Configuration ---
       // Uses a retro-inspired pixel aesthetic.
       theme: ThemeData(
@@ -89,6 +90,15 @@ class MainApp extends StatelessWidget {
           ),
         ),
       ),
+=======
+        // --- Retro Sketch/Pixel Vibe Theme ---
+        theme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: const Color.fromARGB(255, 248, 248, 248),
+          
+          ),
+>>>>>>> 80f4f6d1541bef18cb82d4f347067902b8848935
 
       // --- Navigation Routing ---
       initialRoute: '/',

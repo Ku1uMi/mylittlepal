@@ -54,7 +54,6 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     final provider = context.watch<PetProvider>();
     final selectedLang = _localeToDisplayName(provider.currentLocale);
-    final fontSize = provider.fontSize;
     final brightness = provider.brightness;
     final l10n = AppLocalizations.of(context)!;
 
@@ -113,6 +112,7 @@ class _SettingsViewState extends State<SettingsView> {
                       ),
                     ),
                     const Divider(),
+<<<<<<< HEAD
                     ListTile(
                       title: Text(
                         l10n.fontSize,
@@ -129,6 +129,10 @@ class _SettingsViewState extends State<SettingsView> {
                       ),
                     ),
                     const Divider(),
+=======
+
+                    // Brightness Selection
+>>>>>>> 80f4f6d1541bef18cb82d4f347067902b8848935
                     ListTile(
                       title: Text(
                         l10n.brightness,
@@ -194,6 +198,7 @@ class _SettingsViewState extends State<SettingsView> {
                 ],
               ),
             ),
+<<<<<<< HEAD
             const SizedBox(height: 20),
 
             // Section 3: Notification Simulation
@@ -248,6 +253,8 @@ class _SettingsViewState extends State<SettingsView> {
                 ],
               ),
             ),
+=======
+>>>>>>> 80f4f6d1541bef18cb82d4f347067902b8848935
           ],
         ),
       ),

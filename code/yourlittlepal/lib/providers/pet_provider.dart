@@ -277,9 +277,56 @@ class PetProvider extends ChangeNotifier {
     _timer?.cancel();
     super.dispose();
   }
+<<<<<<< HEAD
 
   /// Wipes active pet storage profiles to instantiate clean fallback models.
   /// Parameters:
   /// - PetType selectedPetType: The targeted baseline variant group configuration.
   Future<void> resetPet(PetType selectedPetType) async {}
+=======
+
+  /// Handles undoing an outfit adjustment sequence step
+  Future<void> undoOutfitChange() async {
+    await undo();
+  }
+
+  /// Handles redoing an outfit adjustment sequence step
+  Future<void> redoOutfitChange() async {
+    await redo();
+  }
+
+  /// Toggles clothing item paths dynamically inside your core business rules
+  Future<void> equipClothingItem(String itemId, bool viewingTops) async {
+    if (viewingTops) {
+      final nextTop = _state.currOutfit.top == itemId ? '' : itemId;
+      await changeOutfit(top: nextTop, bottom: _state.currOutfit.bottom);
+    } else {
+      final nextBottom = _state.currOutfit.bottom == itemId ? '' : itemId;
+      await changeOutfit(top: _state.currOutfit.top, bottom: nextBottom);
+    }
+  }
+
+  /// Automatically persists configurations when confirming wardrobe modifications
+  Future<void> saveCurrentOutfitState() async {
+    await _save();
+    notifyListeners();
+  }
+
+  Future<void> spendCoins(int amount) async {
+    _state.coins -= amount;
+    await _save();
+    notifyListeners();
+  }
+
+  Future<void> resetPet(PetType type) async {
+    _state =PetState.newPet(type);
+    _state.newPet = false;
+    await _save();
+    notifyListeners();
+  }
+
+
+>>>>>>> 80f4f6d1541bef18cb82d4f347067902b8848935
 }
+
+
