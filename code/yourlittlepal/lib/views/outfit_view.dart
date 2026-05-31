@@ -48,31 +48,34 @@ class _OutfitPageState extends State<OutfitView> {
           Center(
             child: Padding(
               padding: const EdgeInsets.only(right: 16.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    'assets/icons/coins.png',
-                    width: 22,
-                    height: 22,
-                    fit: BoxFit.contain,
-                    filterQuality: FilterQuality.none,
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.monetization_on,
-                      color: Colors.amber,
-                      size: 22,
+              child: Semantics(
+                label: 'Coins: ${petState.coins}',
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      'assets/icons/coins.png',
+                      width: 22,
+                      height: 22,
+                      fit: BoxFit.contain,
+                      filterQuality: FilterQuality.none,
+                      errorBuilder: (context, error, stackTrace) => const Icon(
+                        Icons.monetization_on,
+                        color: Colors.amber,
+                        size: 22,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    'Coins: ${petState.coins}',
-                    style: GoogleFonts.pixelifySans(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF2B2B2B),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Coins: ${petState.coins}',
+                      style: GoogleFonts.pixelifySans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF2B2B2B),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -230,29 +233,32 @@ class _OutfitPageState extends State<OutfitView> {
               itemBuilder: (context, index) {
                 // "None" Button (Clears active outfit layer)
                 if (index == 0) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (viewingTops) {
-                        provider.changeOutfit(top: '');
-                      } else {
-                        provider.changeOutfit(bottom: '');
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFEFECE4),
-                        border: Border.all(
-                          color: const Color(0xFF2B2B2B),
-                          width: 2,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          l10n.none,
-                          style: GoogleFonts.pixelifySans(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                  return Semantics(
+                    label: viewingTops ? 'Remove top': 'Remove bottom',
+                    child: GestureDetector(
+                      onTap: () {
+                        if (viewingTops) {
+                          provider.changeOutfit(top: '');
+                        } else {
+                          provider.changeOutfit(bottom: '');
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEFECE4),
+                          border: Border.all(
                             color: const Color(0xFF2B2B2B),
+                            width: 2,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            l10n.none,
+                            style: GoogleFonts.pixelifySans(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF2B2B2B),
+                            ),
                           ),
                         ),
                       ),
@@ -318,18 +324,22 @@ class _OutfitPageState extends State<OutfitView> {
                   );
                 }
 
-                return Draggable<Map<String, dynamic>>(
-                  data: {'id': itemId, 'isTop': viewingTops},
-                  feedback: SizedBox(
-                    width: 90,
-                    height: 105,
-                    child: cardContent(true),
-                  ),
-                  childWhenDragging: Opacity(
-                    opacity: 0.3,
+                return Semantics(
+                  label: 'Equip $displayName',
+                  button: true,
+                  child: Draggable<Map<String, dynamic>>(
+                    data: {'id': itemId, 'isTop': viewingTops},
+                    feedback: SizedBox(
+                      width: 90,
+                      height: 105,
+                      child: cardContent(true),
+                    ),
+                    childWhenDragging: Opacity(
+                      opacity: 0.3,
+                      child: cardContent(false),
+                    ),
                     child: cardContent(false),
                   ),
-                  child: cardContent(false),
                 );
               },
             ),

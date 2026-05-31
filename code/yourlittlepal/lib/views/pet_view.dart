@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yourlittlepal/l10n/app_localizations.dart';
+import 'package:yourlittlepal/models/pet_state.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 
 /// A view that renders the pet, its equipped clothing, and an interactive washing minigame.
@@ -77,6 +78,8 @@ class _PetViewState extends State<PetView> {
               // Base Pet Layer
               Image.asset(
                 'assets/pets/${state.petType.name}.png',
+                semanticLabel: state.petType == PetType.sky ? 
+                'Cloudy the rabbit with wings' : 'Bubble the half goat half whale creature',
                 width: size,
                 height: size,
                 fit: BoxFit.contain,
@@ -86,6 +89,7 @@ class _PetViewState extends State<PetView> {
               if (bottom.isNotEmpty)
                 Image.asset(
                   'assets/outfits/bottoms/$bottom.png',
+                  excludeFromSemantics: true,
                   width: size,
                   height: size,
                   fit: BoxFit.contain,
@@ -107,6 +111,7 @@ class _PetViewState extends State<PetView> {
                   top: bubblePos.dy - 15,
                   child: Image.asset(
                     'assets/effects/bubble.png',
+                    excludeFromSemantics: true,
                     width: 50,
                     height: 50,
                     filterQuality: FilterQuality.none,

@@ -25,48 +25,51 @@ class StatBar extends StatelessWidget {
     // Convert the fractional value to a 0-100 percentage integer for display.
     final int percent = (val * 100).toInt();
 
-    return Row(
-      children: [
-        // Name label container
-        SizedBox(
-          width: 90,
-          child: Text(
-            name,
-            style: GoogleFonts.pixelifySans(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+    return Semantics(
+      label: '$name: $percent percent',
+      child: Row(
+        children: [
+          // Name label container
+          SizedBox(
+            width: 90,
+            child: Text(
+              name,
+              style: GoogleFonts.pixelifySans(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
           ),
-        ),
-
-        // Progress bar container
-        Expanded(
-          child: Container(
-            height: 16,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              border: Border.all(color: Colors.black, width: 2),
-            ),
-            child: FractionallySizedBox(
-              alignment: Alignment.centerLeft,
-              // Ensures the width does not exceed 100% or drop below 0%.
-              widthFactor: val.clamp(0.0, 1.0),
-              child: Container(color: color),
+      
+          // Progress bar container
+          Expanded(
+            child: Container(
+              height: 16,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                border: Border.all(color: Colors.black, width: 2),
+              ),
+              child: FractionallySizedBox(
+                alignment: Alignment.centerLeft,
+                // Ensures the width does not exceed 100% or drop below 0%.
+                widthFactor: val.clamp(0.0, 1.0),
+                child: Container(color: color),
+              ),
             ),
           ),
-        ),
-
-        const SizedBox(width: 8),
-
-        // Numeric percentage display
-        SizedBox(
-          width: 36,
-          child: Text(
-            '$percent',
-            style: GoogleFonts.pixelifySans(color: Colors.black),
+      
+          const SizedBox(width: 8),
+      
+          // Numeric percentage display
+          SizedBox(
+            width: 36,
+            child: Text(
+              '$percent',
+              style: GoogleFonts.pixelifySans(color: Colors.black),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

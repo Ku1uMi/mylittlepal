@@ -62,19 +62,22 @@ class _ShopViewState extends State<ShopView> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
-            child: Row(
-              children: [
-                Image.asset('assets/icons/coins.png', width: 24, height: 24),
-                const SizedBox(width: 4),
-                Text(
-                  '${state.coins}',
-                  style: GoogleFonts.pixelifySans(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF2B2B2B),
+            child: Semantics(
+              label: '${state.coins} coins',
+              child: Row(
+                children: [
+                  Image.asset('assets/icons/coins.png', width: 24, height: 24),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${state.coins}',
+                    style: GoogleFonts.pixelifySans(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF2B2B2B),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
@@ -116,50 +119,54 @@ class _ShopViewState extends State<ShopView> {
                     final bool isSelected = selectedItem == itemName;
                     final isSold = activeTab == 'toy' && state.ownedToy.contains(itemName.toLowerCase());
                     
-                    return GestureDetector(
-                      onTap: isSold ? null :() => setState(() {
-                        selectedItem = itemName;
-                        selectedPrice = itemData['price'];
-                      }),
-                      child: Opacity(
-                        opacity: isSold? 0.4 : 1.0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: isSelected
-                                  ? Colors.cyan
-                                  : const Color(0xFF33250E),
-                              width: isSelected ? 3 : 2,
+                    return Semantics(
+                      label: isSold ? 
+                      '$itemName already owned' : '$itemName costs ${itemData['price']} ',
+                      child: GestureDetector(
+                        onTap: isSold ? null :() => setState(() {
+                          selectedItem = itemName;
+                          selectedPrice = itemData['price'];
+                        }),
+                        child: Opacity(
+                          opacity: isSold? 0.4 : 1.0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: isSelected
+                                    ? Colors.cyan
+                                    : const Color(0xFF33250E),
+                                width: isSelected ? 3 : 2,
+                              ),
                             ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                    itemData['asset'],
-                                    filterQuality: FilterQuality.none,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(
+                                      itemData['asset'],
+                                      filterQuality: FilterQuality.none,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Text(
-                                itemName,
-                                style: GoogleFonts.pixelifySans(fontSize: 12),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                isSold ? 'SOLD' : '\$${itemData['price']}',
-                                style: GoogleFonts.pixelifySans(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
+                                Text(
+                                  itemName,
+                                  style: GoogleFonts.pixelifySans(fontSize: 12),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                            ],
+                                const SizedBox(height: 4),
+                                Text(
+                                  isSold ? 'SOLD' : '\$${itemData['price']}',
+                                  style: GoogleFonts.pixelifySans(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                              ],
+                            ),
                           ),
                         ),
                       ),

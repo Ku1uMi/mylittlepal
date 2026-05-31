@@ -73,78 +73,83 @@ class _SelectViewState extends State<SelectView> {
                         final pet = totalPets[index];
                         final isSelected = _selectedIndex == index;
 
-                        return GestureDetector(
-                          onTap: () => setState(() => _selectedIndex = index),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 150),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 18.0,
-                            ),
-                            padding: const EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              border: Border.all(
-                                color: isSelected
-                                    ? const Color(0xFF2B2B2B)
-                                    : Colors.transparent,
-                                width: 3,
+                        return Semantics(
+                          label: 'Select ${pet['name']} ',
+                          button: true,
+                          child: GestureDetector(
+                            onTap: () => setState(() => _selectedIndex = index),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 150),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 18.0,
                               ),
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: isSelected
-                                  ? [
-                                      const BoxShadow(
-                                        color: Color.fromARGB(
-                                          103,
-                                          255,
-                                          255,
-                                          255,
+                              padding: const EdgeInsets.all(16.0),
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                border: Border.all(
+                                  color: isSelected
+                                      ? const Color(0xFF2B2B2B)
+                                      : Colors.transparent,
+                                  width: 3,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: isSelected
+                                    ? [
+                                        const BoxShadow(
+                                          color: Color.fromARGB(
+                                            103,
+                                            255,
+                                            255,
+                                            255,
+                                          ),
+                                          offset: Offset(4, 4),
+                                          blurRadius: 0,
                                         ),
-                                        offset: Offset(4, 4),
-                                        blurRadius: 0,
+                                      ]
+                                    : null,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      height: 100,
+                                      width: 100,
+                                      child: Image.asset(
+                                        pet['image']!,
+                                        semanticLabel: pet['name']!,
+                                        fit: BoxFit.contain,
+                                        filterQuality: FilterQuality.none,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                const Icon(
+                                                  Icons.pets,
+                                                  size: 100,
+                                                  color: Color(0xFF2B2B2B),
+                                                ),
                                       ),
-                                    ]
-                                  : null,
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SizedBox(
-                                    height: 100,
-                                    width: 100,
-                                    child: Image.asset(
-                                      pet['image']!,
-                                      fit: BoxFit.contain,
-                                      filterQuality: FilterQuality.none,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              const Icon(
-                                                Icons.pets,
-                                                size: 100,
-                                                color: Color(0xFF2B2B2B),
-                                              ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 12),
-                                Text(
-                                  pet['name']!,
-                                  style: GoogleFonts.pixelifySans(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color.fromARGB(88, 43, 43, 43),
-                                    shadows: const [
-                                      Shadow(
-                                        color: Colors.white,
-                                        offset: Offset(1.5, 1.5),
-                                        blurRadius: 2.0,
-                                      ),
-                                    ],
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    pet['name']!,
+                                    style: GoogleFonts.pixelifySans(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color.fromARGB(88, 43, 43, 43),
+                                      shadows: const [
+                                        Shadow(
+                                          color: Colors.white,
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 2.0,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         );

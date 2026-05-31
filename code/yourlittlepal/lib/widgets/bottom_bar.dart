@@ -22,30 +22,35 @@ class BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Icon display with pixel-art settings
-          Image.asset(
-            icon,
-            width: 64,
-            height: 64,
-            fit: BoxFit.contain,
-            filterQuality: FilterQuality.none, // Ensures crisp pixel edges
-          ),
-          const SizedBox(height: 8),
-
-          // Label text
-          Text(
-            name,
-            style: GoogleFonts.pixelifySans(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
+    return Semantics(
+      label: name,
+      button: true,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Icon display with pixel-art settings
+            Image.asset(
+              icon,
+              excludeFromSemantics: true,
+              width: 64,
+              height: 64,
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.none, // Ensures crisp pixel edges
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+      
+            // Label text
+            Text(
+              name,
+              style: GoogleFonts.pixelifySans(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

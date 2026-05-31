@@ -75,16 +75,20 @@ class GameView extends StatelessWidget {
                         children: [
                           Image.asset(
                             weatherIcon(weather.condition),
+                            semanticLabel: weather.condition.name,
                             width: 28,
                             height: 28,
                             filterQuality: FilterQuality.none,
                           ),
                           const SizedBox(width: 3),
-                          Text(
-                            '${weather.tempInFahrenheit}°F',
-                            style: GoogleFonts.pixelifySans(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                          Semantics(
+                            label: '${weather.tempInFahrenheit} degrees Fahrenheit',
+                            child: Text(
+                              '${weather.tempInFahrenheit}°F',
+                              style: GoogleFonts.pixelifySans(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
@@ -121,19 +125,27 @@ class GameView extends StatelessWidget {
             const Expanded(child: Center(child: PetView())),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Image.asset('assets/icons/coins.png', width: 28, height: 28),
-                  const SizedBox(width: 6),
-                  Text(
-                    '${state.coins}',
-                    style: GoogleFonts.pixelifySans(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+              child: Semantics(
+                label: '${state.coins} coins',
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Image.asset(
+                      'assets/icons/coins.png', 
+                      width: 28, 
+                      height: 28,
+                      excludeFromSemantics: true
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 6),
+                    Text(
+                      '${state.coins}',
+                      style: GoogleFonts.pixelifySans(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(
@@ -151,6 +163,7 @@ class GameView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   BottomBar(
+                    
                     name: l10n.feed,
                     icon: 'assets/icons/feed.png',
                     onTap: () => showFeedSheet(context, provider),
