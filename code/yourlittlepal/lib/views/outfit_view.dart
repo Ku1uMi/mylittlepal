@@ -4,14 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
 
-class OutfitPage extends StatefulWidget {
-  const OutfitPage({super.key});
+class OutfitView extends StatefulWidget {
+  const OutfitView({super.key});
 
   @override
-  State<OutfitPage> createState() => _OutfitPageState();
+  State<OutfitView> createState() => _OutfitPageState();
 }
 
-class _OutfitPageState extends State<OutfitPage> {
+class _OutfitPageState extends State<OutfitView> {
   bool viewingTops = true;
 
   @override
@@ -241,9 +241,9 @@ class _OutfitPageState extends State<OutfitPage> {
 
                       String exactAssetPath = '';
                       if (viewingTops) {
-                        exactAssetPath = 'assets/outfits/tops/${itemId}.png';
+                        exactAssetPath = 'assets/outfits/tops/$itemId.png';
                       } else {
-                        exactAssetPath = 'assets/outfits/bottoms/${itemId}.png';
+                        exactAssetPath = 'assets/outfits/bottoms/$itemId.png';
                       }
 
                       return GestureDetector(

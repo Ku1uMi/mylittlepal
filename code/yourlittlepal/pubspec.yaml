@@ -15,6 +15,7 @@ dependencies:
   google_fonts: ^8.1.0
   http: ^1.6.0
   provider: ^6.1.5+1
+  screen_brightness: ^2.1.9
   shared_preferences: ^2.5.5
 
 dev_dependencies:
@@ -30,9 +31,7 @@ flutter:
     - assets/outfits/tops/
     - assets/outfits/bottoms/
     - assets/icons/
-<<<<<<< HEAD
     - assets/backgrounds/
-=======
     - assets/effects/bubble.png
     - assets/backgrounds/
 
@@ -42,4 +41,3 @@ flutter:
         - asset: assets/fonts/PixelifySans-VariableFont_wght.ttf
   
 
->>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5

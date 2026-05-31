@@ -142,7 +142,6 @@ class _SelectViewState extends State<SelectView> {
                                 ),
                               ],
                             ),
-<<<<<<< HEAD
                           ),
                         );
                       }),
@@ -166,26 +165,12 @@ class _SelectViewState extends State<SelectView> {
                       side: const BorderSide(
                         color: Color(0xFF2B2B2B),
                         width: 3,
-=======
-                            const SizedBox(height: 8),
-                            Text(
-                              pet['name']!,
-                              style: GoogleFonts.pixelifySans(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF2B2B2B)
-                              ),
-                            ),
-                          ],
-                        ),
->>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5
                       ),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 18),
                     ),
-<<<<<<< HEAD
                     onPressed: !isAnyPetSelected
                         ? null
                         : () {
@@ -208,33 +193,6 @@ class _SelectViewState extends State<SelectView> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-=======
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  onPressed: !isAnyPetSelected
-                      ? null
-                      : () {
-                          final selectedPetName =
-                              totalPets[_selectedIndex!]['name']!;
-
-                          // 1. Initialize and lock in the chosen pet data
-                          try {
-                            petProvider.selectPet(selectedPetName as PetType);
-                          } catch (_) {}
-
-                          // 2. Smoothly transition directly over to your main game loop arena!
-                          Navigator.of(
-                            context,
-                          ).pushReplacementNamed('/playground');
-                        },
-                  child: Text(
-                    'CONFIRM PAL',
-                    style: GoogleFonts.pixelifySans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                  
->>>>>>> 0cadff5d52db09276332bca162c195a0590c53a5
                   ),
                 ),
               ),

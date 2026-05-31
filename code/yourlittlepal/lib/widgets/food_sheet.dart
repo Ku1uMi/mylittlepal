@@ -27,13 +27,13 @@ class FoodSheet extends StatelessWidget{
             Text(
               food,
               style: GoogleFonts.pixelifySans(
-                      fontSize: 12,
+                      //fontSize: 12,
               ),
             ),
             Text(
                 ' x$num',
                 style: GoogleFonts.pixelifySans(
-                        fontSize: 12,
+                        //fontSize: 12,
                 ),
             )
           ],

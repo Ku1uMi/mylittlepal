@@ -33,7 +33,7 @@ class Dialogue extends StatelessWidget{
                 dialogue,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.pixelifySans(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: Colors.black
                 ),
               ),

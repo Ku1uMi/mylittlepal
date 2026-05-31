@@ -17,7 +17,7 @@ class ToySheet extends StatelessWidget {
         child: Text(
           toy,
           style: GoogleFonts.pixelifySans(
-                        fontSize: 12,
+                        //fontSize: 12,
                 ),
         ),
       ),

@@ -39,6 +39,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<PetProvider>();
     return ChangeNotifierProvider(
       create: (_) => PetProvider()..init(),
       child: MaterialApp(
@@ -63,7 +64,20 @@ class MainApp extends StatelessWidget {
           useMaterial3: true,
           brightness: Brightness.light,
           scaffoldBackgroundColor: const Color.fromARGB(255, 248, 248, 248),
-          textTheme: GoogleFonts.pixelifySansTextTheme(),
+          textTheme: TextTheme(
+            bodyLarge: TextStyle(
+              fontFamily: 'Pixelify Sans',
+              fontSize: provider.fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.black
+            ),
+            headlineMedium: TextStyle(
+              fontFamily: 'Pixelify Sans',
+              fontSize: provider.fontSize + 10,
+              fontWeight: FontWeight.bold,
+              color: Colors.black
+            ) 
+          ),
         ),
 
         // --- Application Route Flow Hierarchy ---
@@ -80,6 +94,4 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class z {
-  const z();
-}
+

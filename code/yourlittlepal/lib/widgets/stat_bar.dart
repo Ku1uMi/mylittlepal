@@ -23,7 +23,7 @@ class StatBar extends StatelessWidget{
               child: Text(
                 name,
                 style: GoogleFonts.pixelifySans(
-                        fontSize: 14,
+                        //fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.black
                 ),
@@ -49,7 +49,7 @@ class StatBar extends StatelessWidget{
               child: Text(
                 '$percent',
                 style: GoogleFonts.pixelifySans(
-                        fontSize: 12,
+                        //fontSize: 12,
                         color: Colors.black
                 ),
 

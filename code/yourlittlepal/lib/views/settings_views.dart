@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yourlittlepal/providers/pet_provider.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -9,9 +11,9 @@ class SettingsView extends StatefulWidget {
 
 class _SettingsViewState extends State<SettingsView> {
   // --- Settings States ---
-  String _selectedLanguage = 'English';
-  double _fontSize = 14.0;
-  double _brightness = 0.8;
+  //String _selectedLanguage = 'English';
+  //double _fontSize = 14.0;
+  //double _brightness = 0.8;
 
   TimeOfDay _sleepTime = const TimeOfDay(hour: 22, minute: 0);
   TimeOfDay _mealTime = const TimeOfDay(hour: 12, minute: 0);
@@ -36,8 +38,29 @@ class _SettingsViewState extends State<SettingsView> {
     }
   }
 
+  static const _languages = {
+    'English': Locale('en', ''), 
+    'Español': Locale('es', ''), 
+    '繁體中文': Locale('zh','TW')
+
+  }; 
+
+  String _localeToDisplayName(Locale locale){
+    for(final e in _languages.entries){
+      if(e.value.languageCode == locale.languageCode){
+        return e.key;
+      }
+    }
+    return 'English';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<PetProvider>();
+    final selectedLang = _localeToDisplayName(provider.currentLocale);
+    final fontSize = provider.fontSize;
+    final brightness = provider.brightness;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF4F1EA), // App retro canvas color
       appBar: AppBar(
@@ -82,8 +105,8 @@ class _SettingsViewState extends State<SettingsView> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       trailing: DropdownButton<String>(
-                        value: _selectedLanguage,
-                        items: ['English', 'Español', '繁體中文'].map((String val) {
+                        value: selectedLang,
+                        items: _languages.keys.map((String val) {
                           return DropdownMenuItem<String>(
                             value: val,
                             child: Text(val),
@@ -91,7 +114,7 @@ class _SettingsViewState extends State<SettingsView> {
                         }).toList(),
                         onChanged: (val) {
                           if (val != null) {
-                            setState(() => _selectedLanguage = val);
+                            provider.setLocale(_languages[val]!);
                           }
                         },
                       ),
@@ -105,13 +128,13 @@ class _SettingsViewState extends State<SettingsView> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Slider(
-                        value: _fontSize,
+                        value: fontSize,
                         min: 12.0,
                         max: 24.0,
                         divisions: 4,
                         activeColor: const Color(0xFF2B2B2B),
-                        label: '${_fontSize.toInt()}px',
-                        onChanged: (val) => setState(() => _fontSize = val),
+                        label: '${fontSize.toInt()}px',
+                        onChanged: (val) => provider.setFontSize(val),
                       ),
                     ),
                     const Divider(),
@@ -123,9 +146,9 @@ class _SettingsViewState extends State<SettingsView> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Slider(
-                        value: _brightness,
+                        value: brightness,
                         activeColor: const Color(0xFF2B2B2B),
-                        onChanged: (val) => setState(() => _brightness = val),
+                        onChanged: (val) => provider.setBrightness(val),
                       ),
                     ),
                   ],
@@ -224,7 +247,7 @@ class _SettingsViewState extends State<SettingsView> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
-                              '🔔 Reminder: Remember to feed, wash, and play with your pal!',
+                              'Reminder: Remember to feed, wash, and play with your pal!',
                             ),
                           ),
                         );
@@ -254,7 +277,7 @@ class _SettingsViewState extends State<SettingsView> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
-                              '💬 Message Box: "I\'m lonely and my tummy is rumbling!"',
+                              'Message Box: "I\'m lonely and my tummy is rumbling!"',
                             ),
                           ),
                         );
@@ -284,7 +307,7 @@ class _SettingsViewState extends State<SettingsView> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              '🌙 Bedtime Alert: It is ${_sleepTime.format(context)}. Time for your pal to go to sleep!',
+                              'Bedtime Alert: It is ${_sleepTime.format(context)}. Time for your pal to go to sleep!',
                             ),
                           ),
                         );
@@ -302,5 +325,6 @@ class _SettingsViewState extends State<SettingsView> {
         ),
       ),
     );
+
   }
 }
