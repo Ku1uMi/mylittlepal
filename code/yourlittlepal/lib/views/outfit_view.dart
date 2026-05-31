@@ -91,18 +91,18 @@ class _OutfitPageState extends State<OutfitPage> {
                     filterQuality: FilterQuality.none,
                   ),
 
-                  if (provider.currentTopAsset != null)
+                  if (provider.state.currOutfit.top != null)
                     Positioned.fill(
                       child: Image.asset(
-                        provider.currentTopAsset!,
+                        provider.state.currOutfit.top,
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.none,
                       ),
                     ),
-                  if (provider.currentBottomAsset != null)
+                  if (provider.state.currOutfit.bottom != null)
                     Positioned.fill(
                       child: Image.asset(
-                        provider.currentBottomAsset!,
+                        provider.state.currOutfit.bottom,
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.none,
                       ),
@@ -131,7 +131,7 @@ class _OutfitPageState extends State<OutfitPage> {
                       ),
                       onPressed: petState.undo.isEmpty
                           ? null
-                          : () => provider.undoOutfitChange(),
+                          : () => provider.undo(),
                     ),
                     IconButton(
                       icon: const Icon(
@@ -141,7 +141,7 @@ class _OutfitPageState extends State<OutfitPage> {
                       ),
                       onPressed: petState.redo.isEmpty
                           ? null
-                          : () => provider.redoOutfitChange(),
+                          : () => provider.redo(),
                     ),
                   ],
                 ),
