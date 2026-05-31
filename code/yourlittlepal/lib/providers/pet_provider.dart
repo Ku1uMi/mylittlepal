@@ -98,10 +98,7 @@ class PetProvider extends ChangeNotifier {
     // 2. Build a brand new local Outfit instance payload
     // Note: If your constructor uses positional fields instead of named keys,
     // modify this line to: final newOutfit = Outfit(finalTop, finalBottom);
-    final newOutfit = Outfit(
-      top: finalTop,
-      bottom: finalBottom,
-    );
+    final newOutfit = Outfit(top: finalTop, bottom: finalBottom);
 
     // 3. Re-assign state via the single argument update wrapper inside pet_state.dart
     _state = _state.update(currOutfit: newOutfit);
@@ -109,8 +106,8 @@ class PetProvider extends ChangeNotifier {
     // Notify the UI to rebuild immediately
     notifyListeners();
 
-    // Persist configurations locally 
-    await _saveToStorage(); 
+    // Persist configurations locally
+    await _saveToStorage();
   }
 
   Future<void> undo() async {
@@ -196,16 +193,16 @@ class PetProvider extends ChangeNotifier {
 
   /// Automatically persists configurations when confirming wardrobe modifications
   Future<void> saveCurrentOutfitState() async {
-    await _save(); 
+    await _save();
     notifyListeners();
   }
 
   Future<void> spendCoins(int amount) async {
-    _state.coins -= amount; 
-    await _save(); 
-    notifyListeners(); 
+    _state.coins -= amount;
+    await _save();
+    notifyListeners();
   }
-  
+
   Future<void> _saveToStorage() async {
     // Forwards the data layer modifications into your shared preferences logic block
     await _save();
