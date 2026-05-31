@@ -26,6 +26,7 @@ API:
 This app uses api.weather.gov which required location permission to fetch local weather but no API key.
 
 **Project Layout**
+```bash
 lib/
 main.dart: route flow, theme data, setting up pet,weather and position provider
 weather_checker.dart fetch weather using GPS and http 
@@ -71,3 +72,4 @@ weather_checker.dart fetch weather using GPS and http
         bottoms/ images of bottoms
     icons/ : all the icons shown in the app
     pets/ : two pet images
+```
