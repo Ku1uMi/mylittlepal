@@ -25,7 +25,6 @@ Instead of just tapping a glass screen, we use the phone's built-in systems to m
 ## Target Audience
 The main audience is international university students who are dealing with stress and isolation, and who need a quick, free, and easy way to relax either at home or on campus.
 
----
 
 ## References
 1. *Navigating mental health challenges in international university students: adapting to life transitions - PMC* (NIH research on international student stress).
