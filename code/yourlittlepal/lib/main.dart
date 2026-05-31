@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yourlittlepal/l10n/app_localizations.dart';
 import 'package:yourlittlepal/providers/pet_provider.dart';
-import 'package:yourlittlepal/views/outfit_view.dart';
-import 'package:yourlittlepal/views/settings_views.dart';
-import 'package:yourlittlepal/views/shop_view.dart';
-//import 'models/pet_info.dart';
-//import 'package:yourlittlepal/views/pet_view.dart';
+import 'package:yourlittlepal/providers/position_provider.dart';
+import 'package:yourlittlepal/providers/weather_provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:yourlittlepal/views/start_view.dart';
 import 'package:yourlittlepal/views/select_view.dart';
 import 'package:yourlittlepal/views/game_view.dart';
-import 'package:yourlittlepal/providers/position_provider.dart';
-import 'package:yourlittlepal/providers/weather_provider.dart';
+import 'package:yourlittlepal/views/settings_views.dart'; // Note the 's' at the end
+import 'package:yourlittlepal/views/outfit_view.dart';
+import 'package:yourlittlepal/views/shop_view.dart';
 
 
 void main() async {

@@ -25,16 +25,19 @@ class GameView extends StatelessWidget {
     final positionProvider = context.watch<PositionProvider>();
     final weatherProvider = context.watch<WeatherProvider>();
     final l10n = AppLocalizations.of(context)!;
-    
-    if(positionProvider.positionKnown){
-      weatherProvider.updateLocation(positionProvider.latitude!, positionProvider.longitude!);
+
+    if (positionProvider.positionKnown) {
+      weatherProvider.updateLocation(
+        positionProvider.latitude!,
+        positionProvider.longitude!,
+      );
     }
-    
+
     if (!provider.isLoaded) {
       return Scaffold(
         body: Center(
           child: Text(
-            l10n.loading,
+            'LOADING PAL...',
             style: GoogleFonts.pixelifySans(
                         fontSize: 18,
             ),
@@ -56,19 +59,18 @@ class GameView extends StatelessWidget {
                 children: [
                   IconButton(
                     padding: EdgeInsets.zero,
-                    onPressed: () => Navigator.pushNamed(context, '/settings'), 
+                    onPressed: () => Navigator.pushNamed(context, '/settings'),
                     icon: Image.asset(
                       'assets/icons/setting.png',
                       width: 28,
                       height: 28,
                       semanticLabel: 'Settings',
                     ),
-                    
                   ),
                   //weather -------
                   Consumer<WeatherProvider>(
-                    builder: (context, weather, _){
-                      if(!weather.isValid){
+                    builder: (context, weather, _) {
+                      if (!weather.isValid) {
                         return const SizedBox.shrink();
                       }
                       return Row(
@@ -79,20 +81,18 @@ class GameView extends StatelessWidget {
                             height: 28,
                             filterQuality: FilterQuality.none,
                           ),
-                          const SizedBox(width: 3,),
+                          const SizedBox(width: 3),
                           Text(
                             '${weather.tempInFahrenheit}°F',
                             style: GoogleFonts.pixelifySans(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
                             ),
-                            
                           ),
                         ],
                       );
-                      
-                    }
-                  )
+                    },
+                  ),
                 ],
               ),
             ),
@@ -116,7 +116,7 @@ class GameView extends StatelessWidget {
               ),
             ),
             //dialogue
-            const SizedBox(height: 16,), 
+            const SizedBox(height: 16),
             SizedBox(
               height: 100,
               child: Dialogue(
@@ -126,11 +126,7 @@ class GameView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            const Expanded(
-              child: Center(
-                child: PetView(),
-              )
-            ),
+            const Expanded(child: Center(child: PetView())),
             //coins
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -142,10 +138,9 @@ class GameView extends StatelessWidget {
                   Text(
                     '${state.coins}',
                     style: GoogleFonts.pixelifySans(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                    
                   ),
                 ],
               ),
@@ -200,7 +195,7 @@ class GameView extends StatelessWidget {
                   BottomBar(
                     name: l10n.outfit,
                     icon: 'assets/icons/clothes.png',
-                    onTap: () => Navigator.pushNamed(context, '/outfit')
+                    onTap: () => Navigator.pushNamed(context, '/outfit'),
                   ),
                   BottomBar(
                     name: l10n.shop,
@@ -217,14 +212,15 @@ class GameView extends StatelessWidget {
     );
   }
 
-  String petName(PetType type){
-    switch(type){
+  String petName(PetType type) {
+    switch (type) {
       case PetType.sky:
         return 'Cloudy';
       case PetType.ocean:
         return 'Bubble';
     }
   }
+
   void showFeedSheet(BuildContext context, PetProvider provider) {
     final state = provider.state;
     final name = petName(state.petType);
@@ -293,17 +289,13 @@ class GameView extends StatelessWidget {
       ),
     );
   }
-  
 }
 
-String weatherIcon(WeatherCondition condition){
-  return switch(condition) {
+String weatherIcon(WeatherCondition condition) {
+  return switch (condition) {
     WeatherCondition.sunny => 'assets/icons/sunny.png',
     WeatherCondition.rainy => 'assets/icons/rainy.png',
     WeatherCondition.gloomy => 'assets/icons/gloomy.png',
-    _ => 'assets/icons/unknown.png'
+    _ => 'assets/icons/unknown.png',
   };
 }
-
-
-

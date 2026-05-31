@@ -1,6 +1,8 @@
 import 'package:yourlittlepal/models/outfit.dart';
 
-enum PetType { sky, ocean;
+enum PetType {
+  sky,
+  ocean;
 
   dynamic get info => null;
 
@@ -46,7 +48,7 @@ class PetState {
     this.ownedTops = const [],
     this.ownedBottoms = const [],
     this.newPet = true,
-  }){
+  }) {
     undo = List.of(undo);
     redo = List.of(redo);
     ownedFood = Map.of(ownedFood);
@@ -88,13 +90,23 @@ class PetState {
       isWashed: json['isWashed'] as bool,
       sleepTime: DateTime.parse(json['sleepTime']),
       playTime: json['playTime'] as int,
-      currOutfit: (json['currOutfit']) != null ? Outfit.fromJson(json['currOutfit']) : const Outfit(),
-      undo: json['undo'] != null ? (json['undo'] as List).map((e) => Outfit.fromJson(e)).toList() : [],
-      redo: json['redo'] != null ? (json['redo'] as List).map((e) => Outfit.fromJson(e)).toList() : [],
+      currOutfit: (json['currOutfit']) != null
+          ? Outfit.fromJson(json['currOutfit'])
+          : const Outfit(),
+      undo: json['undo'] != null
+          ? (json['undo'] as List).map((e) => Outfit.fromJson(e)).toList()
+          : [],
+      redo: json['redo'] != null
+          ? (json['redo'] as List).map((e) => Outfit.fromJson(e)).toList()
+          : [],
       ownedFood: Map<String, int>.from(json['ownedFood']),
       ownedToy: List<String>.from(json['ownedToy']),
-      ownedTops: (json['ownedTops']) != null ? List<String>.from(json['ownedTops']) : [],
-      ownedBottoms: (json['ownedBottoms']) != null ? List<String>.from(json['ownedBottoms']) : [],
+      ownedTops: (json['ownedTops']) != null
+          ? List<String>.from(json['ownedTops'])
+          : [],
+      ownedBottoms: (json['ownedBottoms']) != null
+          ? List<String>.from(json['ownedBottoms'])
+          : [],
       newPet: json['newPet'] as bool,
     );
   }
@@ -103,13 +115,11 @@ class PetState {
     final defaultFood = {
       PetType.sky: {'carrot': 2, 'hay': 2},
       PetType.ocean: {'shrimp': 2, 'salmon': 2},
-
     };
 
     final defaultToy = {
       PetType.sky: ['socks'],
       PetType.ocean: ['socks'],
-
     };
 
     return PetState(
@@ -123,6 +133,4 @@ class PetState {
       newPet: true,
     );
   }
-
-
 }
