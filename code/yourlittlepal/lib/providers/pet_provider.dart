@@ -157,6 +157,13 @@ Future<void> changeOutfit({String? top, String? bottom}) async {
     notifyListeners();
   }
 
+  Future<void> resetPet(PetType type) async{
+    _state = PetState.newPet(type);
+    _state.newPet = false;
+    await _save();
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
@@ -199,4 +206,8 @@ Future<void> changeOutfit({String? top, String? bottom}) async {
     await _save(); // Persists the change to device storage
     notifyListeners(); // Refreshes the UI
   }
+<<<<<<< HEAD
+=======
+  }*/
+>>>>>>> 11adcf58ca5eea7d96ab058324681bdff5e1f728
 }

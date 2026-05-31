@@ -58,7 +58,7 @@ class _SelectViewState extends State<SelectView> {
               Expanded(
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(totalPets.length, (index) {
@@ -74,9 +74,9 @@ class _SelectViewState extends State<SelectView> {
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 150),
                             margin: const EdgeInsets.symmetric(
-                              horizontal: 20.0,
+                              horizontal: 18.0,
                             ),
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.all(16.0),
                             decoration: BoxDecoration(
                               color: Colors.transparent,
                               border: Border.all(
@@ -89,7 +89,7 @@ class _SelectViewState extends State<SelectView> {
                               boxShadow: isSelected
                                   ? [
                                       const BoxShadow(
-                                        color: Color(0xFF2B2B2B),
+                                        color: Color.fromARGB(103, 255, 255, 255),
                                         offset: Offset(4, 4),
                                         blurRadius: 0,
                                       ),
@@ -100,22 +100,42 @@ class _SelectViewState extends State<SelectView> {
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  height: 120,
-                                  width: 120,
-                                  child: Image.asset(
-                                    pet['image']!,
-                                    fit: BoxFit.contain,
-                                    filterQuality: FilterQuality.none,
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    height: 100,
+                                    width: 100,
+                                    child: Image.asset(
+                                      pet['image']!,
+                                      fit: BoxFit.contain,
+                                      filterQuality: FilterQuality.none,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                            return const Icon(
+                                              Icons.pets,
+                                              size: 100,
+                                              color: Color(0xFF2B2B2B),
+                                            );
+                                          },
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
                                   pet['name']!,
                                   style: GoogleFonts.pixelifySans(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xFF2B2B2B),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color.fromARGB(88, 43, 43, 43),
+                                 
+                                    // Added shadow for better contrast against background
+                                    shadows: [
+                                      Shadow(
+                                        color: Colors.white,
+                                        offset: Offset(1.5, 1.5),
+                                        blurRadius: 2.0,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -134,7 +154,7 @@ class _SelectViewState extends State<SelectView> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isAnyPetSelected
-                          ? const Color(0xFF2B2B2B)
+                          ? const Color.fromARGB(255, 255, 166, 49)
                           : const Color(0xFFD6D1C4),
                       foregroundColor: Colors.white,
                       elevation: 0,
@@ -149,19 +169,27 @@ class _SelectViewState extends State<SelectView> {
                     ),
                     onPressed: !isAnyPetSelected
                         ? null
-                        : () {
+                        : () async {
                             final selectedPetType =
                                 totalPets[_selectedIndex!]['type'] as PetType;
-                            petProvider.selectPet(selectedPetType);
-                            Navigator.of(
-                              context,
-                            ).pushReplacementNamed('/playground');
+                            /*try {
+                              petProvider.selectPet(selectedPetType);
+                            } catch (e) {
+                              debugPrint("Selection save error: $e");
+                            }*/
+                            await petProvider.resetPet(selectedPetType);
+                            if(mounted){
+                                Navigator.of(
+                                context,
+                              ).pushReplacementNamed('/playground');
+                            }
                           },
                     child: Text(
                       'CONFIRM PAL',
                       style: GoogleFonts.pixelifySans(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 255, 244, 215)
                       ),
                     ),
                   ),

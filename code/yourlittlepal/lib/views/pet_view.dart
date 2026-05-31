@@ -21,7 +21,21 @@ class _PetViewState extends State<PetView> {
     final top = state.currOutfit.top;
     final bottom = state.currOutfit.bottom;
 
+    void popBubble(Offset globalPosition){
+      if(!state.isWashed){
+        RenderBox renderBox = context.findRenderObject() as RenderBox;
+        Offset localPosition = renderBox.globalToLocal(globalPosition);
+        setState(() {
+          bubbleScrubPoints.removeWhere(
+            (bubblePos) => (bubblePos - localPosition).distance < 25.0
+          );
+        });
+      }
+    }
     return GestureDetector(
+      onPanDown: (DragDownDetails details){
+        popBubble(details.globalPosition);
+      },
       onPanUpdate: (DragUpdateDetails details) {
         if (state.isWashed) return;
 

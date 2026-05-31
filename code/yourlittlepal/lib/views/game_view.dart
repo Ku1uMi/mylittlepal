@@ -147,7 +147,11 @@ class GameView extends StatelessWidget {
                 color: Colors.amber[100],
                 border: const Border(
                   top: BorderSide(
+<<<<<<< HEAD
                     color: Color.fromARGB(255, 51, 37, 14),
+=======
+                    color:  Color.fromRGBO(255, 236, 179, 1),
+>>>>>>> 11adcf58ca5eea7d96ab058324681bdff5e1f728
                     width: 2,
                   ),
                 ),
