@@ -4,6 +4,7 @@ import 'package:screen_brightness/screen_brightness.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:yourlittlepal/models/pet_state.dart';
+import 'package:yourlittlepal/models/outfit.dart'; // Added to reference the Outfit model wrapper
 import 'package:yourlittlepal/providers/pet_logic.dart';
 
 class PetProvider extends ChangeNotifier {
@@ -117,9 +118,29 @@ class PetProvider extends ChangeNotifier {
   }
 
   Future<void> changeOutfit({String? top, String? bottom}) async {
+<<<<<<< HEAD
+    // 1. Determine fallback values if a category is omitted or unprovided
+    final String finalTop = top ?? _state.currOutfit.top;
+    final String finalBottom = bottom ?? _state.currOutfit.bottom;
+
+    // 2. Build a brand new local Outfit instance payload
+    // Note: If your constructor uses positional fields instead of named keys,
+    // modify this line to: final newOutfit = Outfit(finalTop, finalBottom);
+    final newOutfit = Outfit(top: finalTop, bottom: finalBottom);
+
+    // 3. Re-assign state via the single argument update wrapper inside pet_state.dart
+    _state = _state.update(currOutfit: newOutfit);
+
+    // Notify the UI to rebuild immediately
+    notifyListeners();
+
+    // Persist configurations locally
+    await _saveToStorage();
+=======
     PetLogic.changeOutfit(_state, top: top, bottom: bottom);
     await _save();
     notifyListeners();
+>>>>>>> 2d9719fdaad8eddf803af2d4b3e54259da40a364
   }
 
   Future<void> undo() async {
@@ -165,7 +186,6 @@ class PetProvider extends ChangeNotifier {
   String? get tempDialogue => _tempDialogue;
 
   // --- CONNECTED OUTFIT GETTERS ---
-  // Pull directly from your backend state variables instead of returning null
   String? get currentTopAsset => _state.currOutfit.top;
   String? get currentBottomAsset => _state.currOutfit.bottom;
 
@@ -174,13 +194,6 @@ class PetProvider extends ChangeNotifier {
     notifyListeners();
     await Future.delayed(Duration(seconds: seconds));
     _tempDialogue = null;
-    notifyListeners();
-  }
-
-  Future<void> resetPet(PetType type) async{
-    _state = PetState.newPet(type);
-    _state.newPet = false;
-    await _save();
     notifyListeners();
   }
 
@@ -204,27 +217,32 @@ class PetProvider extends ChangeNotifier {
   /// Toggles clothing item paths dynamically inside your core business rules
   Future<void> equipClothingItem(String itemId, bool viewingTops) async {
     if (viewingTops) {
-      // Toggle top: if clicked item is already equipped, strip it (null), else change it
-      final nextTop = _state.currOutfit.top == itemId ? null : itemId;
+      final nextTop = _state.currOutfit.top == itemId ? '' : itemId;
       await changeOutfit(top: nextTop, bottom: _state.currOutfit.bottom);
     } else {
-      // Toggle bottom: if clicked item is already equipped, strip it (null), else change it
-      final nextBottom = _state.currOutfit.bottom == itemId ? null : itemId;
+      final nextBottom = _state.currOutfit.bottom == itemId ? '' : itemId;
       await changeOutfit(top: _state.currOutfit.top, bottom: nextBottom);
     }
   }
 
   /// Automatically persists configurations when confirming wardrobe modifications
   Future<void> saveCurrentOutfitState() async {
-    await _save(); // Saves everything neatly down to local device disk storage
+    await _save();
     notifyListeners();
   }
 
   Future<void> spendCoins(int amount) async {
-    _state.coins -=
-        amount; // Subtracts the cost from the current state's coin count
-    await _save(); // Persists the change to device storage
-    notifyListeners(); // Refreshes the UI
+    _state.coins -= amount;
+    await _save();
+    notifyListeners();
   }
+
+  Future<void> _saveToStorage() async {
+    // Forwards the data layer modifications into your shared preferences logic block
+    await _save();
+  }
+<<<<<<< HEAD
+=======
   }*/
+>>>>>>> 2d9719fdaad8eddf803af2d4b3e54259da40a364
 }
